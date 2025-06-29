@@ -14,11 +14,7 @@
 	}
 </script>
 
-<h1 class="text-2xl">Welcome to TRBL</h1>
-<p>
-	Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the
-	documentation
-</p>
+<h1 class="text-2xl">DB Testing</h1>
 
 <button class="btn btn-primary" on:click={load}>load products</button>
 
