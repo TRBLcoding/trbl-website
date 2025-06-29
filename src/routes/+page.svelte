@@ -5,3 +5,4 @@
 </p>
 
 <a href="/db-testing" class="link">Go to DB Testing</a>
+<a href="/auth-testing" class="link">Go to Auth Testing</a>
