@@ -15,131 +15,133 @@
 	let showMenu = true
 </script>
 
-<div class="border-b border-base-300">
-	<div class="my-5 mx-auto max-w-3/4 flex justify-between">
-		<!-- Socials -->
-		<div class="flex gap-3 mx-auto lg:mx-0 my-auto">
-			<a href="https://facebook.com/trblsoundandlight" target="_blank">
-				<Fa icon={faFacebookSquare} />
-			</a>
-			<a href="https://instagram.com/trbl_snl/" target="_blank">
-				<Fa icon={faInstagram} />
-			</a>
-			<a
-				href="https://youtube.com/channel/UCKdrfhbUobqx98V_ViPOHDg"
-				target="_blank"
-			>
-				<Fa icon={faYoutube} />
-			</a>
-			<a href="mailto:info@trbl.be" target="_blank">
-				<Fa icon={faEnvelope} />
-			</a>
-			<a href="https://discordapp.com/users/_Teunvdv_#5637" target="_blank">
-				<Fa icon={faDiscord} />
-			</a>
-		</div>
-
-		<!-- Links -->
-		<div class="gap-4 hidden lg:flex">
-			<a class="link link-hover text-sm" href="/todo">Mijn account</a>
-			<a class="link link-hover text-sm" href="/todo"
-				>Overzicht Offerte-Aanvraag</a
-			>
-			<a class="link link-hover text-sm" href="/todo">Contact</a>
-		</div>
-	</div>
-</div>
-
-<div class="border-b border-base-300">
-	<div class="flex justify-between items-center mx-auto max-w-3/4">
-		<a href="/"><img src="/TRBL_Logo.avif" alt="TRBL logo" class="w-40" /></a>
-		<!-- Small screen -->
-		<div class="lg:hidden">
-			<button
-				class="btn btn-square btn-ghost"
-				onclick={() => (showMenu = !showMenu)}
-			>
-				<Fa icon={showMenu ? faBars : faXmark} size="lg" />
-			</button>
-			<Cart></Cart>
-		</div>
-		<!-- Large screen -->
-		<div class="menu menu-horizontal hidden lg:block">
-			<a class="btn shadow-none" href="/todo">Home</a>
-			<div class="dropdown dropdown-hover">
-				<div tabindex="0" role="button" class="btn">Sound and light</div>
-				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-				<ul
-					tabindex="0"
-					class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
+<div class="relative z-10 bg-base-100">
+	<div class="border-b border-base-300">
+		<div class="py-5 mx-auto max-w-3/4 flex justify-between">
+			<!-- Socials -->
+			<div class="flex gap-3 mx-auto lg:mx-0 my-auto">
+				<a href="https://facebook.com/trblsoundandlight" target="_blank">
+					<Fa icon={faFacebookSquare} />
+				</a>
+				<a href="https://instagram.com/trbl_snl/" target="_blank">
+					<Fa icon={faInstagram} />
+				</a>
+				<a
+					href="https://youtube.com/channel/UCKdrfhbUobqx98V_ViPOHDg"
+					target="_blank"
 				>
-					<li><a href="/todo">Op Maat</a></li>
-					<li><a href="/todo">Verhuur</a></li>
-				</ul>
+					<Fa icon={faYoutube} />
+				</a>
+				<a href="mailto:info@trbl.be" target="_blank">
+					<Fa icon={faEnvelope} />
+				</a>
+				<a href="https://discordapp.com/users/_Teunvdv_#5637" target="_blank">
+					<Fa icon={faDiscord} />
+				</a>
 			</div>
-			<div class="dropdown dropdown-hover">
-				<div tabindex="0" role="button" class="btn">Electronics</div>
-				<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-				<ul
-					tabindex="0"
-					class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
-				>
-					<li><a href="/todo">TRBL producten</a></li>
-					<li><a href="/todo">Hersteldienst</a></li>
-				</ul>
-			</div>
-			<button class="btn btn-primary">Verhuur</button>
-			<Cart></Cart>
-		</div>
-	</div>
-</div>
 
-<div class="flex flex-col lg:hidden" class:hidden={showMenu}>
-	<a href="/">
-		<div class="bg-base-100 border-base-300 border rounded-none">
-			<div class="collapse-title">Home</div>
-		</div>
-	</a>
-	<div
-		class="collapse collapse-plus bg-base-100 border-base-300 border rounded-none"
-	>
-		<input type="checkbox" />
-		<div class="collapse-title">Sound and Light</div>
-		<div class="collapse-content text-sm">
-			Click the "Sign Up" button in the top right corner and follow the
-			registration process.
+			<!-- Links -->
+			<div class="gap-4 hidden lg:flex">
+				<a class="link link-hover text-sm" href="/todo">Mijn account</a>
+				<a class="link link-hover text-sm" href="/todo"
+					>Overzicht Offerte-Aanvraag</a
+				>
+				<a class="link link-hover text-sm" href="/todo">Contact</a>
+			</div>
 		</div>
 	</div>
-	<div
-		class="collapse collapse-plus bg-base-100 border-base-300 border rounded-none"
-	>
-		<input type="checkbox" />
-		<div class="collapse-title">Electronics</div>
-		<div class="collapse-content text-sm">
-			Click the "Sign Up" button in the top right corner and follow the
-			registration process.
+
+	<div class="border-b border-base-300">
+		<div class="flex justify-between items-center mx-auto max-w-3/4">
+			<a href="/"><img src="/TRBL_Logo.avif" alt="TRBL logo" class="w-40" /></a>
+			<!-- Small screen -->
+			<div class="lg:hidden">
+				<button
+					class="btn btn-square btn-ghost"
+					onclick={() => (showMenu = !showMenu)}
+				>
+					<Fa icon={showMenu ? faBars : faXmark} size="lg" />
+				</button>
+				<Cart></Cart>
+			</div>
+			<!-- Large screen -->
+			<div class="menu menu-horizontal hidden lg:block">
+				<a class="btn shadow-none" href="/todo">Home</a>
+				<div class="dropdown dropdown-hover">
+					<div tabindex="0" role="button" class="btn">Sound and light</div>
+					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+					<ul
+						tabindex="0"
+						class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
+					>
+						<li><a href="/todo">Op Maat</a></li>
+						<li><a href="/todo">Verhuur</a></li>
+					</ul>
+				</div>
+				<div class="dropdown dropdown-hover">
+					<div tabindex="0" role="button" class="btn">Electronics</div>
+					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+					<ul
+						tabindex="0"
+						class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
+					>
+						<li><a href="/todo">TRBL producten</a></li>
+						<li><a href="/todo">Hersteldienst</a></li>
+					</ul>
+				</div>
+				<button class="btn btn-primary px-6">Verhuur</button>
+				<Cart></Cart>
+			</div>
 		</div>
 	</div>
-	<a href="/todo">
-		<div class="bg-base-100 border-base-300 border rounded-none">
-			<div class="collapse-title">Verhuur</div>
+
+	<div class="flex flex-col lg:hidden" class:hidden={showMenu}>
+		<a href="/">
+			<div class="bg-base-100 border-base-300 border rounded-none">
+				<div class="collapse-title">Home</div>
+			</div>
+		</a>
+		<div
+			class="collapse collapse-plus bg-base-100 border-base-300 border rounded-none"
+		>
+			<input type="checkbox" />
+			<div class="collapse-title">Sound and Light</div>
+			<div class="collapse-content text-sm">
+				Click the "Sign Up" button in the top right corner and follow the
+				registration process.
+			</div>
 		</div>
-	</a>
-	<a href="/todo">
-		<div class="bg-base-100 border-base-300 border rounded-none">
-			<div class="collapse-title">Mijn account</div>
+		<div
+			class="collapse collapse-plus bg-base-100 border-base-300 border rounded-none"
+		>
+			<input type="checkbox" />
+			<div class="collapse-title">Electronics</div>
+			<div class="collapse-content text-sm">
+				Click the "Sign Up" button in the top right corner and follow the
+				registration process.
+			</div>
 		</div>
-	</a>
-	<a href="/todo">
-		<div class="bg-base-100 border-base-300 border rounded-none">
-			<div class="collapse-title">Overzicht Offerte-Aanvraag</div>
-		</div>
-	</a>
-	<a href="/todo">
-		<div class="bg-base-100 border-base-300 border rounded-none">
-			<div class="collapse-title">Contact</div>
-		</div>
-	</a>
+		<a href="/todo">
+			<div class="bg-base-100 border-base-300 border rounded-none">
+				<div class="collapse-title">Verhuur</div>
+			</div>
+		</a>
+		<a href="/todo">
+			<div class="bg-base-100 border-base-300 border rounded-none">
+				<div class="collapse-title">Mijn account</div>
+			</div>
+		</a>
+		<a href="/todo">
+			<div class="bg-base-100 border-base-300 border rounded-none">
+				<div class="collapse-title">Overzicht Offerte-Aanvraag</div>
+			</div>
+		</a>
+		<a href="/todo">
+			<div class="bg-base-100 border-base-300 border rounded-none">
+				<div class="collapse-title">Contact</div>
+			</div>
+		</a>
+	</div>
 </div>
 
 <slot />
