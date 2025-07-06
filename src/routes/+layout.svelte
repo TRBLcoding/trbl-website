@@ -10,12 +10,12 @@
 	} from "@fortawesome/free-brands-svg-icons"
 	import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
 	import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons"
-	import Cart from "$lib/components/Cart.svelte"
+	import Cart from "../components/Cart.svelte"
 
 	let showMenu = true
 </script>
 
-<div class="relative z-10 bg-base-100">
+<div class="relative z-20 bg-base-100">
 	<div class="border-b border-base-300">
 		<div class="py-5 mx-auto max-w-3/4 flex justify-between">
 			<!-- Socials -->
