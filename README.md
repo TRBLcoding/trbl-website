@@ -1,38 +1,27 @@
-# sv
+# TRBL website
+A SvelteKit website with Supabase DB, styling with Tailwind and DaisyUI
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+- [SvelteKit in 100 seconds](https://youtu.be/H1eEFfAkIik)
+- [Tailwind in 100 seconds](https://youtu.be/mr15Xzb1Ook)
+- [Supabase in 100 seconds](https://youtu.be/zBZgdTb-dns)
+- [DaisyUI](https://daisyui.com/components/)
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
+## Setup project
+Clone project and install dependencies
 ```bash
-# create a new project in the current directory
-npx sv create
+git clone https://github.com/TRBLcoding/trbl-website.git
+cd trbl-website
+npm install
+```
 
-# create a new project in my-app
-npx sv create my-app
+Setup environement variables, visit Supabase dashboard
+```env
+VITE_SUPABASE_URL="..."
+VITE_SUPABASE_ANON_KEY="..."
 ```
 
 ## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
+Run dev server
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
