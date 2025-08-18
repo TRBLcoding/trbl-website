@@ -89,7 +89,7 @@
 						<li><a href="/todo">Hersteldienst</a></li>
 					</ul>
 				</div>
-				<button class="btn btn-primary px-6">Verhuur</button>
+				<a class="btn btn-primary px-6" href="/verhuur">Verhuur</a>
 				<Cart></Cart>
 			</div>
 		</div>
