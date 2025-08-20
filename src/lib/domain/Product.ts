@@ -4,6 +4,7 @@ export enum Category {
 	TRUSS,
 	MEDIA
 }
+export const CategoryValues = Object.keys(Category).filter((v) => isNaN(Number(v)))
 
 export class Product {
 	constructor(

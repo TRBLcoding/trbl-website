@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Category, Product } from "$lib/domain/Product"
-	import ProductCard from "../../components/ProductCard.svelte"
+	import ProductCard from "../../components/product/ProductCard.svelte"
 
 	const imageUrl =
 		"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1440/h:1080/q:90/f:best/https://trbl.be/files/2025/07/5G_Kit-profile-scaled.jpg"

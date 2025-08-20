@@ -1,0 +1,25 @@
+/* Integrate CL editor with Tailwind and dark mode */
+@reference "tailwindcss";
+
+:global(.cl) {
+	@apply overflow-hidden! shadow-none! border-2! border-[#d1d1d1]! dark:border-[#464e57]! rounded-lg;
+
+	:global(.cl-button svg) {
+		@apply [display:initial]!;
+	}
+	:global(.cl-button.active),
+	:global(.cl-button:hover) {
+		@apply bg-[#dcdedf]! dark:bg-[#313641]!;
+	}
+	:global(.cl-button path) {
+		@apply dark:fill-[#a6adbb]!;
+	}
+	:global(.cl-content) {
+		/* @apply dark:bg-base-100!; Daisyui styles do not work, so HEX values will have to do */
+		@apply dark:bg-[#1d232a]!;
+	}
+	:global(.cl-actionbar) {
+		/* @apply bg-base-200!; Daisyui styles do not work, so HEX values will have to do */
+		@apply dark:bg-[#191e24]! rounded-t-lg;
+	}
+}

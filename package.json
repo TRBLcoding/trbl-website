@@ -19,11 +19,15 @@
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@tailwindcss/vite": "^4.1.10",
+		"@types/byte-size": "^8.1.2",
 		"eslint": "^9.18.0",
 		"eslint-plugin-svelte": "^3.0.0",
 		"globals": "^16.0.0",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
+		"svelte-dnd-action": "^0.9.64",
+		"svelte-multiselect": "^11.2.3",
+		"svelte-select": "^5.8.3",
 		"tailwindcss": "^4.1.10",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.20.0",
@@ -34,7 +38,11 @@
 		"@fortawesome/free-regular-svg-icons": "^6.7.2",
 		"@fortawesome/free-solid-svg-icons": "^6.7.2",
 		"@supabase/supabase-js": "^2.50.2",
+		"byte-size": "^9.0.1",
+		"cl-editor": "^2.3.0",
 		"daisyui": "^5.0.43",
-		"svelte-fa": "^4.0.4"
+		"dayjs": "^1.11.13",
+		"svelte-fa": "^4.0.4",
+		"uuid": "^11.1.0"
 	}
 }
