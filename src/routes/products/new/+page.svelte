@@ -23,7 +23,7 @@
 		bind:combinedImages={uploadedImages}
 		bind:tags
 		bind:content
-		newArticle={true}
+		newProduct={true}
 		submitLabel="Product aanmaken"
 		onSave={saveArticle}
 	/>
