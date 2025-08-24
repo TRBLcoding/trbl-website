@@ -104,7 +104,7 @@
       {disabled}
       on:focusout={() => (edited = true)}
       on:input={onInput}
-      class="input input-bordered border-2 w-full hover:cursor-text"
+      class="input border-2 w-full hover:cursor-text"
       class:bg-base-300={disabled}
       class:text-slate-700={disabled}
       class:pl-9={showIconLeft}

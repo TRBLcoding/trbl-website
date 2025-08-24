@@ -28,7 +28,7 @@
 </script>
 
 <div
-  class="flex items-center w-full pl-2 pr-3 py-2 text-sm max-w-sm gap-2 input-bordered"
+  class="flex items-center w-full pl-2 pr-3 py-2 text-sm max-w-sm gap-2 border-[#d1d1d1] dark:border-[#464e57]"
   class:border-b-2={!isLast}
 >
   {#if !dragFullyDisabled}
@@ -81,7 +81,9 @@
 </div>
 
 <style lang="postcss">
+  @reference "tailwindcss"
+
   :global(#dnd-action-dragged-el) {
-    @reference border-2 rounded-lg bg-base-100 !important;
+    @apply border-2! rounded-lg! bg-base-100!;
   }
 </style>

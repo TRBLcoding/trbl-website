@@ -44,7 +44,7 @@
   <div class="flex row items-center gap-4">
     <input
       id={inputIdStart}
-      class="input input-bordered border-2 font-mono hover:cursor-text"
+      class="input border-2 font-mono hover:cursor-text"
       type="time"
       bind:value={valueStart}
       {required}
@@ -53,7 +53,7 @@
     <label for={inputIdEnd} class:opacity-50={fullDay || disabled}>tot</label>
     <input
       id={inputIdEnd}
-      class="input input-bordered border-2 font-mono hover:cursor-text"
+      class="input border-2 font-mono hover:cursor-text"
       type="time"
       bind:value={valueEnd}
       {required}

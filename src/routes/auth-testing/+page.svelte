@@ -36,13 +36,13 @@
 	type="email"
 	placeholder="Email"
 	bind:value={email}
-	class="input input-bordered w-full max-w-xs mb-4"
+	class="input w-full max-w-xs mb-4"
 />
 <input
 	type="password"
 	placeholder="Password"
 	bind:value={pass}
-	class="input input-bordered w-full max-w-xs mb-4"
+	class="input w-full max-w-xs mb-4"
 />
 <button class="btn btn-primary" on:click={signUpNewUser}>
 	Sign Up New User</button

@@ -1,8 +1,8 @@
 export enum Category {
-	SOUND,
-	LIGHT,
-	TRUSS,
-	MEDIA
+	"SOUND",
+	"LIGHT",
+	"TRUSS",
+	"MEDIA"
 }
 export const CategoryValues = Object.keys(Category).filter((v) => isNaN(Number(v)))
 

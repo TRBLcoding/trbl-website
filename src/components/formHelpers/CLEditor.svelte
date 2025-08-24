@@ -68,4 +68,8 @@
 
 <style lang="postcss">
 	@import "../../css/cl-editor.postcss";
+
+	:global(.cl-textarea) {
+		@apply hidden! p-10;
+	}
 </style>

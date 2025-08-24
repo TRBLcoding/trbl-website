@@ -103,7 +103,7 @@
 	class:max-w-sm={size === "sm"}
 	class:max-w-xs={size === "xs"}
 >
-	<div class="flex items-center">
+	<div class="flex items-center mb-1">
 		<label class="label" for="dropzone-file">
 			<span class="label-text">
 				{label}
@@ -131,7 +131,7 @@
 			id={dropzoneId}
 		>
 			<div
-				class="relative cursor-pointer border-2 border-dashed rounded-sm bg-base-200 border-[#d1d1d1]"
+				class="relative cursor-pointer border-2 border-dashed rounded-sm bg-base-200 border-[#d1d1d1] dark:border-[#464e57]"
 				class:cursor-not-allowed={disabled}
 				class:hover:bg-base-300={!disabled}
 				class:dark:hover:bg-[#313741]={!disabled}
@@ -172,7 +172,7 @@
 	<!-- SelectedImages viewer -->
 	{#if combinedImages.length}
 		<div
-			class="flex flex-col input-bordered border-2 rounded-lg min-h-[3rem] bg-base-100 justify-center"
+			class="flex flex-col border-2 border-[#d1d1d1] dark:border-[#464e57] rounded-lg min-h-[3rem] bg-base-100 justify-center"
 			class:mt-1={remainingSpace}
 			use:dndzone={{
 				items: dragableImages,
@@ -207,4 +207,3 @@
 		</div>
 	{/if}
 </div>
-
