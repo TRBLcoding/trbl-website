@@ -6,7 +6,7 @@
 
 <div class="card bg-base-100 w-96 shadow-md">
 	<figure>
-		<a href="/product/{product.id}">
+		<a href="/products/{product.id}">
 			<img src={product.imageUrl} alt="Productafbeelding" />
 		</a>
 	</figure>

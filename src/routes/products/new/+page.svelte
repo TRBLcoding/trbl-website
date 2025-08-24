@@ -17,13 +17,13 @@
 	let type: string = ""
 	let description = ""
 
-	async function saveProduct() {
-		const product = await createProduct()
+	async function createProduct() {
+		const product = await createPreviewProduct()
 		await productStore.createProduct(product, uploadedImages, progressStore)
 		pushCreatedToast("Product aangemaakt", { gotoUrl: "/products" })
 	}
 
-	async function createProduct() {
+	async function createPreviewProduct() {
 		return new Product(
 			-1, // temporary id
 			name,
@@ -52,7 +52,7 @@
 		bind:description
 		newProduct={true}
 		submitLabel="Product aanmaken"
-		onSave={saveProduct}
+		onSave={createProduct}
 		progress={$progressStore}
 	/>
 </div>

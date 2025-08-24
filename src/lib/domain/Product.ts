@@ -29,4 +29,17 @@ export class Product {
 			imageIds: this.imageIds,
 		} as Database['public']['Tables']['products']['Insert']
 	}
+
+	static fromJSON(json: any): Product {
+		return new Product(
+			json.id,
+			json.name,
+			json.price,
+			json.description,
+			json.categories,
+			json.type,
+			json.visible,
+			json.imageIds || [],
+		)
+	}
 }
