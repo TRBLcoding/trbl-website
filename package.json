@@ -10,7 +10,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "eslint .",
-		"lint-fix": "eslint . --fix"
+		"lint-fix": "eslint . --fix",
+		"gen-types": "npx supabase gen types typescript --project-id \"teiboeelbjhxmsiyzpsn\" --schema public > src/lib/supabase/database.types.ts && echo Types generated: src/lib/supabase/database.types.ts"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.3.2",
