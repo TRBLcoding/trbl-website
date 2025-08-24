@@ -1,16 +1,41 @@
 <script lang="ts">
 	import ProductForm from "$components/product/ProductForm.svelte"
+	import { Product } from "$lib/domain/Product"
+	import { productStore } from "$lib/ProductStore"
+	import { PreviewableFile } from "$lib/utils/PreviewableFile"
+	import { pushCreatedToast } from "$lib/utils/Toast"
+	import type { UploadProgress } from "$lib/utils/UploadProgress"
+	import { writable } from "svelte/store"
 
-	let title = ""
+	const progressStore = writable([] as UploadProgress[])
+
+	let name = ""
 	let visible: boolean = true
+	let price = 0
 	let uploadedImages: File[] = []
-	let tags: string[] = []
-	let content = ""
+	let categories: string[] = []
+	let type: string = ""
+	let description = ""
 
-	async function saveArticle() {
-		// const article = await createPreviewArticle()
-		// await articleStore.createArticle(article, uploadedImages)
-		// pushCreatedToast("Bericht aangemaakt", { gotoUrl: "/" })
+	async function saveProduct() {
+		const product = await createProduct()
+		await productStore.createProduct(product, uploadedImages, progressStore)
+		pushCreatedToast("Product aangemaakt", { gotoUrl: "/products" })
+	}
+
+	async function createProduct() {
+		return new Product(
+			-1, // temporary id
+			name,
+			price,
+			description,
+			categories,
+			type,
+			visible,
+			await Promise.all(
+				uploadedImages.map((e) => PreviewableFile.getFilePreview(e))
+			)
+		)
 	}
 </script>
 
@@ -18,13 +43,16 @@
 	<h1 class="text-2xl font-bold">Nieuw product</h1>
 
 	<ProductForm
-		bind:title
+		bind:name
+		bind:price
 		bind:visible
 		bind:combinedImages={uploadedImages}
-		bind:tags
-		bind:content
+		bind:categories
+		bind:type
+		bind:description
 		newProduct={true}
 		submitLabel="Product aanmaken"
-		onSave={saveArticle}
+		onSave={saveProduct}
+		progress={$progressStore}
 	/>
 </div>

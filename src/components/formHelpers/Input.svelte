@@ -14,7 +14,7 @@
   export let disabled = false
   export let size: "full" | "md" | "sm" | "xs" = "sm"
 
-  export let type: "text" | "email" | "date" | "password"
+  export let type: "text" | "number"| "email" | "date" | "password"
   export let placeholder = ""
   export let labelClass = ""
   export let edited = false

@@ -14,7 +14,7 @@ cd trbl-website
 npm install
 ```
 
-Setup environement variables, visit Supabase dashboard
+Setup environement variables, [Supabase setup](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit)
 ```env
 VITE_SUPABASE_URL="..."
 VITE_SUPABASE_ANON_KEY="..."

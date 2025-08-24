@@ -1,3 +1,4 @@
+import type { Navigation } from "@sveltejs/kit"
 import { WEBP_THUMBNAIL_QUALITY } from "./Constants"
 import generateImageThumbnail from "./ImageThumbnail"
 
@@ -8,6 +9,22 @@ import generateImageThumbnail from "./ImageThumbnail"
  */
 export function clamp(number: number, min: number, max: number) {
 	return Math.min(Math.max(number, min), max)
+}
+
+export function sleep(time: number | undefined = 1000) {
+	return new Promise<void>(resolve => {
+		setTimeout(() => {
+			resolve()
+		}, time)
+	})
+}
+
+// checks if navigation is not triggered by form or page load
+export function isPageNavigation(navigation: Navigation) {
+	return navigation.type === "leave" ||
+		navigation.type === "link" ||
+		navigation.type === "goto" ||
+		navigation.type === "popstate"
 }
 
 export function ignoreDragOver(event: DragEvent, disabled = false) {

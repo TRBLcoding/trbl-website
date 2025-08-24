@@ -16,31 +16,34 @@ export type Database = {
     Tables: {
       products: {
         Row: {
-          category: Database["public"]["Enums"]["Category"][]
+          categories: Database["public"]["Enums"]["Category"][]
           description: string
           id: number
           imageIds: string[]
           name: string
           price: number
           type: Database["public"]["Enums"]["Type"]
+          visible: boolean
         }
         Insert: {
-          category: Database["public"]["Enums"]["Category"][]
+          categories: Database["public"]["Enums"]["Category"][]
           description: string
           id?: number
           imageIds: string[]
           name: string
           price: number
           type: Database["public"]["Enums"]["Type"]
+          visible: boolean
         }
         Update: {
-          category?: Database["public"]["Enums"]["Category"][]
+          categories?: Database["public"]["Enums"]["Category"][]
           description?: string
           id?: number
           imageIds?: string[]
           name?: string
           price?: number
           type?: Database["public"]["Enums"]["Type"]
+          visible?: boolean
         }
         Relationships: []
       }

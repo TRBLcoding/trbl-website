@@ -1,19 +1,32 @@
-export enum Category {
-	"SOUND",
-	"LIGHT",
-	"TRUSS",
-	"MEDIA"
-}
-export const CategoryValues = Object.keys(Category).filter((v) => isNaN(Number(v)))
+import type { Database } from "$lib/supabase/database.types"
+
+export const CategoryValues = ["Sound", "Light", "Truss", "Media"]
+export type Category = typeof CategoryValues[number]
+
+export const TypeValues = ["Mixer", "Microphone", "Speaker", "SoundSet", "LightEffect", "LightSet", "Truss", "Network", "UPS", "Scherm", "Controls"]
+export type Type = typeof TypeValues[number]
 
 export class Product {
 	constructor(
-		public id: string,
+		public id: number,
 		public name: string,
 		public price: number,
 		public description: string,
 		public categories: Category[],
-		public imageUrl: string
-	) {}
+		public type: Type,
+		public visible: boolean,
+		public imageIds: string[],
+	) { }
 
+	toJSON() {
+		return {
+			name: this.name,
+			price: this.price,
+			description: this.description,
+			categories: this.categories,
+			type: this.type,
+			visible: this.visible,
+			imageIds: this.imageIds,
+		} as Database['public']['Tables']['products']['Insert']
+	}
 }

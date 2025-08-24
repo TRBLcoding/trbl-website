@@ -1,18 +1,6 @@
 <script lang="ts">
-	import { Category, Product } from "$lib/domain/Product"
+	import { productStore } from "$lib/ProductStore"
 	import ProductCard from "../../components/product/ProductCard.svelte"
-
-	const imageUrl =
-		"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1440/h:1080/q:90/f:best/https://trbl.be/files/2025/07/5G_Kit-profile-scaled.jpg"
-
-	const product = new Product(
-		"5g-netwerk-kit",
-		"5G Netwerk Kit",
-		48.9,
-		"Description",
-		[Category.MEDIA],
-		imageUrl
-	)
 </script>
 
 <div class="mx-10 my-5">
@@ -27,8 +15,8 @@
 	</div>
 
 	<div class="mt-2 flex gap-2 flex-wrap">
-		{#each Array(8) as _}
-			<ProductCard {product}></ProductCard>
+		{#each $productStore as product}
+			<ProductCard {product} />
 		{/each}
 	</div>
 </div>
