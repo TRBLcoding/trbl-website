@@ -69,9 +69,9 @@
 						ondersteuning op fuiven en evenementen!
 					</p>
 					<div class="card-actions justify-start mt-4">
-						<button class="btn btn-primary px-6 uppercase text-[16px]"
-							>Contact</button
-						>
+						<button class="btn btn-primary px-6 uppercase text-[16px]">
+							Contact
+						</button>
 					</div>
 				</div>
 			</div>

@@ -43,10 +43,11 @@
 			<!-- Links -->
 			<div class="gap-4 hidden lg:flex">
 				<a class="link link-hover text-sm" href="/todo">Mijn account</a>
-				<a class="link link-hover text-sm" href="/todo"
-					>Overzicht Offerte-Aanvraag</a
-				>
+				<a class="link link-hover text-sm" href="/todo">
+					Overzicht Offerte-Aanvraag
+				</a>
 				<a class="link link-hover text-sm" href="/todo">Contact</a>
+				<a class="link link-hover text-sm" href="/dashboard">Dashboard</a>
 			</div>
 		</div>
 	</div>
