@@ -2,7 +2,7 @@ import { browser } from '$app/environment'
 import { get, writable, type Writable } from 'svelte/store'
 import { Product, type Category, type Type, CategoryValues } from './domain/Product'
 import { supabase } from "$lib/supabase/supabaseClient"
-import type { UploadProgress } from './utils/UploadProgress'
+import { convertAndUploadImages, type UploadProgress } from './utils/UploadProgress'
 import type { Database } from './supabase/database.types'
 
 function createProductStore() {
@@ -23,17 +23,21 @@ function createProductStore() {
 	const { subscribe, update } = store
 
 	async function createProduct(newProduct: Product, images: File[], progressStore: Writable<UploadProgress[]>) {
-		// -- Update product --
+		// -- Convert and upload images --
+		const { uploadedImageIds, size } = await convertAndUploadImages(images, "PublicImages", "product-images/", progressStore)
+		newProduct.imageIds = uploadedImageIds
+
+		// -- Create product --
 		const { error } = await supabase
 			.from('products')
 			.insert(newProduct.toJSON())
 		if (error)
 			console.error(error)
 
-		// -- Update store --
-		update((products) => {
-			return [...(products || []), newProduct].sort((a, b) => a.name.localeCompare(b.name))
-		})
+		// // -- Update store --
+		// update((products) => {
+		// 	return [...(products || []), newProduct].sort((a, b) => a.name.localeCompare(b.name))
+		// })
 	}
 
 	function getProductById(id: number) {
@@ -57,11 +61,11 @@ function createProductStore() {
 				description: newDescription,
 			} as Database['public']['Tables']['products']['Update'])
 			.eq('id', 9)
-			.select()
-		  console.log("Update result:", { data, error, affectedRows: data?.length })
-		if (error)
+			.select('id')
+		if (error || !data)
 			console.error(error)
-		console.log("Updated product:", product.id)
+		else if (data.length !== 1)
+			console.error(`Updated ${data.length} products:`, data)
 
 		// -- Update store --
 		product.name = newName

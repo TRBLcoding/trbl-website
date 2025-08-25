@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ProductForm from "$components/product/ProductForm.svelte"
-	import { Product } from "$lib/domain/Product"
+	import { Product, type Category, type Type } from "$lib/domain/Product"
 	import { productStore } from "$lib/ProductStore"
 	import { PreviewableFile } from "$lib/utils/PreviewableFile"
 	import { pushCreatedToast } from "$lib/utils/Toast"
@@ -9,13 +9,13 @@
 
 	const progressStore = writable([] as UploadProgress[])
 
-	let name = ""
+	let name = "Temp"
 	let visible: boolean = true
 	let price = 0
 	let uploadedImages: File[] = []
-	let categories: string[] = []
-	let type: string = ""
-	let description = ""
+	let categories: Category[] = []
+	let type: Type = "Mixer"
+	let description = "Temp"
 
 	async function createProduct() {
 		const product = await createPreviewProduct()

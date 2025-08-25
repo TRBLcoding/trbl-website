@@ -5,15 +5,15 @@
 	import Input from "$components/formHelpers/Input.svelte"
 	import MultiSelect from "$components/formHelpers/MultiSelect.svelte"
 	import Select from "$components/formHelpers/Select.svelte"
-	import { CategoryValues, TypeValues } from "$lib/domain/Product"
+	import { CategoryValues, TypeValues, type Category, type Type } from "$lib/domain/Product"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 
 	export let name = ""
 	export let visible = true
 	export let price = 0
 	export let combinedImages: (string | File)[] = []
-	export let categories: string[] = []
-	export let type: string = ""
+	export let categories: Category[] = []
+	export let type: Type = ""
 	export let description = ""
 
 	export let submitLabel: string

@@ -1,4 +1,5 @@
 import type { Database } from "$lib/supabase/database.types"
+import { createSupabaseStorageUrl } from "$lib/supabase/supabaseClient"
 
 export const CategoryValues = ["Sound", "Light", "Truss", "Media"]
 export type Category = typeof CategoryValues[number]
@@ -42,4 +43,13 @@ export class Product {
 			json.imageIds || [],
 		)
 	}
+
+	getImageUrls() {
+		return this.imageIds.map((e) => createSupabaseStorageUrl("PublicImages", "product-images/", e))
+	}
+
+	getThumbnailUrls() {
+		return this.imageIds.map((e) => createSupabaseStorageUrl("PublicImages", "product-images/thumbnails/", e))
+	}
 }
+
