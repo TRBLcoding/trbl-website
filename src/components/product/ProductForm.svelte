@@ -5,7 +5,7 @@
 	import Input from "$components/formHelpers/Input.svelte"
 	import MultiSelect from "$components/formHelpers/MultiSelect.svelte"
 	import Select from "$components/formHelpers/Select.svelte"
-	import { CategoryValues, TypeValues, type Category, type Type } from "$lib/domain/Product"
+	import { CategoryValues, Product, TypeValues, type Category, type Type } from "$lib/domain/Product"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 
 	export let name = ""
@@ -60,6 +60,7 @@
 		bind:combinedImages
 		showDiskSize={newProduct}
 		{progress}
+		previewConverter={Product.imageToThumbnailUrl}
 	/>
 	<MultiSelect
 		label="Categorieën:"

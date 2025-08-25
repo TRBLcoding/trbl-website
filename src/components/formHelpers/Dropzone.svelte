@@ -24,8 +24,10 @@
 	export let showDiskSize = false
 	export let saving = false
 	export let progress: UploadProgress[] | undefined = undefined
+	export let previewConverter: ((e: string) => string) | undefined = undefined
 
 	$: remainingSpace = maxAmount - combinedImages.length
+	$: fileImages = combinedImages.filter((e) => e instanceof File)
 
 	// -- File input handlers --
 	function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
@@ -69,7 +71,10 @@
 	// -- Drag and drop --
 	let dragDisabled = true
 
-	$: dragableImages = combinedImages.map((e) => ({ id: e, data: e }))
+	$: dragableImages = combinedImages.map((e) => {
+		if (e instanceof File) return { id: e, data: e }
+		return { id: e, data: previewConverter ? previewConverter(e) : e }
+	})
 
 	function handleConsider(event: CustomEvent<DndEvent<any>>) {
 		dragableImages = event.detail.items
@@ -200,7 +205,8 @@
 			{/each}
 		</div>
 	{/if}
-	{#if !disablePreviews && amountOfFinishedPreviews < combinedImages.length}
+
+	{#if !disablePreviews && amountOfFinishedPreviews < fileImages.length}
 		<div class="flex items-center gap-2">
 			<span class="loading loading-ring"></span>
 			<span class="opacity-60">Afbeeldingen laden</span>

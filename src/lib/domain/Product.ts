@@ -44,12 +44,18 @@ export class Product {
 		)
 	}
 
+	static imageToUrl(imageId: string) {
+		return createSupabaseStorageUrl("PublicImages", "product-images/", imageId)
+	}
+	static imageToThumbnailUrl(imageId: string) {
+		return createSupabaseStorageUrl("PublicImages", "product-images/thumbnails/", imageId)
+	}
+
 	getImageUrls() {
-		return this.imageIds.map((e) => createSupabaseStorageUrl("PublicImages", "product-images/", e))
+		return this.imageIds.map(Product.imageToUrl)
 	}
 
 	getThumbnailUrls() {
-		return this.imageIds.map((e) => createSupabaseStorageUrl("PublicImages", "product-images/thumbnails/", e))
+		return this.imageIds.map(Product.imageToThumbnailUrl)
 	}
 }
-
