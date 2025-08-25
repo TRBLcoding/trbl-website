@@ -1,11 +1,11 @@
-import { blobToWebP } from 'webp-converter-browser'
-import { updateStoreAtIndex } from './Svelte'
-import { MAX_CONCURRENT_UPLOADS, WEBP_IMAGE_QUALITY, WEBP_THUMBNAIL_QUALITY } from './Constants'
-import { v4 as uuidv4 } from 'uuid'
-import generateImageThumbnail from './ImageThumbnail'
-import type { Writable } from 'svelte/store'
-import pLimit from 'p-limit'
 import { supabase } from '$lib/supabase/supabaseClient'
+import pLimit from 'p-limit'
+import type { Writable } from 'svelte/store'
+import { v4 as uuidv4 } from 'uuid'
+import { blobToWebP } from 'webp-converter-browser'
+import { MAX_CONCURRENT_UPLOADS, WEBP_IMAGE_QUALITY, WEBP_THUMBNAIL_QUALITY } from './Constants'
+import generateImageThumbnail from './ImageThumbnail'
+import { updateStoreAtIndex } from './Svelte'
 export enum UploadProgress {
 	NOT_STARTED = 0,
 	CONVERTING = 1,
@@ -73,19 +73,15 @@ export async function convertAndUploadImages(combinedImages: (string | File)[], 
 	return { uploadedImageIds, size }
 }
 
-// export async function deleteImages(imageUrls: string[], progressStore?: Writable<number>) {
-// 	const { getStorage, ref, deleteObject } = await import('firebase/storage')
-// 	const storage = getStorage()
+export async function deleteImages(bucket: string, folder: string, imageIds: string[]) {
+	console.log(imageIds.map(e => `${folder}${e}.webp`))
+	const response = await supabase
+		.storage
+		.from(bucket)
+		.remove(imageIds.map(e => `${folder}${e}.webp`))
+	if (response.error)
+		console.error(response)
+	if (response.data?.length !== imageIds.length)
+		console.warn("Some images were not deleted:", response)
 
-// 	await Promise.all(imageUrls.map(async (image) => {
-// 		try {
-// 			const storageRef = ref(storage, image)
-// 			await deleteObject(storageRef)
-// 			progressStore?.update((progress) => progress + 1)
-// 		} catch (error: any) {
-// 			// Not existing images can be safely ignored
-// 			if (error.code !== 'storage/object-not-found')
-// 				throw error
-// 		}
-// 	}))
-// }
+}

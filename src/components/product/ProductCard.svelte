@@ -14,7 +14,7 @@
 	<div class="card-body">
 		<span class="italic opacity-50 mb-[-10px]">Media</span>
 		<h2 class="card-title">
-			<a class="link link-hover" href="/product/{product.id}">{product.name}</a>
+			<a class="link link-hover" href="/products/{product.id}">{product.name}</a>
 		</h2>
 		<p class="text-xl font-semibold text-green-600">€ {product.price}</p>
 		<button class="btn">Toevoegen</button>

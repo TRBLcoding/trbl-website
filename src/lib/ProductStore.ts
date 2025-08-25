@@ -1,9 +1,9 @@
 import { browser } from '$app/environment'
-import { get, writable, type Writable } from 'svelte/store'
-import { Product, type Category, type Type, CategoryValues } from './domain/Product'
 import { supabase } from "$lib/supabase/supabaseClient"
-import { convertAndUploadImages, type UploadProgress } from './utils/UploadProgress'
+import { get, writable, type Writable } from 'svelte/store'
+import { Product, type Category, type Type } from './domain/Product'
 import type { Database } from './supabase/database.types'
+import { convertAndUploadImages, deleteImages, type UploadProgress } from './utils/UploadProgress'
 
 function createProductStore() {
 	const store = writable<Product[]>(undefined, set => {
@@ -34,16 +34,16 @@ function createProductStore() {
 		if (error)
 			console.error(error)
 
-		// // -- Update store --
-		// update((products) => {
-		// 	return [...(products || []), newProduct].sort((a, b) => a.name.localeCompare(b.name))
-		// })
+		// -- Update store --
+		update((products) => {
+			return [...(products || []), newProduct].sort((a, b) => a.name.localeCompare(b.name))
+		})
 	}
 
 	function getProductById(id: number) {
-		// -- Get calendarEvent --
-		const calendarEvents = get(store)
-		return calendarEvents.find((e) => e.id === id)
+		// -- Get product --
+		const products = get(store)
+		return products.find((e) => e.id === id)
 	}
 
 	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string) {
@@ -60,7 +60,7 @@ function createProductStore() {
 				type: newType,
 				description: newDescription,
 			} as Database['public']['Tables']['products']['Update'])
-			.eq('id', 9)
+			.eq('id', product.id)
 			.select('id')
 		if (error || !data)
 			console.error(error)
@@ -78,24 +78,29 @@ function createProductStore() {
 		update((products) => [...products])
 	}
 
-	// async function deleteProduct(calendarEvent: Product) {
-	// 	// -- Remove calendarEvent --
-	// 	const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
-	// 	const { firebaseApp } = await import('$lib/firebase/Firebase')
-	// 	const firestore = getFirestore(firebaseApp)
+	async function deleteProduct(product: Product) {
+		// -- Remove images --
+		await deleteImages("PublicImages", "product-images/", product.imageIds)
+		await deleteImages("PublicImages", "product-images/thumbnails/", product.imageIds)
 
-	// 	await deleteDoc(doc(firestore, Collections.CALENDAR_EVENTS, calendarEvent.id))
+		// -- Remove product --
+		const response = await supabase
+			.from('products')
+			.delete()
+			.eq('id', product.id)
+		if(response.error)
+			console.error(response.error)
 
-	// 	// -- Remove from store --
-	// 	update((calendarEvents) => (calendarEvents.filter((e) => e.id !== calendarEvent.id)))
-	// }
+		// -- Remove from store --
+		update((products) => (products.filter((e) => e.id !== product.id)))
+	}
 
 	return {
 		subscribe,
 		createProduct,
 		getProductById,
 		updateProduct,
-		// deleteProduct,
+		deleteProduct,
 	}
 }
 
