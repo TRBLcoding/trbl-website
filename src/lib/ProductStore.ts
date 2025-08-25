@@ -4,6 +4,7 @@ import { get, writable, type Writable } from 'svelte/store'
 import { Product, type Category, type Type } from './domain/Product'
 import type { Database } from './supabase/database.types'
 import { convertAndUploadImages, deleteImages, type UploadProgress } from './utils/UploadProgress'
+import { arrayDifference, arraysContainSameElements } from './utils/Array'
 
 function createProductStore() {
 	const store = writable<Product[]>(undefined, set => {
@@ -46,16 +47,26 @@ function createProductStore() {
 		return products.find((e) => e.id === id)
 	}
 
-	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string) {
+	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, progressStore: Writable<UploadProgress[]>) {
+		// -- Delete images removed by user --
+		const existingImageIds = newCombinedImages.filter((e) => typeof e === 'string') as string[]
+		if (!arraysContainSameElements(product.imageIds || [], existingImageIds)) {
+			const imageIdsToRemove = arrayDifference(product.imageIds, existingImageIds)
+			await deleteImages("PublicImages", "product-images/", imageIdsToRemove)
+			await deleteImages("PublicImages", "product-images/thumbnails/", imageIdsToRemove)
+		}
+
+		// -- Convert and upload images --
+		const { uploadedImageIds, size } = await convertAndUploadImages(newCombinedImages, "PublicImages", "product-images/", progressStore)
+
 		// -- Update product --
-		console.log(newName)
 		const { data, error } = await supabase
 			.from('products')
 			.update({
 				name: newName,
 				visible: newVisible,
 				price: newPrice,
-				imageIds: [], // newImageIds,
+				imageIds: uploadedImageIds,
 				categories: newCategories,
 				type: newType,
 				description: newDescription,
@@ -88,7 +99,7 @@ function createProductStore() {
 			.from('products')
 			.delete()
 			.eq('id', product.id)
-		if(response.error)
+		if (response.error)
 			console.error(response.error)
 
 		// -- Remove from store --

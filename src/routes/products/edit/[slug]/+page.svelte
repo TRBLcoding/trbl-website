@@ -22,7 +22,6 @@
 	let product: Product | undefined | null
 
 	async function updateProduct() {
-		console.log(name)
 		await productStore.updateProduct(
 			product!,
 			name,
@@ -31,7 +30,8 @@
 			combinedImages,
 			categories,
 			type,
-			description
+			description,
+			progressStore
 		)
 		haveValuesBeenSet = false
 		pushCreatedToast("Product gewijzigd", {

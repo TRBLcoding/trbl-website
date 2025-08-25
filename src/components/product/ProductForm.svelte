@@ -49,6 +49,7 @@
 	<Checkbox label="Zichtbaar" bind:value={visible} />
 	<Input
 		type="number"
+		step=".01"
 		label="Prijs:"
 		placeholder="Prijs €"
 		bind:value={price}

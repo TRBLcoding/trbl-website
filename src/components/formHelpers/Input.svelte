@@ -24,6 +24,7 @@
   export let iconRight: IconDefinition | undefined = undefined
   export let toggleText = type === "password"
   export let toggled = false
+  export let step = ""
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
   $: error = validate(value)
@@ -109,6 +110,7 @@
       class:text-slate-700={disabled}
       class:pl-9={showIconLeft}
       class:pr-9={showIconRight}
+      step={step}
     />
     {#if showIconRight}
       <div class="flex items-center absolute inset-y-0 right-0 pr-3">
