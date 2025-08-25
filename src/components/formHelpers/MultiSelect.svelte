@@ -32,6 +32,7 @@
 		{allowUserOptions}
 		{placeholder}
 		{disabled}
+		{required}
 	/>
 </div>
 

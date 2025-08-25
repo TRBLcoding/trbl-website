@@ -82,7 +82,7 @@ function createProductStore() {
 		product.name = newName
 		product.visible = newVisible
 		product.price = newPrice
-		product.imageIds = []
+		product.imageIds = uploadedImageIds
 		product.categories = newCategories
 		product.type = newType
 		product.description = newDescription
