@@ -5,7 +5,9 @@
 	import ProductCard from "../../components/product/ProductCard.svelte"
 	import Fa from "svelte-fa"
 
+	let sortOption = "Alfabetish oplopend"
 	let activeFilters = new Set<Category>()
+
 	function updateFilter(filter: Category) {
 		if (activeFilters.has(filter)) activeFilters.delete(filter)
 		else activeFilters.add(filter)
@@ -18,6 +20,21 @@
 			: $productStore.filter((product) =>
 					product.categories.some((category) => activeFilters.has(category))
 				)
+	
+    $: sortedProducts = [...filteredProducts||[]].sort((a, b) => {
+        switch (sortOption) {
+            case "Alfabetish oplopend":
+                return a.name.localeCompare(b.name)
+            case "Alfabetish aflopend":
+                return b.name.localeCompare(a.name)
+            case "Prijs oplopend":
+                return a.price - b.price
+            case "Prijs aflopend":
+                return b.price - a.price
+            default:
+                return 0
+        }
+    })
 
 	let { error, loading } = productStore
 </script>
@@ -71,14 +88,14 @@
 			</button>
 		</div>
 		<div class="flex gap-2 items-center ml-auto">
-			{#if filteredProducts}
+			{#if sortedProducts}
 				<div class="border-r pr-2 whitespace-nowrap">
-					<span class="font-bold">{filteredProducts.length}</span> Producten
+					<span class="font-bold">{sortedProducts.length}</span> Producten
 				</div>
 			{/if}
 			<span class="whitespace-nowrap">Sorteer op:</span>
-			<select class="select">
-				<option selected>Alfabetish oplopend</option>
+			<select class="select" bind:value={sortOption}>
+				<option>Alfabetish oplopend</option>
 				<option>Alfabetish aflopend</option>
 				<option>Prijs oplopend</option>
 				<option>Prijs aflopend</option>
@@ -95,7 +112,7 @@
 		Loading
 	{:else}
 		<div class="mt-2 flex gap-2 flex-wrap">
-			{#each filteredProducts as product}
+			{#each sortedProducts as product}
 				<ProductCard {product} />
 			{/each}
 		</div>
