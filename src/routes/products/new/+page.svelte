@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import ProductForm from "$components/product/ProductForm.svelte"
 	import { Product, type Category, type Type } from "$lib/domain/Product"
 	import { productStore } from "$lib/ProductStore"
@@ -23,6 +24,12 @@
 		pushCreatedToast("Product aangemaakt", { gotoUrl: "/products" })
 	}
 
+	// -- Preview --
+	let showPreview = false
+
+	function togglePreview() {
+		showPreview = !showPreview
+	}
 	async function createPreviewProduct() {
 		return new Product(
 			-1, // temporary id
@@ -40,19 +47,43 @@
 </script>
 
 <div class="mx-2 lg:mx-6 mt-3">
-	<h1 class="text-2xl font-bold">Nieuw product</h1>
+	{#if showPreview}
+		<!-- Article preview -->
+		{#await createPreviewProduct()}
+			<div>Loadig</div>
+		{:then product}
+			<button
+				class="btn btn-primary btn-xs normal-case"
+				on:click={togglePreview}
+			>
+				Sluit preview
+			</button>
+			<ProductComponent {product} isPreview={true} />
+		{/await}
+	{:else}
+		<!-- Product editor -->
+		<div class="flex flex-row gap-3 items-center mb-1">
+			<h1 class="text-2xl font-bold">Nieuw product</h1>
+			<button
+				class="btn btn-primary btn-sm normal-case"
+				on:click={togglePreview}
+			>
+				Toon preview
+			</button>
+		</div>
 
-	<ProductForm
-		bind:name
-		bind:price
-		bind:visible
-		bind:combinedImages={uploadedImages}
-		bind:categories
-		bind:type
-		bind:description
-		newProduct={true}
-		submitLabel="Product aanmaken"
-		onSave={createProduct}
-		progress={$progressStore}
-	/>
+		<ProductForm
+			bind:name
+			bind:price
+			bind:visible
+			bind:combinedImages={uploadedImages}
+			bind:categories
+			bind:type
+			bind:description
+			newProduct={true}
+			submitLabel="Product aanmaken"
+			onSave={createProduct}
+			progress={$progressStore}
+		/>
+	{/if}
 </div>

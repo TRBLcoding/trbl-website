@@ -3,9 +3,11 @@
 	import type { PageData } from "./$types"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 	import { writable } from "svelte/store"
-	import type { Product } from "$lib/domain/Product"
+	import { Product } from "$lib/domain/Product"
 	import { productStore } from "$lib/ProductStore"
 	import { pushCreatedToast } from "$lib/utils/Toast"
+	import { PreviewableFile } from "$lib/utils/PreviewableFile"
+	import ProductComponent from "$components/product/ProductComponent.svelte"
 
 	export let data: PageData
 
@@ -39,6 +41,27 @@
 		})
 	}
 
+	// -- Preview --
+	let showPreview = false
+	function togglePreview() {
+		showPreview = !showPreview
+	}
+	async function createPreview() {
+		const images = await Promise.all(
+			combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e))
+		)
+		return new Product(
+			-1, // temporary id
+			name,
+			price,
+			description,
+			categories,
+			type,
+			visible,
+			images
+		)
+	}
+
 	// -- Data loading --
 	let haveValuesBeenSet = false
 	$: $productStore && loadProduct(data)
@@ -59,19 +82,49 @@
 </script>
 
 <div class="mx-6 mt-3">
-	<h1 class="text-2xl font-bold">Product wijzigen</h1>
+	{#if showPreview}
+		<!-- Article preview -->
+		{#await createPreview()}
+			<div>Loadig</div>
+		{:then previewProduct}
+			<button
+				class="btn btn-primary btn-xs normal-case"
+				on:click={togglePreview}
+			>
+				Sluit preview
+			</button>
+			<div class="md:mx-2 mb-4 sm:mb-10">
+				<ProductComponent product={previewProduct} isPreview={true} />
+			</div>
+		{/await}
+	{:else if product === undefined}
+		Loading
+	{:else if product}
+		<!-- Product editor -->
+		<div class="flex flex-row gap-3 items-center mb-1">
+			<h1 class="text-2xl font-bold">Product wijzigen</h1>
+			<button
+				class="btn btn-primary btn-xs normal-case"
+				on:click={togglePreview}
+			>
+				Toon preview
+			</button>
+		</div>
 
-	<ProductForm
-		bind:name
-		bind:price
-		bind:visible
-		bind:combinedImages
-		bind:categories
-		bind:type
-		bind:description
-		newProduct={true}
-		submitLabel="Wijzig product"
-		onSave={updateProduct}
-		progress={$progressStore}
-	/>
+		<ProductForm
+			bind:name
+			bind:price
+			bind:visible
+			bind:combinedImages
+			bind:categories
+			bind:type
+			bind:description
+			newProduct={true}
+			submitLabel="Wijzig product"
+			onSave={updateProduct}
+			progress={$progressStore}
+		/>
+	{:else}
+		<div>"{data.id}": not found</div>
+	{/if}
 </div>
