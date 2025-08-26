@@ -39,7 +39,7 @@
 	}
 </script>
 
-<div class="mx-6 mt-3">
+<div class="mx-2 lg:mx-6 mt-3">
 	<h1 class="text-2xl font-bold">Nieuw product</h1>
 
 	<ProductForm

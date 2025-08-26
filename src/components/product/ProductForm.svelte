@@ -45,7 +45,7 @@
 </script>
 
 <form class="flex flex-col" on:submit={onSubmitWrapper}>
-	<div class="flex flex-col xl:flex-row xl:gap-14">
+	<div class="flex flex-col lg:flex-row lg:gap-8 xl:gap-14">
 		<div class="flex-col flex-auto min-w-sm">
 			<Input
 				type="text"
