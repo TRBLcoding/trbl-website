@@ -9,13 +9,13 @@
 
 	const progressStore = writable([] as UploadProgress[])
 
-	let name = "Temp"
+	let name = ""
 	let visible: boolean = true
 	let price = 0
 	let uploadedImages: File[] = []
 	let categories: Category[] = []
-	let type: Type = "Mixer"
-	let description = "Temp"
+	let type: Type = ""
+	let description = ""
 
 	async function createProduct() {
 		const product = await createPreviewProduct()

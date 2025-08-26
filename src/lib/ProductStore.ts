@@ -7,17 +7,27 @@ import { convertAndUploadImages, deleteImages, type UploadProgress } from './uti
 import { arrayDifference, arraysContainSameElements } from './utils/Array'
 
 function createProductStore() {
+	const errorStore = writable<string | null>(null)
+	const loadingStore = writable<boolean>(false)
+
 	const store = writable<Product[]>(undefined, set => {
 		async function init() {
 			if (!browser) return
+			loadingStore.set(true)
+			errorStore.set(null)
 
 			const response = await supabase.from("products").select()
 			if (response.error) {
-				console.error("Error loading products:", response.error)
+				if (response.error.message === "TypeError: Failed to fetch")
+					console.error("Network error while loading products:", response.error)
+				else
+					console.error("Error loading products:", response.error)
+				errorStore.set("Netwerkfout: Kan geen verbinding maken met de server. Controleer je internetverbinding.")
 			} else {
 				let products = (response.data || []).map(Product.fromJSON)
 				set(products)
 			}
+			loadingStore.set(false)
 		}
 		init()
 	})
@@ -108,6 +118,8 @@ function createProductStore() {
 
 	return {
 		subscribe,
+		error: { subscribe: errorStore.subscribe },
+        loading: { subscribe: loadingStore.subscribe },
 		createProduct,
 		getProductById,
 		updateProduct,
