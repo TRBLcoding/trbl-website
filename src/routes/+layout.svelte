@@ -46,7 +46,7 @@
 				<a class="link link-hover text-sm" href="/todo">
 					Overzicht Offerte-Aanvraag
 				</a>
-				<a class="link link-hover text-sm" href="/todo">Contact</a>
+				<a class="link link-hover text-sm" href="/#contact">Contact</a>
 				<a class="link link-hover text-sm" href="/dashboard">Dashboard</a>
 			</div>
 		</div>
