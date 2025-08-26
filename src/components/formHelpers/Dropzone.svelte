@@ -73,6 +73,7 @@
 
 	$: dragableImages = combinedImages.map((e) => {
 		if (e instanceof File) return { id: e, data: e }
+		if (e.includes("http")) return { id: e, data: e }
 		return { id: e, data: previewConverter ? previewConverter(e) : e }
 	})
 
