@@ -16,7 +16,7 @@
 			product = await productStore.getProductById(Number(data.id))
 		} catch (error) {
 			console.error(error)
-			errorMessage = "error ocured"
+			errorMessage = "error occurred"
 		}
 	}
 

@@ -85,7 +85,7 @@
 	{#if showPreview}
 		<!-- Article preview -->
 		{#await createPreview()}
-			<div>Loadig</div>
+			<div>Loading</div>
 		{:then previewProduct}
 			<button
 				class="btn btn-primary btn-xs normal-case"
