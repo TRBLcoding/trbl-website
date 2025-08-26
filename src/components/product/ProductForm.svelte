@@ -5,7 +5,13 @@
 	import Input from "$components/formHelpers/Input.svelte"
 	import MultiSelect from "$components/formHelpers/MultiSelect.svelte"
 	import Select from "$components/formHelpers/Select.svelte"
-	import { CategoryValues, Product, TypeValues, type Category, type Type } from "$lib/domain/Product"
+	import {
+		CategoryValues,
+		Product,
+		TypeValues,
+		type Category,
+		type Type,
+	} from "$lib/domain/Product"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 
 	export let name = ""
@@ -38,44 +44,48 @@
 	}
 </script>
 
-<form class="flex flex-col gap-2" on:submit={onSubmitWrapper}>
-	<Input
-		type="text"
-		label="Naam:"
-		placeholder="Naam"
-		bind:value={name}
-		required
-	/>
-	<Checkbox label="Zichtbaar" bind:value={visible} />
-	<Input
-		type="number"
-		step=".01"
-		label="Prijs:"
-		placeholder="Prijs €"
-		bind:value={price}
-		required
-	/>
-	<Dropzone
-		label="Afbeeldingen:"
-		bind:combinedImages
-		showDiskSize={newProduct}
-		{progress}
-		previewConverter={Product.imageToThumbnailUrl}
-	/>
-	<MultiSelect
-		label="Categorieën:"
-		bind:values={categories}
-		options={CategoryValues}
-		required
-	/>
-	<Select label="Type:" bind:value={type} required>
-		{#each TypeValues as type}
-			<option>{type}</option>
-		{/each}
-	</Select>
-
-	<CLEditor label="Beschrijving van product:" bind:value={description} />
-
+<form class="flex flex-col" on:submit={onSubmitWrapper}>
+	<div class="flex flex-col xl:flex-row xl:gap-14">
+		<div class="flex-col flex-auto min-w-sm">
+			<Input
+				type="text"
+				label="Naam:"
+				placeholder="Naam"
+				bind:value={name}
+				required
+			/>
+			<Checkbox label="Zichtbaar" bind:value={visible} />
+			<Input
+				type="number"
+				step=".01"
+				label="Prijs:"
+				placeholder="Prijs €"
+				bind:value={price}
+				required
+			/>
+			<Dropzone
+				label="Afbeeldingen:"
+				bind:combinedImages
+				showDiskSize={newProduct}
+				{progress}
+				previewConverter={Product.imageToThumbnailUrl}
+			/>
+			<MultiSelect
+				label="Categorieën:"
+				bind:values={categories}
+				options={CategoryValues}
+				required
+			/>
+			<Select label="Type:" bind:value={type} required>
+				{#each TypeValues as type}
+					<option>{type}</option>
+				{/each}
+			</Select>
+		</div>
+		<div class="flex-col w-full">
+			<CLEditor label="Beschrijving van product:" bind:value={description} />
+		</div>
+	</div>
 	<div class="w-fit" class:hover:cursor-wait={saving}>
 		<button
 			class="btn btn-primary mt-2 max-w-sm"

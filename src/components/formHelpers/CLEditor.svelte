@@ -42,7 +42,7 @@
 </script>
 
 <div
-	class="form-control w-full"
+	class="form-control w-full h-full flex flex-col"
 	class:max-w-md={size === "md"}
 	class:max-w-sm={size === "sm"}
 	class:max-w-xs={size === "xs"}
@@ -55,12 +55,13 @@
 			{/if}
 		</span>
 	</label>
-	<div class:cursor-not-allowed={disabled}>
-		<div class:pointer-events-none={disabled}>
+	<div class:cursor-not-allowed={disabled} class="flex-1">
+		<div class:pointer-events-none={disabled} class="h-full">
 			<Editor
 				html={value}
 				on:change={(e: any) => (value = e.detail)}
 				{actions}
+				
 			/>
 		</div>
 	</div>
@@ -72,4 +73,7 @@
 	:global(.cl-textarea) {
 		@apply hidden! p-10;
 	}
+	:global(.cl, .cl-content) {
+        @apply h-full! min-h-72;
+    }
 </style>

@@ -108,7 +108,7 @@
 	class:max-w-sm={size === "sm"}
 	class:max-w-xs={size === "xs"}
 >
-	<div class="flex items-center mb-1">
+	<div class="flex items-center my-1">
 		<label class="label" for="dropzone-file">
 			<span class="label-text">
 				{label}
