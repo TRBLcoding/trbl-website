@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { Category } from "$lib/domain/Product"
-	import { productStore } from "$lib/ProductStore"
+	import { productStore } from "$lib/stores/ProductStore"
 	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 	import ProductCard from "../../components/product/ProductCard.svelte"
 	import Fa from "svelte-fa"
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
 	let sortOption = "Alfabetish oplopend"
 	let activeFilters = new Set<Category>()
@@ -37,6 +38,9 @@
 	})
 
 	let { error, loading } = productStore
+
+	// -- Page title --
+	pageHeadStore.updatePageTitle("Producten")
 </script>
 
 <div class="mx-4 lg:mx-10 my-5">
@@ -55,8 +59,12 @@
 	<hr class="h-px bg-base-300 border-none" />
 
 	<!-- Filters -->
-	<div class="flex flex-col md:flex-row items-center justify-center lg:justify-between">
-		<div class="overflow-x-auto w-fit md:overflow-x-visible mt-3 mb-2  md:mx-0 mx-[-20px]">
+	<div
+		class="flex flex-col md:flex-row items-center justify-center lg:justify-between"
+	>
+		<div
+			class="overflow-x-auto w-fit md:overflow-x-visible mt-3 mb-2 md:mx-0 mx-[-20px]"
+		>
 			<div class="flex items-center gap-2 lg:gap-3 mb-2">
 				<span class="hidden md:block">Filters:</span>
 				<button

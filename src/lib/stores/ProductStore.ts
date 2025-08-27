@@ -1,10 +1,10 @@
 import { browser } from '$app/environment'
 import { supabase } from "$lib/supabase/supabaseClient"
 import { get, writable, type Writable } from 'svelte/store'
-import { Product, type Category, type Type } from './domain/Product'
-import type { Database } from './supabase/database.types'
-import { convertAndUploadImages, deleteImages, type UploadProgress } from './utils/UploadProgress'
-import { arrayDifference, arraysContainSameElements } from './utils/Array'
+import { Product, type Category, type Type } from '../domain/Product'
+import type { Database } from '../supabase/database.types'
+import { convertAndUploadImages, deleteImages, type UploadProgress } from '../utils/UploadProgress'
+import { arrayDifference, arraysContainSameElements } from '../utils/Array'
 
 function createProductStore() {
 	const errorStore = writable<string | null>(null)

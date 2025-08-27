@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+
+	// -- Page title --
+	pageHeadStore.updatePageTitle("Algemene Voorwaarden")
 </script>
 
 <div class="max-w-3/4 mx-auto mt-15">

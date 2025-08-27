@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { supabase } from "$lib/supabase/supabaseClient"
 
 	let email: string = ""
@@ -29,6 +30,9 @@
 		} = await supabase.auth.getUser()
 		alert(user ? `User is logged in: ${user.email}` : "No user is logged in")
 	}
+
+	// -- Page title --
+	pageHeadStore.updatePageTitle("Auth testing")
 </script>
 
 <h1 class="text-2xl">Auth testing</h1>

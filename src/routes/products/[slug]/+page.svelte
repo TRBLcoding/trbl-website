@@ -1,7 +1,8 @@
 <script lang="ts">
 	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import type { Product } from "$lib/domain/Product"
-	import { productStore } from "$lib/ProductStore"
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import { productStore } from "$lib/stores/ProductStore"
 	import type { PageData } from "./$types"
 
 	export let data: PageData
@@ -24,8 +25,8 @@
 	// $: authStore.known.then(() => {
 	// 	if (!product?.visible && !$authStore) goto("/")
 	// })
-	// // -- Page title --
-	// $: product && pageHeadStore.updatePageTitle(product.title)
+	// -- Page title --
+	$: product && pageHeadStore.updatePageTitle(product.name)
 </script>
 
 <div class="mx-6 mt-3">

@@ -2,7 +2,8 @@
 	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import ProductForm from "$components/product/ProductForm.svelte"
 	import { Product, type Category, type Type } from "$lib/domain/Product"
-	import { productStore } from "$lib/ProductStore"
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import { productStore } from "$lib/stores/ProductStore"
 	import { PreviewableFile } from "$lib/utils/PreviewableFile"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
@@ -44,6 +45,9 @@
 			)
 		)
 	}
+
+	// -- Page title --
+  	pageHeadStore.updatePageTitle("Nieuw product")
 </script>
 
 <div class="mx-2 lg:mx-6 mt-3 mb-8">

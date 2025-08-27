@@ -1,6 +1,10 @@
 <script lang="ts">
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faUserPen } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+
+	// -- Page title --
+	pageHeadStore.updatePageTitle("Dashboard")
 </script>
 
 <div class="mx-6 mt-3">
