@@ -4,10 +4,11 @@
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 	import { writable } from "svelte/store"
 	import { Product } from "$lib/domain/Product"
-	import { productStore } from "$lib/ProductStore"
+	import { productStore } from "$lib/stores/ProductStore"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import { PreviewableFile } from "$lib/utils/PreviewableFile"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
 	export let data: PageData
 
@@ -79,6 +80,9 @@
 		type = product.type
 		description = product.description
 	}
+
+	// -- Page title --
+  	pageHeadStore.updatePageTitle("Product wijzigen")
 </script>
 
 <div class="mx-6 mt-3 mb-8">

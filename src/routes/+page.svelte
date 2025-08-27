@@ -3,6 +3,7 @@
 	import Carousel from "../components/Carousel.svelte"
 	import Fa from "svelte-fa"
 	import Contact from "$components/Contact.svelte"
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
 	const imageUrl =
 		"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:300/h:300/q:90/rt:fill/g:ce/f:best/https://trbl.be/files/2023/01/SpeakSet1_Blurred-BG.jpg"
@@ -44,6 +45,9 @@
 				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1620/h:1080/q:90/f:best/https://trbl.be/files/2023/01/Gentbrugge-feest.jpg",
 		},
 	]
+
+	// -- Page title --
+	pageHeadStore.updatePageTitle("")
 </script>
 
 <!-- Static image -->

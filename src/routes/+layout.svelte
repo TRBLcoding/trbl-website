@@ -12,9 +12,14 @@
 	import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons"
 	import Cart from "../components/Cart.svelte"
 	import Footer from "$components/Footer.svelte"
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
 	let showMenu = true
 </script>
+
+<svelte:head>
+  <title>{$pageHeadStore.getFullTitle()}</title>
+</svelte:head>
 
 <div class="min-h-screen flex flex-col">
 	<div class="relative z-20 bg-base-100">
