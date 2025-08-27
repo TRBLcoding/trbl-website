@@ -69,9 +69,12 @@
 						ondersteuning op fuiven en evenementen!
 					</p>
 					<div class="card-actions justify-start mt-4">
-						<button class="btn btn-primary px-6 uppercase text-[16px]"
-							>Contact</button
+						<a
+							class="btn btn-primary px-6 uppercase text-[16px]"
+							href="/#contact"
 						>
+							Contact
+						</a>
 					</div>
 				</div>
 			</div>
@@ -136,7 +139,10 @@
 
 	<!-- Contact -->
 	<div class="w-full bg-gray-600 flex justify-center align-middle">
-		<div class="text-4xl font-semibold text-white my-12 text-center">
+		<div
+			id="contact"
+			class="text-4xl font-semibold text-white my-12 text-center"
+		>
 			Contact:
 		</div>
 	</div>
@@ -194,3 +200,9 @@
 		</div>
 	</div>
 </div>
+
+<style lang="postcss">
+	:global(html) {
+		scroll-behavior: smooth !important;
+	}
+</style>

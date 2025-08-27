@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { supabase } from "$lib/supabaseClient"
+	import type { Product } from "$lib/domain/Product"
+	import { supabase } from "$lib/supabase/supabaseClient"
 	
-	let products: any[] = []
+	let products: Product[] = []
 
 	async function load() {
 		const response = await supabase.from("products").select()
@@ -10,7 +11,6 @@
 		} else {
 			products = response.data || []
 		}
-		
 	}
 </script>
 
@@ -34,7 +34,7 @@
 				<tr>
 					<td>{product.name}</td>
 					<td>€{product.price}</td>
-					<td>{product.category}</td>
+					<td>{product.categories}</td>
 					<td>{product.type}</td>
 					<td>{product.description}</td>
 				</tr>

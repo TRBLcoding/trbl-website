@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Fa from "svelte-fa"
 	import "../app.css"
-
+	import { SvelteToast } from "@zerodevx/svelte-toast"
 	import {
 		faDiscord,
 		faFacebookSquare,
@@ -43,10 +43,11 @@
 			<!-- Links -->
 			<div class="gap-4 hidden lg:flex">
 				<a class="link link-hover text-sm" href="/todo">Mijn account</a>
-				<a class="link link-hover text-sm" href="/todo"
-					>Overzicht Offerte-Aanvraag</a
-				>
-				<a class="link link-hover text-sm" href="/todo">Contact</a>
+				<a class="link link-hover text-sm" href="/todo">
+					Overzicht Offerte-Aanvraag
+				</a>
+				<a class="link link-hover text-sm" href="/#contact">Contact</a>
+				<a class="link link-hover text-sm" href="/dashboard">Dashboard</a>
 			</div>
 		</div>
 	</div>
@@ -89,7 +90,7 @@
 						<li><a href="/todo">Hersteldienst</a></li>
 					</ul>
 				</div>
-				<button class="btn btn-primary px-6">Verhuur</button>
+				<a class="btn btn-primary px-6" href="/products">Verhuur</a>
 				<Cart></Cart>
 			</div>
 		</div>
@@ -145,3 +146,22 @@
 </div>
 
 <slot />
+
+<SvelteToast options={{ reversed: true, intro: { y: 192 } }} />
+
+<style lang="postcss">
+	@reference "../app.css";
+	:root {
+		/* Toast formatting */
+		--toastBackground: transparent;
+		--toastPadding: 0;
+		--toastMsgPadding: 0;
+		--toastWidth: fit-content;
+		--toastBoxShadow: none;
+
+		/* Toast layout */
+		--toastContainerTop: auto;
+		--toastContainerRight: 2rem;
+		--toastContainerBottom: 2.5rem;
+	}
+</style>
