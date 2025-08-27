@@ -42,7 +42,7 @@
         oldValue = value
         dirty = false
       } catch (error) {
-        errorText = "iierroooooor"
+        errorText = "An error occurred while saving."
       }
       saving = false
     }

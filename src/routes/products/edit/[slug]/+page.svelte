@@ -119,7 +119,7 @@
 			bind:categories
 			bind:type
 			bind:description
-			newProduct={true}
+			newProduct={false}
 			submitLabel="Wijzig product"
 			onSave={updateProduct}
 			progress={$progressStore}
