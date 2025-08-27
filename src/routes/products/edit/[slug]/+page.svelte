@@ -81,7 +81,7 @@
 	}
 </script>
 
-<div class="mx-6 mt-3">
+<div class="mx-6 mt-3 mb-8">
 	{#if showPreview}
 		<!-- Article preview -->
 		{#await createPreview()}

@@ -149,15 +149,14 @@
 		</div>
 	</div>
 
-	<div class="flex-1 mb-8">
+	<div class="flex-1">
 		<slot />
 	</div>
-
-
+	<SvelteToast options={{ reversed: true, intro: { y: 192 } }} />
 	<Footer />
 </div>
 
-<SvelteToast options={{ reversed: true, intro: { y: 192 } }} />
+
 
 <style lang="postcss">
 	@reference "../app.css";
