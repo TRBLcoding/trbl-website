@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { faEnvelope, faLocationDot } from "@fortawesome/free-solid-svg-icons"
+	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Carousel from "../components/Carousel.svelte"
 	import Fa from "svelte-fa"
+	import Contact from "$components/Contact.svelte"
 
 	const imageUrl =
 		"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:300/h:300/q:90/rt:fill/g:ce/f:best/https://trbl.be/files/2023/01/SpeakSet1_Blurred-BG.jpg"
@@ -164,38 +165,7 @@
 				></iframe>
 			</div>
 			<div class="flex-1">
-				<div class="max-w-lg">
-					<div class="text-xl font-semibold mb-1 flex items-center gap-2">
-						<Fa icon={faEnvelope} class="" />
-						Stuur een bericht
-					</div>
-					<div class="flex gap-6">
-						<fieldset class="fieldset text-[15px] w-full">
-							<legend class="fieldset-legend">Voornaam</legend>
-							<input type="text" class="input" placeholder="Voornaam" />
-						</fieldset>
-						<fieldset class="fieldset text-[15px] w-full">
-							<legend class="fieldset-legend">Achternaam</legend>
-							<input type="text" class="input" placeholder="Achternaam" />
-						</fieldset>
-					</div>
-					<fieldset class="fieldset text-[15px]">
-						<legend class="fieldset-legend">Email</legend>
-						<input type="email" class="input w-full" placeholder="Email" />
-					</fieldset>
-					<fieldset class="fieldset text-[15px]">
-						<legend class="fieldset-legend">Onderwerp</legend>
-						<input type="text" class="input w-full" placeholder="Onderwerp" />
-					</fieldset>
-					<fieldset class="fieldset text-[15px]">
-						<legend class="fieldset-legend">Onderwerp</legend>
-						<textarea class="input w-full h-30" placeholder="Onderwerp"
-						></textarea>
-					</fieldset>
-					<button type="submit" class="btn btn-primary mt-3"
-						>Verstuur bericht</button
-					>
-				</div>
+				<Contact />
 			</div>
 		</div>
 	</div>
