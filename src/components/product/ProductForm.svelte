@@ -38,7 +38,11 @@
 			await onSave()
 		} catch (error) {
 			console.error(error)
-			errorMessage = "error occured"
+			 if (error instanceof Error) {
+                errorMessage = error.message
+            } else {
+                errorMessage = "An unknown error occurred"
+            }
 		}
 		saving = false
 	}

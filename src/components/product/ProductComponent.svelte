@@ -13,7 +13,7 @@
 	async function removeProduct() {
 		await productStore.deleteProduct(product)
 		pushCreatedToast("Product verwijderd")
-		goto("/")
+		goto("/products")
 	}
 </script>
 

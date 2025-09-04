@@ -5,31 +5,30 @@ import { Product, type Category, type Type } from '../domain/Product'
 import type { Database } from '../supabase/database.types'
 import { convertAndUploadImages, deleteImages, type UploadProgress } from '../utils/UploadProgress'
 import { arrayDifference, arraysContainSameElements } from '../utils/Array'
+import { createPostgrestErrorFromObject } from '$lib/utils/SupabaseUtils'
 
 function createProductStore() {
-	const errorStore = writable<string | null>(null)
 	const loadingStore = writable<boolean>(false)
+	let initPromise: Promise<void> = new Promise(() => { })
 
 	const store = writable<Product[]>(undefined, set => {
 		async function init() {
+			console.log("initialising")
 			if (!browser) return
 			loadingStore.set(true)
-			errorStore.set(null)
 
-			const response = await supabase.from("products").select()
-			if (response.error) {
-				if (response.error.message === "TypeError: Failed to fetch")
-					console.error("Network error while loading products:", response.error)
-				else
-					console.error("Error loading products:", response.error)
-				errorStore.set("Netwerkfout: Kan geen verbinding maken met de server. Controleer je internetverbinding.")
+			const { error, data } = await supabase.from("products").select()
+			if (error) {
+				if (error?.message === "TypeError: Failed to fetch")
+					throw createPostgrestErrorFromObject(error)
+				throw error
 			} else {
-				let products = (response.data || []).map(Product.fromJSON)
+				let products = (data || []).map(Product.fromJSON)
 				set(products)
 			}
 			loadingStore.set(false)
 		}
-		init()
+		initPromise = init()
 	})
 	const { subscribe, update } = store
 
@@ -51,10 +50,13 @@ function createProductStore() {
 		})
 	}
 
-	function getProductById(id: number) {
+	async function getProductById(id: number) {
 		// -- Get product --
+		// console.log("initpromise: ", initPromise)
+		await initPromise
 		const products = get(store)
-		return products.find((e) => e.id === id)
+		console.log("getProductById:", products?.length)
+		return products?.find((e) => e.id === id)
 	}
 
 	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, progressStore: Writable<UploadProgress[]>) {
@@ -83,10 +85,21 @@ function createProductStore() {
 			} as Database['public']['Tables']['products']['Update'])
 			.eq('id', product.id)
 			.select('id')
-		if (error || !data)
-			console.error(error)
-		else if (data.length !== 1)
-			console.error(`Updated ${data.length} products:`, data)
+
+		console.error(error)
+		console.log(data)
+		if (error) {
+			if (error.message === "TypeError: Failed to fetch")
+				throw new Error(`Network error while updating products: ${error?.message}`)
+			throw new Error(`Error updating product: ${error?.message}`)
+		}
+		else if (data.length === 0 || !data) {
+			throw new Error(`No products updated. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
+		}
+		else if (data.length > 1) {
+			throw new Error(`Multiple (${data.length}) products updated. This should not happen because product ID is unique`)
+		}
+
 
 		// -- Update store --
 		product.name = newName
@@ -111,6 +124,8 @@ function createProductStore() {
 			.eq('id', product.id)
 		if (response.error)
 			console.error(response.error)
+		console.log(response.data)
+
 
 		// -- Remove from store --
 		update((products) => (products.filter((e) => e.id !== product.id)))
@@ -118,8 +133,7 @@ function createProductStore() {
 
 	return {
 		subscribe,
-		error: { subscribe: errorStore.subscribe },
-        loading: { subscribe: loadingStore.subscribe },
+		loading: { subscribe: loadingStore.subscribe },
 		createProduct,
 		getProductById,
 		updateProduct,

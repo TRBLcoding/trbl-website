@@ -9,6 +9,7 @@
 	import { PreviewableFile } from "$lib/utils/PreviewableFile"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import { PostgrestError } from "@supabase/supabase-js"
 
 	export let data: PageData
 
@@ -23,6 +24,7 @@
 	let description: string = ""
 
 	let product: Product | undefined | null
+	let errorMessage = ""
 
 	async function updateProduct() {
 		await productStore.updateProduct(
@@ -65,11 +67,21 @@
 
 	// -- Data loading --
 	let haveValuesBeenSet = false
-	$: $productStore && loadProduct(data)
+	$: loadProduct(data, $productStore)
 	$: if (!haveValuesBeenSet && product) setValues(product)
 
-	async function loadProduct(data: PageData) {
-		product = await productStore.getProductById(Number(data.id))
+	async function loadProduct(data: PageData, _reactive: Product[]) {
+		// _reactive store parameter is nesecairy to load the init function of the Svelte Store
+		try {
+			product = await productStore.getProductById(Number(data.id))
+		} catch (error) {
+			console.error(error)
+			if (error instanceof Error) {
+				errorMessage = error.message
+			} else {
+				errorMessage = "An unknown error occurred"
+			}
+		}
 	}
 	function setValues(product: Product) {
 		name = product.name
@@ -82,12 +94,12 @@
 	}
 
 	// -- Page title --
-  	pageHeadStore.updatePageTitle("Product wijzigen")
+	pageHeadStore.updatePageTitle("Product wijzigen")
 </script>
 
 <div class="mx-6 mt-3 mb-8">
 	{#if showPreview}
-		<!-- Article preview -->
+		<!-- Product preview -->
 		{#await createPreview()}
 			<div>Loading</div>
 		{:then previewProduct}
@@ -101,34 +113,40 @@
 				<ProductComponent product={previewProduct} isPreview={true} />
 			</div>
 		{/await}
-	{:else if product === undefined}
-		Loading
-	{:else if product}
+	{:else}
 		<!-- Product editor -->
 		<div class="flex flex-row gap-3 items-center mb-1">
 			<h1 class="text-2xl font-bold">Product wijzigen</h1>
-			<button
-				class="btn btn-primary btn-xs normal-case"
-				on:click={togglePreview}
-			>
-				Toon preview
-			</button>
+			{#if !errorMessage && product !== undefined}
+				<button
+					class="btn btn-primary btn-xs normal-case"
+					on:click={togglePreview}
+				>
+					Toon preview
+				</button>
+			{/if}
 		</div>
-
-		<ProductForm
-			bind:name
-			bind:price
-			bind:visible
-			bind:combinedImages
-			bind:categories
-			bind:type
-			bind:description
-			newProduct={false}
-			submitLabel="Wijzig product"
-			onSave={updateProduct}
-			progress={$progressStore}
-		/>
-	{:else}
-		<div>"{data.id}": not found</div>
+		{#if errorMessage}
+			<span class="text-error">{errorMessage}</span>
+		{:else if product === undefined}
+			<span>Loading</span>
+			<span class="loading loading-ring"></span>
+		{:else if product}
+			<ProductForm
+				bind:name
+				bind:price
+				bind:visible
+				bind:combinedImages
+				bind:categories
+				bind:type
+				bind:description
+				newProduct={false}
+				submitLabel="Wijzig product"
+				onSave={updateProduct}
+				progress={$progressStore}
+			/>
+		{:else}
+			<div>"{data.id}": not found</div>
+		{/if}
 	{/if}
 </div>
