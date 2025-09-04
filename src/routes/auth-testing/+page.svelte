@@ -3,9 +3,16 @@
 	import { supabase } from "$lib/supabase/supabaseClient"
 
 	let email: string = ""
-	let pass: string = "" 
+	let pass: string = ""
+	let saving = false
+
+	let errorMessage: string = ""
+	let message = ""
 
 	async function signUpNewUser() {
+		saving = true
+		message = ""
+		errorMessage = ""
 		const { data, error } = await supabase.auth.signUp({
 			email: email,
 			password: pass,
@@ -13,15 +20,31 @@
 				emailRedirectTo: "https://example.com/welcome",
 			},
 		})
-		console.log("Sign up data:", data)
+		if (error) {
+			errorMessage = error.message
+			console.error(error)
+		} else {
+			message = "SIgned up"
+			console.log("Sign up data:", data)
+		}
+		saving = false
 	}
 	async function signInWithEmail() {
+		saving = true
+		errorMessage = ""
+		message = ""
 		const { data, error } = await supabase.auth.signInWithPassword({
 			email: email,
 			password: pass,
 		})
-		console.log("Sign in data:", data)
-		console.log("Error:", error)
+		if (error) {
+			errorMessage = error.message
+			console.error(error)
+		} else {
+			console.log("Sign in data:", data)
+			message = `Signed in ${data.user.email} (${data.user.role})`
+		}
+		saving = false
 	}
 
 	async function checkUser() {
@@ -61,3 +84,13 @@
 <button class="btn btn-secondary" on:click={checkUser}
 	>Check if logged in</button
 >
+
+<span class="loading loading-ring" class:hidden={!saving}></span>
+
+{#if errorMessage}
+	<div class="text-error m-2">{errorMessage}</div>
+{/if}
+
+{#if message}
+	<div class="text-success m-2">{message}</div>
+{/if}
