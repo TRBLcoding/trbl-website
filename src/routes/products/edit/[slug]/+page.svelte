@@ -1,19 +1,23 @@
 <script lang="ts">
-	import ProductForm from "$components/product/ProductForm.svelte"
-	import type { PageData } from "./$types"
-	import type { UploadProgress } from "$lib/utils/UploadProgress"
-	import { writable } from "svelte/store"
-	import { Product } from "$lib/domain/Product"
-	import { productStore } from "$lib/stores/ProductStore"
-	import { pushCreatedToast } from "$lib/utils/Toast"
-	import { PreviewableFile } from "$lib/utils/PreviewableFile"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
+	import ProductForm from "$components/product/ProductForm.svelte"
+	import { Product } from "$lib/domain/Product"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
-	import { PostgrestError } from "@supabase/supabase-js"
+	import { productStore } from "$lib/stores/ProductStore"
+	import { PreviewableFile } from "$lib/utils/PreviewableFile"
+	import { pushCreatedToast } from "$lib/utils/Toast"
+	import type { UploadProgress } from "$lib/utils/UploadProgress"
+	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+	import Fa from "svelte-fa"
+	import { writable } from "svelte/store"
+	import type { PageData } from "./$types"
 
 	export let data: PageData
 
 	const progressStore = writable([] as UploadProgress[])
+
+	let loading = true
+	let errorMessage = ""
 
 	let name: string = ""
 	let visible: boolean = true
@@ -24,7 +28,23 @@
 	let description: string = ""
 
 	let product: Product | undefined | null
-	let errorMessage = ""
+
+	async function initStore() {
+		loading = true
+		try {
+			await productStore.initPromise
+		} catch (error) {
+			console.error(error)
+			if (error instanceof Error) {
+				errorMessage = error.toString()
+			} else {
+				errorMessage = "An unknown error occurred"
+			}
+		} finally {
+			loading = false
+		}
+	}
+	initStore()
 
 	async function updateProduct() {
 		await productStore.updateProduct(
@@ -67,17 +87,16 @@
 
 	// -- Data loading --
 	let haveValuesBeenSet = false
-	$: loadProduct(data, $productStore)
+	$: $productStore && loadProduct(data)
 	$: if (!haveValuesBeenSet && product) setValues(product)
 
-	async function loadProduct(data: PageData, _reactive: Product[]) {
-		// _reactive store parameter is nesecairy to load the init function of the Svelte Store
+	async function loadProduct(data: PageData) {
 		try {
 			product = await productStore.getProductById(Number(data.id))
 		} catch (error) {
 			console.error(error)
 			if (error instanceof Error) {
-				errorMessage = error.message
+				errorMessage = error.toString()
 			} else {
 				errorMessage = "An unknown error occurred"
 			}
@@ -127,9 +146,12 @@
 			{/if}
 		</div>
 		{#if errorMessage}
-			<span class="text-error">{errorMessage}</span>
-		{:else if product === undefined}
-			<span>Loading</span>
+			<div class="text-error flex gap-2 items-center">
+				<Fa icon={faTriangleExclamation} />
+				{errorMessage}
+			</div>
+		{:else if loading}
+			<span>Loading product</span>
 			<span class="loading loading-ring"></span>
 		{:else if product}
 			<ProductForm
@@ -146,7 +168,10 @@
 				progress={$progressStore}
 			/>
 		{:else}
-			<div>"{data.id}": not found</div>
+			<div class="text-error flex gap-2 items-center">
+				<Fa icon={faTriangleExclamation} />
+				Product met ID <span class="font-bold">{data.id}</span>: niet gevonden
+			</div>
 		{/if}
 	{/if}
 </div>

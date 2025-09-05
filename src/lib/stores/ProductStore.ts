@@ -1,36 +1,31 @@
 import { browser } from '$app/environment'
 import { supabase } from "$lib/supabase/supabaseClient"
+import { createPostgrestErrorFromObject } from '$lib/utils/SupabaseUtils'
 import { get, writable, type Writable } from 'svelte/store'
 import { Product, type Category, type Type } from '../domain/Product'
 import type { Database } from '../supabase/database.types'
-import { convertAndUploadImages, deleteImages, type UploadProgress } from '../utils/UploadProgress'
 import { arrayDifference, arraysContainSameElements } from '../utils/Array'
-import { createPostgrestErrorFromObject } from '$lib/utils/SupabaseUtils'
+import { convertAndUploadImages, deleteImages, type UploadProgress } from '../utils/UploadProgress'
 
 function createProductStore() {
-	const loadingStore = writable<boolean>(false)
-	let initPromise: Promise<void> = new Promise(() => { })
-
-	const store = writable<Product[]>(undefined, set => {
-		async function init() {
-			console.log("initialising")
-			if (!browser) return
-			loadingStore.set(true)
-
-			const { error, data } = await supabase.from("products").select()
-			if (error) {
-				if (error?.message === "TypeError: Failed to fetch")
-					throw createPostgrestErrorFromObject(error)
-				throw error
-			} else {
-				let products = (data || []).map(Product.fromJSON)
-				set(products)
-			}
-			loadingStore.set(false)
-		}
-		initPromise = init()
-	})
+	const store = writable<Product[]>(undefined)
 	const { subscribe, update } = store
+
+	async function init() {
+		if (!browser) return
+
+		const { error, data } = await supabase.from("products").select()
+		if (error) {
+			if (error?.message === "TypeError: Failed to fetch")
+				throw createPostgrestErrorFromObject(error)
+			throw error
+		} else {
+			let products = (data || []).map(Product.fromJSON)
+			update(() => products)
+		}
+	}
+	const initPromise: Promise<void> = init()
+
 
 	async function createProduct(newProduct: Product, images: File[], progressStore: Writable<UploadProgress[]>) {
 		// -- Convert and upload images --
@@ -42,7 +37,7 @@ function createProductStore() {
 			.from('products')
 			.insert(newProduct.toJSON())
 		if (error)
-			console.error(error)
+			throw createPostgrestErrorFromObject(error)
 
 		// -- Update store --
 		update((products) => {
@@ -52,10 +47,7 @@ function createProductStore() {
 
 	async function getProductById(id: number) {
 		// -- Get product --
-		// console.log("initpromise: ", initPromise)
-		await initPromise
 		const products = get(store)
-		console.log("getProductById:", products?.length)
 		return products?.find((e) => e.id === id)
 	}
 
@@ -93,7 +85,7 @@ function createProductStore() {
 				throw new Error(`Network error while updating products: ${error?.message}`)
 			throw new Error(`Error updating product: ${error?.message}`)
 		}
-		else if (data.length === 0 || !data) {
+		else if (!data || data.length === 0) {
 			throw new Error(`No products updated. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
 		}
 		else if (data.length > 1) {
@@ -118,13 +110,18 @@ function createProductStore() {
 		await deleteImages("PublicImages", "product-images/thumbnails/", product.imageIds)
 
 		// -- Remove product --
-		const response = await supabase
+		const { error, count } = await supabase
 			.from('products')
 			.delete()
 			.eq('id', product.id)
-		if (response.error)
-			console.error(response.error)
-		console.log(response.data)
+		if (error)
+			throw error
+		else if (!count || count === 0) {
+			throw new Error(`No products deleted. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
+		}
+		else if (count > 1) {
+			throw new Error(`Multiple (${count}) products delete. This should not happen because product ID is unique`)
+		}
 
 
 		// -- Remove from store --
@@ -133,11 +130,11 @@ function createProductStore() {
 
 	return {
 		subscribe,
-		loading: { subscribe: loadingStore.subscribe },
 		createProduct,
 		getProductById,
 		updateProduct,
 		deleteProduct,
+		initPromise
 	}
 }
 

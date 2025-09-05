@@ -1,19 +1,23 @@
 <script lang="ts">
 	import type { Category } from "$lib/domain/Product"
-	import { productStore } from "$lib/stores/ProductStore"
-	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
-	import ProductCard from "../../components/product/ProductCard.svelte"
-	import Fa from "svelte-fa"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import { productStore } from "$lib/stores/ProductStore"
+	import {
+		faBorderNone,
+		faTriangleExclamation,
+	} from "@fortawesome/free-solid-svg-icons"
+	import Fa from "svelte-fa"
+	import ProductCard from "../../components/product/ProductCard.svelte"
 
 	let sortOption = "Alfabetish oplopend"
 	let activeFilters = new Set<Category>()
+	let errorMessage = ""
+	let loading = true
 
 	function updateFilter(filter: Category) {
 		if (activeFilters.has(filter)) activeFilters.delete(filter)
 		else activeFilters.add(filter)
 		activeFilters = activeFilters
-		console.log(activeFilters)
 	}
 	$: filteredProducts =
 		activeFilters.size === 0
@@ -37,7 +41,22 @@
 		}
 	})
 
-	let { error, loading } = productStore
+	async function initStore() {
+		loading = true
+		try {
+			await productStore.initPromise
+		} catch (error) {
+			console.error(error)
+			if (error instanceof Error) {
+				errorMessage = error.toString()
+			} else {
+				errorMessage = "An unknown error occurred"
+			}
+		} finally {
+			loading = false
+		}
+	}
+	initStore()
 
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Producten")
@@ -113,17 +132,23 @@
 		</div>
 	</div>
 
-	{#if $error}
+	{#if errorMessage}
 		<div class="text-error flex gap-2 items-center">
 			<Fa icon={faTriangleExclamation} class="" />
-			{$error}
+			{errorMessage}
 		</div>
-	{:else if $loading}
-		Loading
+	{:else if loading}
+		<span>Producten laden</span>
+		<span class="loading loading-ring"></span>
 	{:else}
 		<div class="mt-2 flex gap-2 flex-wrap justify-center">
 			{#each sortedProducts as product}
 				<ProductCard {product} />
+			{:else}
+				<div class="flex flex-col gap-2 mt-4">
+					<Fa icon={faBorderNone} class="min-w-20" size="4x" />
+					Geen producten gevonden
+				</div>
 			{/each}
 		</div>
 	{/if}
