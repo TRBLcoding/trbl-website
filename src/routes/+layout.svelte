@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Fa from "svelte-fa"
-	import "../app.css"
-	import { SvelteToast } from "@zerodevx/svelte-toast"
+	import Footer from "$components/Footer.svelte"
+	import { authStore } from "$lib/stores/AuthStore"
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import {
 		faDiscord,
 		faFacebookSquare,
@@ -10,15 +10,19 @@
 	} from "@fortawesome/free-brands-svg-icons"
 	import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
 	import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons"
+	import { SvelteToast } from "@zerodevx/svelte-toast"
+	import Fa from "svelte-fa"
+	import "../app.css"
 	import Cart from "../components/Cart.svelte"
-	import Footer from "$components/Footer.svelte"
-	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
 	let showMenu = true
+
+	// Make sure user is always loaded, by subscribing to authStore
+	$authStore
 </script>
 
 <svelte:head>
-  <title>{$pageHeadStore.getFullTitle()}</title>
+	<title>{$pageHeadStore.getFullTitle()}</title>
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">
@@ -160,8 +164,6 @@
 	<SvelteToast options={{ reversed: true, intro: { y: 192 } }} />
 	<Footer />
 </div>
-
-
 
 <style lang="postcss">
 	@reference "../app.css";
