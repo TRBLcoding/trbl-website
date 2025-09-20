@@ -41,7 +41,7 @@ function createAuthStore() {
 			email: email,
 			password: password,
 			options: {
-				emailRedirectTo: "https://example.com/todo",
+				emailRedirectTo: `${location.href}?action=confirm`,
 				data: { first_name: firstName, last_name: lastName }
 			},
 		})
@@ -70,6 +70,22 @@ function createAuthStore() {
 			throw error
 		}
 		console.log(`Signed out current user`)
+	}
+
+	async function requestPasswordReset(email: string) {
+		const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+			redirectTo: `${location.href}?action=reset`
+		})
+		if (error) {
+			throw error
+		}
+	}
+
+	async function resetPassword(password: string) {
+		const { data, error } = await supabase.auth.updateUser({ password })
+		if (error) {
+			throw error
+		}
 	}
 
 	// async function updateCurrentUserEmail(email: string) {
@@ -118,6 +134,8 @@ function createAuthStore() {
 		signUp,
 		signIn,
 		signOut,
+		requestPasswordReset,
+		resetPassword,
 		// updateCurrentUserEmail,
 		// updateCurrentUserPassword,
 		// updateCurrentUserName
