@@ -36,12 +36,13 @@ function createAuthStore() {
 	})
 	const { subscribe, update } = innerStore
 
-	async function signUp(email: string, password: string) {
+	async function signUp(email: string, password: string, firstName: string, lastName: string) {
 		const { error, data } = await supabase.auth.signUp({
 			email: email,
 			password: password,
 			options: {
 				emailRedirectTo: "https://example.com/todo",
+				data: { first_name: firstName, last_name: lastName }
 			},
 		})
 		if (error) {
@@ -65,7 +66,6 @@ function createAuthStore() {
 
 	async function signOut() {
 		const { error } = await supabase.auth.signOut()
-
 		if (error) {
 			throw error
 		}
