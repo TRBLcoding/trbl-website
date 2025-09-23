@@ -42,7 +42,7 @@ function createAuthStore() {
 			email: email,
 			password: password,
 			options: {
-				emailRedirectTo: `${location.href}?action=confirm`,
+				emailRedirectTo: `${location.origin}${location.pathname}?action=confirm`,
 				data: { first_name: firstName, last_name: lastName }
 			},
 		})
@@ -70,7 +70,7 @@ function createAuthStore() {
 
 	async function requestPasswordReset(email: string) {
 		const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-			redirectTo: `${location.href}?action=reset`
+			redirectTo: `${location.origin}${location.pathname}?action=reset`
 		})
 		if (error) {
 			throw error
