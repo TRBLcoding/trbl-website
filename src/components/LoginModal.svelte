@@ -162,7 +162,7 @@
 						<h1 class="font-bold text-xl">Inloggen</h1>
 						<h2 class="text-sm text-gray-400">Welkom terug</h2>
 					</div>
-					<form on:submit={submitLogin} class="mb-3 flex flex-col gap-3">
+					<form on:submit|preventDefault={submitLogin} class="mb-3 flex flex-col gap-3">
 						<div>
 							<label class="input w-full">
 								<Fa icon={faEnvelope} class="h-[1em] opacity-50" />
@@ -172,6 +172,7 @@
 									bind:value={email}
 									class:input-error={loginError}
 									required
+									autocomplete="email"
 								/>
 							</label>
 						</div>
@@ -224,7 +225,7 @@
 						<h2 class="text-sm text-gray-400">Welkom</h2>
 					</div>
 					{#if !formSumbmitted}
-						<form on:submit={submitRegister} class="mb-5 flex flex-col gap-3">
+						<form on:submit|preventDefault={submitRegister} class="mb-5 flex flex-col gap-3">
 							<div>
 								<label class="input w-full">
 									<Fa icon={faUser} class="h-[1em] opacity-50" />
@@ -317,7 +318,7 @@
 					</div>
 					{#if !formSumbmitted}
 						<form
-							on:submit={submitRequestPasswordReset}
+							on:submit|preventDefault={submitRequestPasswordReset}
 							class="mb-5 flex flex-col gap-3"
 						>
 							<div>
@@ -375,7 +376,7 @@
 					</div>
 					{#if !formSumbmitted}
 						<form
-							on:submit={submitResetPassword}
+							on:submit|preventDefault={submitResetPassword}
 							class="mb-5 flex flex-col gap-3"
 						>
 							<div>
@@ -419,7 +420,7 @@
 					</div>
 					<div role="alert" class="alert alert-success mb-4">
 						<Fa icon={faCircleCheck} size="lg" />
-						<span> Uw account is nu geactiveerd 🎉 </span>
+						<span> Uw account is nu geactiveerd 🎉. U bent ook automatisch ingelogd </span>
 					</div>
 				</div>
 			{/if}
