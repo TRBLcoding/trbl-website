@@ -34,8 +34,13 @@
 				return "Ongeldige login gegevens"
 			if (error.message === "Email not confirmed")
 				return "Account nog niet geverifierd, check email om uw account te activeren"
-			if (error.message.match(/Email address ".*" is invalid/))
-				return "Ongeldig email adres"
+			const emailMatch = error.message.match(/Email address "(.*)" is invalid/)
+			if (emailMatch) return `Email adres "${emailMatch}" is ongeldig`
+			const securityMatch = error.message.match(
+				/For security purposes, you can only request this after (.*) seconds\./
+			)
+			if (securityMatch)
+				return `U kunt dit om veiligheidsredenen pas na ${securityMatch[1]} seconden opnieuw aanvragen.`
 			if (
 				error.message ===
 				"New password should be different from the old password."
@@ -63,6 +68,7 @@
 		loginError = ""
 		try {
 			await authStore.signUp(email, password, firstName, lastName)
+			alertEmailBuffer = email
 			email = ""
 			password = ""
 			firstName = ""
@@ -76,9 +82,9 @@
 	async function submitRequestPasswordReset() {
 		loading = true
 		loginError = ""
-		formSumbmitted = false
 		try {
 			await authStore.requestPasswordReset(email)
+			alertEmailBuffer = email
 			email = ""
 			password = ""
 			formSumbmitted = true
@@ -87,10 +93,10 @@
 		}
 		loading = false
 	}
+	let alertEmailBuffer = "" // Stores email after form is submitted for use in alert, because input field values needs to be cleared
 	async function submitResetPassword() {
 		loading = true
 		loginError = ""
-		formSumbmitted = false
 		try {
 			await authStore.resetPassword(password)
 			email = ""
@@ -122,7 +128,6 @@
 			modalState = "Reset"
 			showModal = true
 		} else if (page.url.searchParams.get("action") === "confirm") {
-			window.history.replaceState({}, document.title, location.origin)
 			modalState = "Confirm"
 			showModal = true
 		}
@@ -130,7 +135,8 @@
 
 	$: resetModal(showModal)
 	async function resetModal(state: boolean) {
-		if ((!state && modalState === "Confirm") || modalState === "Reset") {
+		if (!state && (modalState === "Confirm" || modalState === "Reset")) {
+			console.log(state)
 			await sleep(300)
 			modalState = "Login"
 		}
@@ -162,7 +168,10 @@
 						<h1 class="font-bold text-xl">Inloggen</h1>
 						<h2 class="text-sm text-gray-400">Welkom terug</h2>
 					</div>
-					<form on:submit|preventDefault={submitLogin} class="mb-3 flex flex-col gap-3">
+					<form
+						on:submit|preventDefault={submitLogin}
+						class="mb-3 flex flex-col gap-3"
+					>
 						<div>
 							<label class="input w-full">
 								<Fa icon={faEnvelope} class="h-[1em] opacity-50" />
@@ -225,7 +234,10 @@
 						<h2 class="text-sm text-gray-400">Welkom</h2>
 					</div>
 					{#if !formSumbmitted}
-						<form on:submit|preventDefault={submitRegister} class="mb-5 flex flex-col gap-3">
+						<form
+							on:submit|preventDefault={submitRegister}
+							class="mb-5 flex flex-col gap-3"
+						>
 							<div>
 								<label class="input w-full">
 									<Fa icon={faUser} class="h-[1em] opacity-50" />
@@ -294,8 +306,9 @@
 							<Fa icon={faCircleCheck} size="lg" />
 							<span>
 								Uw account is succesvol aangemaakt! Een bevestigingsmail is
-								verstuurd naar <a href={"mailto:" + email} class="link"
-									>{email || "Lorin.speybrouck@proximus.be"}</a
+								verstuurd naar <a
+									href={"mailto:" + alertEmailBuffer}
+									class="link">{alertEmailBuffer}</a
 								>. Klik op de link in de e-mail om uw account te activeren.
 							</span>
 						</div>
@@ -310,7 +323,7 @@
 					</div>
 				</div>
 			{:else if modalState === "RequestReset"}
-				<!-- Request reset form -->
+				<!-- Request password reset form -->
 				<div class="w-full">
 					<div class="mb-4">
 						<h1 class="font-bold text-xl">Wachtwoord resetten</h1>
@@ -350,20 +363,26 @@
 						<div role="alert" class="alert alert-success mb-2">
 							<Fa icon={faCircleCheck} size="lg" />
 							<span>
-								Een email om u wachtwoord te resetten is doorgestuurd naar <a
-									href={"mailto:" + email}
-									class="link">{email || "Lorin.speybrouck@proximus.be"}</a
-								>
+								Er is een wachtwoord reset link verzonden naar <a
+									href={"mailto:" + alertEmailBuffer}
+									class="link">{alertEmailBuffer}</a
+								>, mits er een account bestaat met dit emailadres.
 							</span>
 						</div>
 					{/if}
 
-					<div class="w-full flex items-center justify-center">
+					<div class="w-full flex flex-col items-center gap-1">
 						<button
 							class="link link-hover text-sm text-gray-400"
 							on:click={() => switchState("Login")}
 						>
 							Al een account? Log hier in
+						</button>
+						<button
+							class="link link-hover text-sm text-gray-400"
+							on:click={() => switchState("Register")}
+						>
+							Nog geen account? Registreer hier
 						</button>
 					</div>
 				</div>
@@ -418,9 +437,18 @@
 						<h1 class="font-bold text-xl">Account geactiveerd</h1>
 						<h2 class="text-sm text-gray-400">Lets go</h2>
 					</div>
-					<div role="alert" class="alert alert-success mb-4">
-						<Fa icon={faCircleCheck} size="lg" />
-						<span> Uw account is nu geactiveerd 🎉. U bent ook automatisch ingelogd </span>
+					<div class="mb-5 flex flex-col gap-2">
+						<div role="alert" class="alert alert-success">
+							<Fa icon={faCircleCheck} size="lg" />
+							<span>
+								Uw account is nu geactiveerd 🎉. U bent ook automatisch ingelogd
+							</span>
+						</div>
+						<button
+							class="btn btn-primary mt-2"
+							type="button"
+							on:click={() => (showModal = false)}>Ok</button
+						>
 					</div>
 				</div>
 			{/if}
