@@ -1,10 +1,14 @@
 <script lang="ts">
+	import { goto } from "$app/navigation"
+	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faUserPen } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Dashboard")
+	// -- Authguard --
+	$: if ($authStore === null || ($authStore && !$authStore.isAdmin())) goto("/")
 </script>
 
 <div class="mx-6 mt-3">

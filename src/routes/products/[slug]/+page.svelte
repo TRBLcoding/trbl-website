@@ -41,10 +41,6 @@
 		}
 	}
 
-	// // -- Authguard --
-	// $: authStore.known.then(() => {
-	// 	if (!product?.visible && !$authStore) goto("/")
-	// })
 	// -- Page title --
 	$: product && pageHeadStore.updatePageTitle(product.name)
 </script>

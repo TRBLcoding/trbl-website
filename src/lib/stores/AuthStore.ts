@@ -4,7 +4,8 @@ import { supabase } from '$lib/supabase/supabaseClient'
 import { get, writable } from 'svelte/store'
 
 function createAuthStore() {
-	const innerStore = writable<User | null>(undefined, () => {
+	// Value can be: undefined (not known yet), null (not logged in) or User (logged in)
+	const innerStore = writable<User | null | undefined>(undefined, () => {
 		let unsubscribe = () => { }
 
 		function init() {
@@ -21,7 +22,7 @@ function createAuthStore() {
 								.single()
 							if (error)
 								throw error
-							const newUser = new User(session.user.id, session.user.email!, data.role)
+							const newUser = new User(session.user.id, session.user.email!, data.role, data.first_name, data.last_name)
 							update(() => newUser)
 						})()
 					}
@@ -48,8 +49,6 @@ function createAuthStore() {
 		if (error) {
 			throw error
 		}
-		console.log("Sign up data:", data)
-		console.log(`Signed up ${data.user?.email} (${data.user?.role})`)
 	}
 
 	async function signIn(email: string, password: string) {
@@ -60,8 +59,6 @@ function createAuthStore() {
 		if (error) {
 			throw error
 		}
-		console.log("Sign in data:", data)
-		console.log(`Signed in ${data.user.email} (${data.user.role})`)
 	}
 
 	async function signOut() {
@@ -69,7 +66,6 @@ function createAuthStore() {
 		if (error) {
 			throw error
 		}
-		console.log(`Signed out current user`)
 	}
 
 	async function requestPasswordReset(email: string) {

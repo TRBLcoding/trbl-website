@@ -2,6 +2,7 @@
 	import { goto } from "$app/navigation"
 	import EditDropdown from "$components/EditDropdown.svelte"
 	import type { Product } from "$lib/domain/Product"
+	import { authStore } from "$lib/stores/AuthStore"
 	import { productStore } from "$lib/stores/ProductStore"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import { faEyeSlash } from "@fortawesome/free-regular-svg-icons"
@@ -43,8 +44,7 @@
 <!-- Name -->
 <div class="flex flex-row items-center">
 	<h1 class="text-4xl font-semibold">{product.name || "Geen naam"}</h1>
-	<!-- {#if !isPreview && $authStore} -->
-	{#if !isPreview}
+	{#if !isPreview && $authStore?.isAdmin()}
 		<div class="ml-auto">
 			<EditDropdown
 				editUrl={"/products/edit/" + product.id}

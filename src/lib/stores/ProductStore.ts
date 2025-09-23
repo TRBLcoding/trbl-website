@@ -78,9 +78,8 @@ function createProductStore() {
 			.eq('id', product.id)
 			.select('id')
 
-		console.error(error)
-		console.log(data)
 		if (error) {
+			console.error(error)
 			if (error.message === "TypeError: Failed to fetch")
 				throw new Error(`Network error while updating products: ${error?.message}`)
 			throw new Error(`Error updating product: ${error?.message}`)

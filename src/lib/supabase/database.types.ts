@@ -50,17 +50,23 @@ export type Database = {
       users: {
         Row: {
           auth_id: string | null
+          first_name: string
           id: number
+          last_name: string
           role: Database["public"]["Enums"]["Role"]
         }
         Insert: {
           auth_id?: string | null
+          first_name: string
           id?: number
+          last_name: string
           role?: Database["public"]["Enums"]["Role"]
         }
         Update: {
           auth_id?: string | null
+          first_name?: string
           id?: number
+          last_name?: string
           role?: Database["public"]["Enums"]["Role"]
         }
         Relationships: []
