@@ -1,37 +1,31 @@
 import { browser } from '$app/environment'
 import { supabase } from "$lib/supabase/supabaseClient"
+import { createPostgrestErrorFromObject } from '$lib/utils/SupabaseUtils'
 import { get, writable, type Writable } from 'svelte/store'
 import { Product, type Category, type Type } from '../domain/Product'
 import type { Database } from '../supabase/database.types'
-import { convertAndUploadImages, deleteImages, type UploadProgress } from '../utils/UploadProgress'
 import { arrayDifference, arraysContainSameElements } from '../utils/Array'
+import { convertAndUploadImages, deleteImages, type UploadProgress } from '../utils/UploadProgress'
 
 function createProductStore() {
-	const errorStore = writable<string | null>(null)
-	const loadingStore = writable<boolean>(false)
-
-	const store = writable<Product[]>(undefined, set => {
-		async function init() {
-			if (!browser) return
-			loadingStore.set(true)
-			errorStore.set(null)
-
-			const response = await supabase.from("products").select()
-			if (response.error) {
-				if (response.error.message === "TypeError: Failed to fetch")
-					console.error("Network error while loading products:", response.error)
-				else
-					console.error("Error loading products:", response.error)
-				errorStore.set("Netwerkfout: Kan geen verbinding maken met de server. Controleer je internetverbinding.")
-			} else {
-				let products = (response.data || []).map(Product.fromJSON)
-				set(products)
-			}
-			loadingStore.set(false)
-		}
-		init()
-	})
+	const store = writable<Product[]>(undefined)
 	const { subscribe, update } = store
+
+	async function init() {
+		if (!browser) return
+
+		const { error, data } = await supabase.from("products").select()
+		if (error) {
+			if (error?.message === "TypeError: Failed to fetch")
+				throw createPostgrestErrorFromObject(error)
+			throw error
+		} else {
+			let products = (data || []).map(Product.fromJSON)
+			update(() => products)
+		}
+	}
+	const initPromise: Promise<void> = init()
+
 
 	async function createProduct(newProduct: Product, images: File[], progressStore: Writable<UploadProgress[]>) {
 		// -- Convert and upload images --
@@ -43,7 +37,7 @@ function createProductStore() {
 			.from('products')
 			.insert(newProduct.toJSON())
 		if (error)
-			console.error(error)
+			throw createPostgrestErrorFromObject(error)
 
 		// -- Update store --
 		update((products) => {
@@ -51,10 +45,10 @@ function createProductStore() {
 		})
 	}
 
-	function getProductById(id: number) {
+	async function getProductById(id: number) {
 		// -- Get product --
 		const products = get(store)
-		return products.find((e) => e.id === id)
+		return products?.find((e) => e.id === id)
 	}
 
 	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, progressStore: Writable<UploadProgress[]>) {
@@ -83,10 +77,20 @@ function createProductStore() {
 			} as Database['public']['Tables']['products']['Update'])
 			.eq('id', product.id)
 			.select('id')
-		if (error || !data)
+
+		if (error) {
 			console.error(error)
-		else if (data.length !== 1)
-			console.error(`Updated ${data.length} products:`, data)
+			if (error.message === "TypeError: Failed to fetch")
+				throw new Error(`Network error while updating products: ${error?.message}`)
+			throw new Error(`Error updating product: ${error?.message}`)
+		}
+		else if (!data || data.length === 0) {
+			throw new Error(`No products updated. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
+		}
+		else if (data.length > 1) {
+			throw new Error(`Multiple (${data.length}) products updated. This should not happen because product ID is unique`)
+		}
+
 
 		// -- Update store --
 		product.name = newName
@@ -105,12 +109,19 @@ function createProductStore() {
 		await deleteImages("PublicImages", "product-images/thumbnails/", product.imageIds)
 
 		// -- Remove product --
-		const response = await supabase
+		const { error, count } = await supabase
 			.from('products')
 			.delete()
 			.eq('id', product.id)
-		if (response.error)
-			console.error(response.error)
+		if (error)
+			throw error
+		else if (!count || count === 0) {
+			throw new Error(`No products deleted. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
+		}
+		else if (count > 1) {
+			throw new Error(`Multiple (${count}) products deleted. This should not happen because product ID is unique`)
+		}
+
 
 		// -- Remove from store --
 		update((products) => (products.filter((e) => e.id !== product.id)))
@@ -118,12 +129,11 @@ function createProductStore() {
 
 	return {
 		subscribe,
-		error: { subscribe: errorStore.subscribe },
-        loading: { subscribe: loadingStore.subscribe },
 		createProduct,
 		getProductById,
 		updateProduct,
 		deleteProduct,
+		initPromise
 	}
 }
 

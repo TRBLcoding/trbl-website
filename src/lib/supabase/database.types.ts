@@ -47,6 +47,30 @@ export type Database = {
         }
         Relationships: []
       }
+      users: {
+        Row: {
+          auth_id: string | null
+          first_name: string
+          id: number
+          last_name: string
+          role: Database["public"]["Enums"]["Role"]
+        }
+        Insert: {
+          auth_id?: string | null
+          first_name: string
+          id?: number
+          last_name: string
+          role?: Database["public"]["Enums"]["Role"]
+        }
+        Update: {
+          auth_id?: string | null
+          first_name?: string
+          id?: number
+          last_name?: string
+          role?: Database["public"]["Enums"]["Role"]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -56,6 +80,7 @@ export type Database = {
     }
     Enums: {
       Category: "Sound" | "Light" | "Truss" | "Media"
+      Role: "User" | "Admin"
       Type:
         | "Mixer"
         | "Microphone"
@@ -196,6 +221,7 @@ export const Constants = {
   public: {
     Enums: {
       Category: ["Sound", "Light", "Truss", "Media"],
+      Role: ["User", "Admin"],
       Type: [
         "Mixer",
         "Microphone",

@@ -13,6 +13,8 @@
 		type Type,
 	} from "$lib/domain/Product"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
+	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+	import Fa from "svelte-fa"
 
 	export let name = ""
 	export let visible = true
@@ -38,7 +40,11 @@
 			await onSave()
 		} catch (error) {
 			console.error(error)
-			errorMessage = "error occured"
+			if (error instanceof Error) {
+				errorMessage = error.toString()
+			} else {
+				errorMessage = "An unknown error occurred"
+			}
 		}
 		saving = false
 	}
@@ -97,6 +103,9 @@
 		</button>
 	</div>
 	{#if errorMessage}
-		<p class="text-error">{errorMessage}</p>
+		<div class="text-error flex gap-2 items-center mt-2">
+			<Fa icon={faTriangleExclamation} class="" />
+			{errorMessage}
+		</div>
 	{/if}
 </form>

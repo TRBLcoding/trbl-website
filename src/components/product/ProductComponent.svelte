@@ -1,19 +1,36 @@
 <script lang="ts">
-	import type { Product } from "$lib/domain/Product"
-	import EditDropdown from "$components/EditDropdown.svelte"
-	import Fa from "svelte-fa"
-	import { faEyeSlash } from "@fortawesome/free-regular-svg-icons"
-	import { pushCreatedToast } from "$lib/utils/Toast"
-	import { productStore } from "$lib/stores/ProductStore"
 	import { goto } from "$app/navigation"
+	import EditDropdown from "$components/EditDropdown.svelte"
+	import type { Product } from "$lib/domain/Product"
+	import { authStore } from "$lib/stores/AuthStore"
+	import { productStore } from "$lib/stores/ProductStore"
+	import { pushCreatedToast } from "$lib/utils/Toast"
+	import { faEyeSlash } from "@fortawesome/free-regular-svg-icons"
+	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+	import Fa from "svelte-fa"
 
 	export let product: Product
 	export let isPreview = false
 
+	let loading = false
+	let errorMessage = ""
+
 	async function removeProduct() {
-		await productStore.deleteProduct(product)
-		pushCreatedToast("Product verwijderd")
-		goto("/")
+		loading = true
+		try {
+			await productStore.deleteProduct(product)
+			pushCreatedToast("Product verwijderd")
+			goto("/products")
+		} catch (error) {
+			console.error(error)
+			if (error instanceof Error) {
+				errorMessage = error.toString()
+			} else {
+				errorMessage = "An unknown error occurred"
+			}
+		} finally {
+			loading = false
+		}
 	}
 </script>
 
@@ -27,8 +44,7 @@
 <!-- Name -->
 <div class="flex flex-row items-center">
 	<h1 class="text-4xl font-semibold">{product.name || "Geen naam"}</h1>
-	<!-- {#if !isPreview && $authStore} -->
-	{#if !isPreview}
+	{#if !isPreview && $authStore?.isAdmin()}
 		<div class="ml-auto">
 			<EditDropdown
 				editUrl={"/products/edit/" + product.id}
@@ -37,3 +53,12 @@
 		</div>
 	{/if}
 </div>
+
+{#if errorMessage}
+	<div class="text-error flex gap-2 items-center">
+		<Fa icon={faTriangleExclamation} class="" />
+		{errorMessage}
+	</div>
+{:else if loading}
+	<span class="loading loading-ring"></span>
+{/if}

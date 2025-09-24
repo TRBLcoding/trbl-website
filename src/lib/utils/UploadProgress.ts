@@ -74,14 +74,13 @@ export async function convertAndUploadImages(combinedImages: (string | File)[], 
 }
 
 export async function deleteImages(bucket: string, folder: string, imageIds: string[]) {
-	console.log(imageIds.map(e => `${folder}${e}.webp`))
-	const response = await supabase
+	const { error, data } = await supabase
 		.storage
 		.from(bucket)
 		.remove(imageIds.map(e => `${folder}${e}.webp`))
-	if (response.error)
-		console.error(response)
-	if (response.data?.length !== imageIds.length)
-		console.warn("Some images were not deleted:", response)
+	if (error)
+		throw error
+	if (data?.length !== imageIds.length)
+		console.warn("Some images were not deleted:", data)
 
 }

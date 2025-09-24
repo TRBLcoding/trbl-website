@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-
-
 </script>
 
 <div class="max-w-lg">

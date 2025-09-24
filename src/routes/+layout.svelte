@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Fa from "svelte-fa"
-	import "../app.css"
-	import { SvelteToast } from "@zerodevx/svelte-toast"
+	import Footer from "$components/Footer.svelte"
+	import { authStore } from "$lib/stores/AuthStore"
+	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import {
 		faDiscord,
 		faFacebookSquare,
@@ -9,16 +9,23 @@
 		faYoutube,
 	} from "@fortawesome/free-brands-svg-icons"
 	import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
-	import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons"
+	import { faBars, faRightToBracket, faUser, faXmark } from "@fortawesome/free-solid-svg-icons"
+	import { SvelteToast } from "@zerodevx/svelte-toast"
+	import Fa from "svelte-fa"
+	import "../app.css"
 	import Cart from "../components/Cart.svelte"
-	import Footer from "$components/Footer.svelte"
-	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import LoginModal from "$components/LoginModal.svelte"
+	import ProfileDropdown from "$components/ProfileDropdown.svelte"
 
 	let showMenu = true
+	const loginModalID = "login-modal"
+
+	// Make sure user is always loaded, by subscribing to authStore
+	$authStore
 </script>
 
 <svelte:head>
-  <title>{$pageHeadStore.getFullTitle()}</title>
+	<title>{$pageHeadStore.getFullTitle()}</title>
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">
@@ -46,16 +53,6 @@
 						<Fa icon={faDiscord} />
 					</a>
 				</div>
-
-				<!-- Links -->
-				<div class="gap-4 hidden lg:flex">
-					<a class="link link-hover text-sm" href="/todo">Mijn account</a>
-					<a class="link link-hover text-sm" href="/todo">
-						Overzicht Offerte-Aanvraag
-					</a>
-					<a class="link link-hover text-sm" href="/#contact">Contact</a>
-					<a class="link link-hover text-sm" href="/dashboard">Dashboard</a>
-				</div>
 			</div>
 		</div>
 
@@ -76,7 +73,6 @@
 				</div>
 				<!-- Large screen -->
 				<div class="menu menu-horizontal hidden lg:block">
-					<a class="btn shadow-none" href="/todo">Home</a>
 					<div class="dropdown dropdown-hover">
 						<div tabindex="0" role="button" class="btn">Sound and light</div>
 						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -99,8 +95,16 @@
 							<li><a href="/todo">Hersteldienst</a></li>
 						</ul>
 					</div>
+					<a class="btn shadow-none" href="/#contact">Contact</a>
 					<a class="btn btn-primary px-6" href="/products">Verhuur</a>
 					<Cart></Cart>
+					{#if !$authStore}
+						<label for={loginModalID} class="btn btn-square btn-ghost" title="Account">
+							<Fa icon={faRightToBracket} size="lg" />
+						</label>
+					{:else}
+						<ProfileDropdown></ProfileDropdown>
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -161,7 +165,7 @@
 	<Footer />
 </div>
 
-
+<LoginModal {loginModalID} />
 
 <style lang="postcss">
 	@reference "../app.css";

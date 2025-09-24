@@ -1,18 +1,25 @@
 <script lang="ts">
-	import ProductForm from "$components/product/ProductForm.svelte"
-	import type { PageData } from "./$types"
-	import type { UploadProgress } from "$lib/utils/UploadProgress"
-	import { writable } from "svelte/store"
-	import { Product } from "$lib/domain/Product"
-	import { productStore } from "$lib/stores/ProductStore"
-	import { pushCreatedToast } from "$lib/utils/Toast"
-	import { PreviewableFile } from "$lib/utils/PreviewableFile"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
+	import ProductForm from "$components/product/ProductForm.svelte"
+	import { Product } from "$lib/domain/Product"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import { productStore } from "$lib/stores/ProductStore"
+	import { PreviewableFile } from "$lib/utils/PreviewableFile"
+	import { pushCreatedToast } from "$lib/utils/Toast"
+	import type { UploadProgress } from "$lib/utils/UploadProgress"
+	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+	import Fa from "svelte-fa"
+	import { writable } from "svelte/store"
+	import type { PageData } from "./$types"
+	import { authStore } from "$lib/stores/AuthStore"
+	import { goto } from "$app/navigation"
 
 	export let data: PageData
 
 	const progressStore = writable([] as UploadProgress[])
+
+	let loading = true
+	let errorMessage = ""
 
 	let name: string = ""
 	let visible: boolean = true
@@ -23,6 +30,23 @@
 	let description: string = ""
 
 	let product: Product | undefined | null
+
+	async function initStore() {
+		loading = true
+		try {
+			await productStore.initPromise
+		} catch (error) {
+			console.error(error)
+			if (error instanceof Error) {
+				errorMessage = error.toString()
+			} else {
+				errorMessage = "An unknown error occurred"
+			}
+		} finally {
+			loading = false
+		}
+	}
+	initStore()
 
 	async function updateProduct() {
 		await productStore.updateProduct(
@@ -69,7 +93,16 @@
 	$: if (!haveValuesBeenSet && product) setValues(product)
 
 	async function loadProduct(data: PageData) {
-		product = await productStore.getProductById(Number(data.id))
+		try {
+			product = await productStore.getProductById(Number(data.id))
+		} catch (error) {
+			console.error(error)
+			if (error instanceof Error) {
+				errorMessage = error.toString()
+			} else {
+				errorMessage = "An unknown error occurred"
+			}
+		}
 	}
 	function setValues(product: Product) {
 		name = product.name
@@ -82,12 +115,14 @@
 	}
 
 	// -- Page title --
-  	pageHeadStore.updatePageTitle("Product wijzigen")
+	pageHeadStore.updatePageTitle("Product wijzigen")
+	// -- Authguard --
+	$: if ($authStore === null || ($authStore && !$authStore.isAdmin())) goto("/")
 </script>
 
 <div class="mx-6 mt-3 mb-8">
 	{#if showPreview}
-		<!-- Article preview -->
+		<!-- Product preview -->
 		{#await createPreview()}
 			<div>Loading</div>
 		{:then previewProduct}
@@ -101,34 +136,46 @@
 				<ProductComponent product={previewProduct} isPreview={true} />
 			</div>
 		{/await}
-	{:else if product === undefined}
-		Loading
-	{:else if product}
+	{:else}
 		<!-- Product editor -->
 		<div class="flex flex-row gap-3 items-center mb-1">
 			<h1 class="text-2xl font-bold">Product wijzigen</h1>
-			<button
-				class="btn btn-primary btn-xs normal-case"
-				on:click={togglePreview}
-			>
-				Toon preview
-			</button>
+			{#if !errorMessage && product !== undefined}
+				<button
+					class="btn btn-primary btn-xs normal-case"
+					on:click={togglePreview}
+				>
+					Toon preview
+				</button>
+			{/if}
 		</div>
-
-		<ProductForm
-			bind:name
-			bind:price
-			bind:visible
-			bind:combinedImages
-			bind:categories
-			bind:type
-			bind:description
-			newProduct={false}
-			submitLabel="Wijzig product"
-			onSave={updateProduct}
-			progress={$progressStore}
-		/>
-	{:else}
-		<div>"{data.id}": not found</div>
+		{#if errorMessage}
+			<div class="text-error flex gap-2 items-center">
+				<Fa icon={faTriangleExclamation} />
+				{errorMessage}
+			</div>
+		{:else if loading}
+			<span>Loading product</span>
+			<span class="loading loading-ring"></span>
+		{:else if product}
+			<ProductForm
+				bind:name
+				bind:price
+				bind:visible
+				bind:combinedImages
+				bind:categories
+				bind:type
+				bind:description
+				newProduct={false}
+				submitLabel="Wijzig product"
+				onSave={updateProduct}
+				progress={$progressStore}
+			/>
+		{:else}
+			<div class="text-error flex gap-2 items-center">
+				<Fa icon={faTriangleExclamation} />
+				Product met ID <span class="font-bold">{data.id}</span>: niet gevonden
+			</div>
+		{/if}
 	{/if}
 </div>
