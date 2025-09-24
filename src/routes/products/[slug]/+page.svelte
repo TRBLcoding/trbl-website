@@ -45,7 +45,7 @@
 	$: product && pageHeadStore.updatePageTitle(product.name)
 </script>
 
-<div class="mx-6 mt-3">
+<div class="mx-4 lg:mx-10 mt-3">
 	{#if errorMessage}
 		<div class="text-error flex gap-2 items-center">
 			<Fa icon={faTriangleExclamation} class="" />

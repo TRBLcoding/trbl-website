@@ -14,6 +14,7 @@
   export let hideIndicators = false
   export let fillWidth = false
   export let duration = 10000
+  export let background = false
 
   // -- Counter --
   export let counter = 0
@@ -45,7 +46,8 @@
 <!-- Adapted from https://flowbite.com/docs/components/carousel/ -->
 <!-- Carousel container -->
 <div
-  class={`relative  h-72 sm:h-96 w-full overflow-hidden rounded-lg ${height}`}
+  class={`relative h-72 sm:h-96 w-full overflow-hidden rounded-lg ${height}`}
+  class:bg-base-200={background}
 >
   <!-- Carousel images -->
   {#each images as item, i}
@@ -65,7 +67,7 @@
         <!-- svelte-ignore a11y_consider_explicit_label -->
         <button
           type="button"
-          class="w-3 h-3 rounded-full"
+          class="w-3 h-3 rounded-full cursor-pointer "
           class:bg-slate-200={counter === i}
           class:bg-slate-500={counter !== i}
           on:click={() => (counter = i)}
