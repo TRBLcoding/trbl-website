@@ -400,7 +400,7 @@
 						>
 							<div>
 								<label class="input w-full">
-									<Fa icon={faEnvelope} class="h-[1em] opacity-50" />
+									<Fa icon={faKey} class="h-[1em] opacity-50" />
 									<input
 										type="password"
 										placeholder="Nieuw wachtwoord"
