@@ -122,7 +122,6 @@ function createProductStore() {
 			throw new Error(`Multiple (${count}) products deleted. This should not happen because product ID is unique`)
 		}
 
-
 		// -- Remove from store --
 		update((products) => (products.filter((e) => e.id !== product.id)))
 	}
