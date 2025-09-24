@@ -24,7 +24,7 @@
 
 	let showModal = false
 	let loading = false
-	let formSumbmitted = false
+	let formSubmitted = false
 
 	function handleAuthError(error: unknown) {
 		console.error(error)
@@ -73,7 +73,7 @@
 			password = ""
 			firstName = ""
 			lastName = ""
-			formSumbmitted = true
+			formSubmitted = true
 		} catch (error) {
 			loginError = handleAuthError(error)
 		}
@@ -87,7 +87,7 @@
 			alertEmailBuffer = email
 			email = ""
 			password = ""
-			formSumbmitted = true
+			formSubmitted = true
 		} catch (error) {
 			loginError = handleAuthError(error)
 		}
@@ -101,7 +101,7 @@
 			await authStore.resetPassword(password)
 			email = ""
 			password = ""
-			formSumbmitted = true
+			formSubmitted = true
 		} catch (error) {
 			loginError = handleAuthError(error)
 		}
@@ -114,7 +114,7 @@
 		loading = false
 		loginError = ""
 		modalState = newState
-		formSumbmitted = false
+		formSubmitted = false
 	}
 
 	// -- Reset link Check --
@@ -233,7 +233,7 @@
 						<h1 class="font-bold text-xl">Registreren</h1>
 						<h2 class="text-sm text-gray-400">Welkom</h2>
 					</div>
-					{#if !formSumbmitted}
+					{#if !formSubmitted}
 						<form
 							on:submit|preventDefault={submitRegister}
 							class="mb-5 flex flex-col gap-3"
@@ -329,7 +329,7 @@
 						<h1 class="font-bold text-xl">Wachtwoord resetten</h1>
 						<h2 class="text-sm text-gray-400">Email aanvragen</h2>
 					</div>
-					{#if !formSumbmitted}
+					{#if !formSubmitted}
 						<form
 							on:submit|preventDefault={submitRequestPasswordReset}
 							class="mb-5 flex flex-col gap-3"
@@ -393,7 +393,7 @@
 						<h1 class="font-bold text-xl">Wachtwoord veranderen</h1>
 						<h2 class="text-sm text-gray-400">Kies een nieuw wachtwoord</h2>
 					</div>
-					{#if !formSumbmitted}
+					{#if !formSubmitted}
 						<form
 							on:submit|preventDefault={submitResetPassword}
 							class="mb-5 flex flex-col gap-3"
