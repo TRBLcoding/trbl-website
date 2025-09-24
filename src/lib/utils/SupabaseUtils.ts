@@ -4,6 +4,6 @@ export function createPostgrestErrorFromObject(error: { message: string, code: s
 	const message = error.message
 	const code = error.code
 	const hint = error.hint
-	const details = error.message
+	const details = error.details
 	return new PostgrestError({ message, code, hint, details })
 }
