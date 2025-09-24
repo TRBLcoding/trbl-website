@@ -47,7 +47,7 @@
 			)
 				return "Nieuw wachtwoord moet anders zijn dan voriger wachtwoord"
 		}
-		return "Unkown error occured"
+		return "Unknown error occurred"
 	}
 
 	async function submitLogin() {
