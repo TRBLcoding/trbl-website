@@ -33,11 +33,13 @@ function createProductStore() {
 		newProduct.imageIds = uploadedImageIds
 
 		// -- Create product --
-		const { error } = await supabase
+		const { data, error } = await supabase
 			.from('products')
 			.insert(newProduct.toJSON())
+			.select('id')
 		if (error)
 			throw createPostgrestErrorFromObject(error)
+		newProduct.id = data[0].id
 
 		// -- Update store --
 		update((products) => {
