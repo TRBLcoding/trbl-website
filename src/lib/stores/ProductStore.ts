@@ -113,7 +113,7 @@ function createProductStore() {
 		// -- Remove product --
 		const { error, count } = await supabase
 			.from('products')
-			.delete()
+			.delete({count: 'exact'})
 			.eq('id', product.id)
 		if (error)
 			throw error
