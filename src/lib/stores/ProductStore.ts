@@ -119,7 +119,7 @@ function createProductStore() {
 			throw new Error(`No products deleted. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
 		}
 		else if (count > 1) {
-			throw new Error(`Multiple (${count}) products delete. This should not happen because product ID is unique`)
+			throw new Error(`Multiple (${count}) products deleted. This should not happen because product ID is unique`)
 		}
 
 
