@@ -62,7 +62,7 @@
 	pageHeadStore.updatePageTitle("Producten")
 </script>
 
-<div class="mx-4 lg:mx-10 my-5">
+<div class="mx-4 lg:mx-12 my-5">
 	<div class="flex gap-3 mb-2">
 		<h1 class="text-4xl font-semibold">Producten</h1>
 		<a href="/products/new" class="btn btn-primary normal-case">

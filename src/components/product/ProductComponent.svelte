@@ -2,6 +2,7 @@
 	import { goto } from "$app/navigation"
 	import Carousel from "$components/Carousel.svelte"
 	import EditDropdown from "$components/EditDropdown.svelte"
+	import UserContentRenderer from "$components/UserContentRenderer.svelte"
 	import type { Product } from "$lib/domain/Product"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { productStore } from "$lib/stores/ProductStore"
@@ -9,6 +10,7 @@
 	import { faEyeSlash } from "@fortawesome/free-regular-svg-icons"
 	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import PriceCard from "./PriceCard.svelte"
 
 	export let product: Product
 	export let isPreview = false
@@ -61,40 +63,33 @@
 	{/if}
 </div>
 
-<div class="flex flex-col lg:flex-row gap-6 mt-2 mb-5">
-    <div class="w-full lg:w-2/3 flex flex-col gap-6">
-        <!-- Gallery -->
-        <div class="bg-blue-400 h-96 rounded-lg flex items-center justify-center">
-            Gallery
-        </div>
-
-        <!-- Description - Shows last on mobile, second on desktop -->
-        <div class="order-2 lg:order-none">
-            <div
-                class="bg-red-400 rounded-lg p-6 h-screen flex items-center justify-center"
-            >
-                Description
-            </div>
-        </div>
-    </div>
-
-    <!-- Right column - Price (sticky) -->
-    <div class="w-full lg:w-1/3 order-1 lg:order-none">
-        <div
-            class="bg-green-400 h-60 rounded-lg flex items-center justify-center lg:sticky lg:top-6"
-        >
-            Pricee
-        </div>
-    </div>
-</div>
-
-<!-- {#await Promise.all(product.createCarouselImages()) then images}
-	{#if images.length > 0}
-		<div class="my-2">
-			<Carousel {images} background />
+<div class="flex flex-col md:flex-row gap-6 mt-4 mb-5">
+	<div class="w-full md:w-2/3 flex flex-col gap-6">
+		<!-- Gallery -->
+		<div class="">
+			{#await Promise.all(product.createCarouselImages()) then images}
+				{#if images.length > 0}
+					<Carousel {images} background />
+				{/if}
+			{/await}
 		</div>
-	{/if}
-{/await} -->
+
+		<div class="w-full md:hidden">
+			<PriceCard {product}></PriceCard>
+		</div>
+
+		<div class="order-2 md:order-none">
+			<div class="rounded-lg p-6 bg-base-200">
+				<h2 class="text-xl font-semibold mb-3">Omschrijving</h2>
+				<UserContentRenderer content={product.description} showLinks />
+			</div>
+		</div>
+	</div>
+
+	<div class="w-1/3 hidden md:block">
+		<PriceCard {product}></PriceCard>
+	</div>
+</div>
 
 {#if errorMessage}
 	<div class="text-error flex gap-2 items-center">
