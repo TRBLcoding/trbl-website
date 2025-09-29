@@ -50,7 +50,9 @@ function createProductStore() {
 	async function getProductById(id: number) {
 		// -- Get product --
 		const products = get(store)
-		return products?.find((e) => e.id === id)
+		const a = products?.find((e) => e.id === id)
+		// TODO fetch from supabase if not in store
+		return a
 	}
 
 	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, newMaxOrderAmount: null|number, progressStore: Writable<UploadProgress[]>) {

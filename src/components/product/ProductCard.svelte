@@ -6,7 +6,7 @@
 	export let product: Product
 
 	function addProduct() {
-		cartStore.addToCart(product, 1)
+		cartStore.add(product, 1)
 		pushCreatedToast("Product toegevoegd aan winkelmandje")
 	}
 </script>

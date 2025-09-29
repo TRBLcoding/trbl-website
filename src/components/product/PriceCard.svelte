@@ -25,8 +25,7 @@
 	}
 
 	function addProduct() {
-		if (!isPreview) {
-			cartStore.addToCart(product, amount)
+		if (!isPreview) {cartStore.add(product, amount)
 			pushCreatedToast("Product toegevoegd aan winkelmandje")
 		}
 	}

@@ -4,7 +4,7 @@ export function isArrayNotEmpty(array: any[] | undefined) {
 }
 
 export function arraysContainSameElements<T>(array1: T[], array2: T[]) {
-	
+
 	if (array1.length !== array2.length) return false
 	return array1.length === array1.filter(e => array2.includes(e)).length
 }
@@ -50,5 +50,10 @@ export function partition<T>(array: T[], predicate: (e: T) => boolean) {
 	const fail = [] as T[]
 	array.forEach((e) => (predicate(e) ? pass : fail).push(e))
 	return [pass, fail]
-  }
-  
+}
+
+export function zip<T, U>(array1: T[], array2: U[]): [T, U][] {
+	if (array1.length !== array2.length)
+		throw new Error("Arrays must have equal length")
+	return array1.map((item, index) => [item, array2[index]])
+}
