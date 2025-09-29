@@ -25,7 +25,7 @@
 			<a class="link link-hover" href="/products/{product.id}">{product.name}</a
 			>
 		</h2>
-		<p class="text-xl font-semibold text-green-600">€ {product.price}</p>
+		<p class="text-xl font-semibold text-green-600">€ {product.price.toFixed(2)}</p>
 		<button class="btn hover:btn-primary" type="button" on:click={addProduct}>
 			Toevoegen
 		</button>

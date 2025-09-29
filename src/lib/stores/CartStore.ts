@@ -15,24 +15,24 @@ function createCartStore() {
 	// Derived store that transforms CartItems to CartProducts
 	const subscribe = derived(innerStore, (cartItems) => {
 		if (!browser) return []
-		console.log(cartItems)
-		const a = cartItems.map(async e => ({ product: await productStore.getProductById(e.id), amount: e.amount }))
-		console.log(a)
-		return a
+		const cartProducts = cartItems.map(async e => {
+			const product = await productStore.getProductById(e.id)
+			if (!product)
+				console.warn("Product not found for id", e.id)
+			return { product: product, amount: e.amount }
+		})
+		return cartProducts
 	}).subscribe
-
-	function load() {
-		if (!browser) return
-		update((items) => [...items])
-	}
 
 	function add(product: Product, amount: number) {
 		update((products) => {
 			const existingProduct = products.find((p) => p.id === product.id)
 			if (existingProduct) {
-				existingProduct.amount = Math.min(existingProduct.amount + amount, product.maxOrderAmount || 0)
+				const safeAmount = product.maxOrderAmount ? Math.min(existingProduct.amount + amount, product.maxOrderAmount) : existingProduct.amount + amount
+				existingProduct.amount = safeAmount
 			} else {
-				products.push({ id: product.id, amount })
+				const safeAmount = product.maxOrderAmount ? Math.min(amount, product.maxOrderAmount) : amount
+				products.push({ id: product.id, amount: safeAmount })
 			}
 			return products
 		})
@@ -40,10 +40,7 @@ function createCartStore() {
 
 	function remove(productToRemove: Product) {
 		update((products) => {
-			console.log(products)
-			console.log("removing product", productToRemove)
 			const newProducts = products.filter((e) => e.id !== productToRemove.id)
-			console.log(newProducts)
 			return newProducts
 		})
 	}
@@ -51,9 +48,7 @@ function createCartStore() {
 	return {
 		subscribe,
 		add,
-		remove,
-		innerStore,
-		load
+		remove
 	}
 }
 

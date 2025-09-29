@@ -26,7 +26,6 @@ function createProductStore() {
 	}
 	const initPromise: Promise<void> = init()
 
-
 	async function createProduct(newProduct: Product, images: File[], progressStore: Writable<UploadProgress[]>) {
 		// -- Convert and upload images --
 		const { uploadedImageIds, size } = await convertAndUploadImages(images, "PublicImages", "product-images/", progressStore)
@@ -49,13 +48,12 @@ function createProductStore() {
 
 	async function getProductById(id: number) {
 		// -- Get product --
+		await initPromise
 		const products = get(store)
-		const a = products?.find((e) => e.id === id)
-		// TODO fetch from supabase if not in store
-		return a
+		return products?.find((e) => e.id === id)
 	}
 
-	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, newMaxOrderAmount: null|number, progressStore: Writable<UploadProgress[]>) {
+	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, newMaxOrderAmount: null | number, progressStore: Writable<UploadProgress[]>) {
 		// -- Delete images removed by user --
 		const existingImageIds = newCombinedImages.filter((e) => typeof e === 'string') as string[]
 		if (!arraysContainSameElements(product.imageIds || [], existingImageIds)) {
@@ -117,7 +115,7 @@ function createProductStore() {
 		// -- Remove product --
 		const { error, count } = await supabase
 			.from('products')
-			.delete({count: 'exact'})
+			.delete({ count: 'exact' })
 			.eq('id', product.id)
 		if (error)
 			throw error

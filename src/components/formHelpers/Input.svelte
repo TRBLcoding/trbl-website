@@ -25,6 +25,7 @@
 	export let toggleText = type === "password"
 	export let toggled = false
 	export let step = ""
+	export let min = ""
 
 	$: inputId = label?.replace(/[ :]/g, "").toLowerCase()
 	$: error = validate(value)
@@ -96,7 +97,9 @@
 				class="flex items-center absolute inset-y-0 left-0 pl-3 pointer-events-none"
 			>
 				<slot name="iconLeft">
-					<Fa icon={iconLeft} class="text-gray-500" />
+					{#if iconLeft}
+						<Fa icon={iconLeft} class="text-gray-500" />
+					{/if}
 				</slot>
 			</div>
 		{/if}
@@ -116,11 +119,12 @@
 			class:pl-9={showIconLeft}
 			class:pr-9={showIconRight}
 			{step}
+			{min}
 		/>
 		{#if showIconRight}
 			<div class="flex items-center absolute inset-y-0 right-0 pr-3">
 				<slot name="iconRight">
-					{#if type !== "password"}
+					{#if type !== "password" && iconRight}
 						<Fa icon={iconRight} class="text-gray-500" />
 					{:else}
 						<button

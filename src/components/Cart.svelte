@@ -1,25 +1,25 @@
 <script lang="ts">
 	import type { Product } from "$lib/domain/Product"
 	import { cartStore } from "$lib/stores/CartStore"
-	import { pushCreatedToast } from "$lib/utils/Toast"
 	import {
 		faBorderNone,
 		faCartShopping,
+		faTrashCan,
 		faXmark,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
-	export function zip<T, U>(array1: T[], array2: U[]): [T, U][] {
-		if (array1.length !== array2.length)
-			throw new Error("Arrays must have equal length")
-		return array1.map((item, index) => [item, array2[index]])
-	}
-
 	function removeItem(product: Product | undefined) {
 		if (!product) return
 		cartStore.remove(product)
-		// pushCreatedToast("Product verwijderd uit winkelmandje")
 	}
+
+	$: combinedPrice = Promise.all($cartStore).then((cartItems) =>
+		cartItems.reduce(
+			(acc, item) => acc + (item.product?.price ?? 0) * item.amount,
+			0
+		)
+	)
 </script>
 
 <div class="dropdown dropdown-hover dropdown-end">
@@ -51,25 +51,42 @@
 	>
 		<li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Winkelmandje</li>
 
-		{#each $cartStore as productP, i}
-			{#await productP then cartProduct}
-				<li class="list-row">
-					<div>
+		{#each $cartStore as productPromise}
+			{#await productPromise then cartProduct}
+				<li class="list-row flex flex-row items-center gap-1 p-3">
+					<div
+						class="cursor-default bg-base-100! overflow-clip w-20 h-14 relative rounded-lg"
+					>
 						<img
 							alt="temp"
-							class="size-10 rounded-box"
-							src="https://img.daisyui.com/images/profile/demo/1@94.webp"
+							class="rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+							src={cartProduct.product?.getImageUrls()[0]}
 						/>
 					</div>
-					<div>
-						<div>{cartProduct.product?.name}</div>
+					<div
+						class="flex-1 cursor-default bg-base-100! flex flex-col items-baseline gap-0"
+					>
+						<a
+							class="font-semibold hover:link"
+							href="/products/{cartProduct.product?.id}"
+							>{cartProduct.product?.name || "Product not found"}</a
+						>
+						<div
+							class="opacity-80 text-[13px] mt-[-2px] flex gap-1 items-baseline"
+						>
+							{cartProduct.amount}
+							<Fa icon={faXmark} size="xs" />
+							<span class="text-green-600 font-semibold"
+								>€{cartProduct.product?.price.toFixed(2)}</span
+							>
+						</div>
 					</div>
 					<button
 						class="btn btn-square btn-ghost"
 						aria-label="Remove item"
 						on:click={() => removeItem(cartProduct.product)}
 					>
-						<Fa icon={faXmark} class="" />
+						<Fa icon={faTrashCan} size="lg" />
 					</button>
 				</li>
 			{:catch error}
@@ -77,10 +94,20 @@
 			{/await}
 		{/each}
 
-		<!-- {#if cartProducts.length > 0}
-			<div class="p-4 pb-2 flex flex-row justify-between interaction">
-				<div>Subtotaal:</div>
-				<div>{15.0}€</div>
+		{#if $cartStore.length > 0}
+			<div
+				class="p-4 pb-2 flex flex-row justify-between interaction items-center"
+			>
+				<div class="font-semibold">Subtotaal:</div>
+				{#await combinedPrice}
+					<div>€ {0}</div>
+				{:then price}
+					<div class="text-green-600 font-semibold text-lg">
+						€ {price.toFixed(2)}
+					</div>
+				{:catch error}
+					<li class="p-4 text-error">Error calculating price</li>
+				{/await}
 			</div>
 
 			<li class="p-4 pb-2 flex flex-row justify-between">
@@ -92,6 +119,6 @@
 				<Fa icon={faBorderNone} size="2x" />
 				<span>Geen items in winkelmandje</span>
 			</div>
-		{/if} -->
+		{/if}
 	</ul>
 </div>

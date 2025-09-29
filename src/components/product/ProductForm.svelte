@@ -80,6 +80,7 @@
 			<Input
 				type="number"
 				step="1"
+				min="1"
 				label="Max hoeveelheid:"
 				placeholder="Onbeperkt"
 				bind:value={maxOrderAmount}
