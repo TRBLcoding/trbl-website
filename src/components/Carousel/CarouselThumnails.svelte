@@ -1,8 +1,8 @@
 <script lang="ts">
 	export let selectImage: (i: number) => void
 	export let counter: number
-	export let images
-	export let carouselWidth
+	export let images: { imageUrl: string; alt?: string; thumbnailUrl?: string }[]
+	export let carouselWidth: number
 
 	// -- Responsive thumbnail display --
 	let maxThumbnails = 0
