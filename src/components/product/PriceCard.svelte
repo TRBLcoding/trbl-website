@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Product } from "$lib/domain/Product"
+	import { pushCreatedToast } from "$lib/utils/Toast"
 	import {
 		faCreditCard,
 		faMinus,
@@ -9,6 +10,20 @@
 	import Fa from "svelte-fa"
 
 	export let product: Product
+
+	let amount: number = 1
+
+	function decrease() {
+		amount = amount - 1
+	}
+	function increase() {
+		amount = amount + 1
+	}
+
+	function addProduct() {
+		console.log("Added to cart")
+		pushCreatedToast("Product toegevoegd aan winkelmandje")
+	}
 </script>
 
 <div class="sticky top-6">
@@ -21,15 +36,17 @@
 		<div class="join flex flex-1 w-full">
 			<button
 				class="btn btn-lg btn-square btn-neutral join-item"
-				disabled={true}
+				disabled={amount <= 1}
+				type="button"
+				on:click={decrease}
 			>
 				<Fa icon={faMinus} size="lg" />
 			</button>
 			<label class="input input-lg join-item flex-1">
 				<input
-					class="text-center"
+					class="text-center font-bold"
 					type="number"
-					value="1"
+					bind:value={amount}
 					min="1"
 					step="1"
 					required
@@ -38,11 +55,17 @@
 			<button
 				class="btn btn-lg btn-square btn-neutral join-item"
 				disabled={false}
+				type="button"
+				on:click={increase}
 			>
 				<Fa icon={faPlus} size="lg" />
 			</button>
 		</div>
-		<button class="btn btn-primary mt-6 mb-2" type="button">Toevoegen</button>
+		<button
+			class="btn btn-primary mt-6 mb-2"
+			type="button"
+			on:click={addProduct}>Toevoegen</button
+		>
 		<div class="mt-3 flex flex-col gap-1">
 			<div class="flex gap-1 items-center opacity-60">
 				<Fa icon={faTruck} class="w-5" />
