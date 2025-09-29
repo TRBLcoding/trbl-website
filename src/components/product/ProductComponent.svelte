@@ -47,7 +47,7 @@
 <div class="breadcrumbs text-sm">
 	<ul>
 		<li><a href="/products">Producten</a></li>
-		<li><a href="/products">{product.categories.join("+")}</a></li>
+		<li><a href="/products?{product.categories.map(e=>`filter=${e}`).join("&")}">{product.categories.join("+")}</a></li>
 	</ul>
 </div>
 <!-- Name -->
