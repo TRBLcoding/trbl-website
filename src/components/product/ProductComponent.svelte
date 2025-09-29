@@ -75,7 +75,7 @@
 		</div>
 
 		<div class="w-full md:hidden">
-			<PriceCard {product}></PriceCard>
+			<PriceCard {product} {isPreview}></PriceCard>
 		</div>
 
 		<div class="order-2 md:order-none">
@@ -87,7 +87,7 @@
 	</div>
 
 	<div class="w-1/3 hidden md:block">
-		<PriceCard {product}></PriceCard>
+		<PriceCard {product} {isPreview}></PriceCard>
 	</div>
 </div>
 

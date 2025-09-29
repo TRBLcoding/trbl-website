@@ -10,6 +10,7 @@
 	import Fa from "svelte-fa"
 
 	export let product: Product
+	export let isPreview: boolean = false
 
 	let amount: number = 1
 
@@ -21,8 +22,10 @@
 	}
 
 	function addProduct() {
-		console.log("Added to cart")
-		pushCreatedToast("Product toegevoegd aan winkelmandje")
+		if (!isPreview) {
+			console.log("Added to cart")
+			pushCreatedToast("Product toegevoegd aan winkelmandje")
+		}
 	}
 </script>
 
