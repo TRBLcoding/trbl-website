@@ -33,11 +33,13 @@ function createProductStore() {
 		newProduct.imageIds = uploadedImageIds
 
 		// -- Create product --
-		const { error } = await supabase
+		const { data, error } = await supabase
 			.from('products')
 			.insert(newProduct.toJSON())
+			.select('id')
 		if (error)
 			throw createPostgrestErrorFromObject(error)
+		newProduct.id = data[0].id
 
 		// -- Update store --
 		update((products) => {
@@ -111,7 +113,7 @@ function createProductStore() {
 		// -- Remove product --
 		const { error, count } = await supabase
 			.from('products')
-			.delete()
+			.delete({count: 'exact'})
 			.eq('id', product.id)
 		if (error)
 			throw error
@@ -121,7 +123,6 @@ function createProductStore() {
 		else if (count > 1) {
 			throw new Error(`Multiple (${count}) products deleted. This should not happen because product ID is unique`)
 		}
-
 
 		// -- Remove from store --
 		update((products) => (products.filter((e) => e.id !== product.id)))

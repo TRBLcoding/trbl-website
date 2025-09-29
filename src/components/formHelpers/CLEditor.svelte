@@ -33,7 +33,7 @@
 		"right",
 		"center",
 		"justify",
-		//"a",
+		"a",
 		//"image",
 		"forecolor",
 		"backcolor",

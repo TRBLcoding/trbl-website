@@ -74,6 +74,8 @@ export async function convertAndUploadImages(combinedImages: (string | File)[], 
 }
 
 export async function deleteImages(bucket: string, folder: string, imageIds: string[]) {
+	if (imageIds.length === 0)
+		return
 	const { error, data } = await supabase
 		.storage
 		.from(bucket)

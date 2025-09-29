@@ -58,4 +58,15 @@ export class Product {
 	getThumbnailUrls() {
 		return this.imageIds.map(Product.imageToThumbnailUrl)
 	}
+
+	createCarouselImages() {
+		if (!this.imageIds) return []
+		return this.imageIds.map(async (e) => {
+			return {
+				name: "name",
+				imageUrl:Product.imageToUrl(e),
+				thumbnailUrl: Product.imageToThumbnailUrl(e)
+			}
+		})
+	}
 }

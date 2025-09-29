@@ -1,13 +1,18 @@
 <script lang="ts">
-	import type { Category } from "$lib/domain/Product"
+	import { browser } from "$app/environment"
+	import { goto } from "$app/navigation"
+	import { page } from "$app/stores"
+	import ProductCard from "$components/product/ProductCard.svelte"
+	import type { Category, Product } from "$lib/domain/Product"
+	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { productStore } from "$lib/stores/ProductStore"
 	import {
 		faBorderNone,
 		faTriangleExclamation,
 	} from "@fortawesome/free-solid-svg-icons"
+	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
-	import ProductCard from "../../components/product/ProductCard.svelte"
 
 	let sortOption = "Alfabetish oplopend"
 	let activeFilters = new Set<Category>()
@@ -26,21 +31,43 @@
 					product.categories.some((category) => activeFilters.has(category))
 				)
 
-	$: sortedProducts = [...(filteredProducts || [])].sort((a, b) => {
-		switch (sortOption) {
-			case "Alfabetish oplopend":
-				return a.name.localeCompare(b.name)
-			case "Alfabetish aflopend":
-				return b.name.localeCompare(a.name)
-			case "Prijs oplopend":
-				return a.price - b.price
-			case "Prijs aflopend":
-				return b.price - a.price
-			default:
-				return 0
-		}
-	})
+	function updateSort(filteredProducts: Product[], sortOption: string) {
+		updateSearchParams()
+		return [...(filteredProducts || [])].sort((a, b) => {
+			switch (sortOption) {
+				case "Alfabetish oplopend":
+					return a.name.localeCompare(b.name)
+				case "Alfabetish aflopend":
+					return b.name.localeCompare(a.name)
+				case "Prijs oplopend":
+					return a.price - b.price
+				case "Prijs aflopend":
+					return b.price - a.price
+				default:
+					return 0
+			}
+		})
+	}
+	$: sortedProducts = updateSort(filteredProducts, sortOption)
 
+	function updateSearchParams() {
+		if (!browser) return
+		const url = new URL($page.url)
+
+		// -- Filter --
+		url.searchParams.delete("filter")
+		activeFilters.forEach((filter) => {
+			url.searchParams.append("filter", filter)
+		})
+		// -- Search --
+		url.searchParams.delete("sort")
+		if (sortOption !== "Alfabetish oplopend")
+			url.searchParams.set("sort", sortOption)
+
+		goto(url.toString(), { replaceState: true, noScroll: true })
+	}
+
+	// -- Init --
 	async function initStore() {
 		loading = true
 		try {
@@ -58,21 +85,30 @@
 	}
 	initStore()
 
+	onMount(() => {
+		if (browser && $page.url) {
+			// -- Filters --
+			const filterParams = $page.url.searchParams.getAll("filter")
+			activeFilters = new Set(filterParams as Category[])
+
+			// -- Sort --
+			const sortParam = $page.url.searchParams.get("sort")
+			if (sortParam) {
+				sortOption = sortParam
+			}
+		}
+	})
+
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Producten")
 </script>
 
-<div class="mx-4 lg:mx-10 my-5">
+<div class="mx-4 lg:mx-12 my-5">
 	<div class="flex gap-3 mb-2">
 		<h1 class="text-4xl font-semibold">Producten</h1>
-		<a href="/products/new" class="btn btn-primary normal-case">
-			Nieuw product
-		</a>
-		<!-- {#await authStore.known then _}
-		{#if $authStore}
-			<a class="btn btn-sm btn-primary" href="/articles/new"> Nieuw artikel </a>
+		{#if $authStore && $authStore.isAdmin()}
+			<a href="/products/new" class="btn btn-primary"> Nieuw product </a>
 		{/if}
-	{/await} -->
 	</div>
 
 	<hr class="h-px bg-base-300 border-none" />

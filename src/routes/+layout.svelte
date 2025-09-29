@@ -28,6 +28,8 @@
 	<title>{$pageHeadStore.getFullTitle()}</title>
 </svelte:head>
 
+<SvelteToast options={{ reversed: true, intro: { y: 192 } }} />
+
 <div class="min-h-screen flex flex-col">
 	<div class="relative z-20 bg-base-100">
 		<div class="border-b border-base-300">
@@ -161,9 +163,11 @@
 	<div class="flex-1">
 		<slot />
 	</div>
-	<SvelteToast options={{ reversed: true, intro: { y: 192 } }} />
+	
 	<Footer />
 </div>
+
+
 
 <LoginModal {loginModalID} />
 

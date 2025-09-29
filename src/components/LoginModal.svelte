@@ -34,6 +34,8 @@
 				return "Ongeldige login gegevens"
 			if (error.message === "Email not confirmed")
 				return "Account nog niet geverifierd, check email om uw account te activeren"
+			if (error.message === "Failed to fetch")
+				return "Netwerkprobleem, bent u verbonden met het internet?"
 			const emailMatch = error.message.match(/Email address "(.*)" is invalid/)
 			if (emailMatch) return `Email adres "${emailMatch}" is ongeldig`
 			const securityMatch = error.message.match(
