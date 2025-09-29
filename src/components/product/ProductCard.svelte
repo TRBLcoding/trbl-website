@@ -19,6 +19,6 @@
 			>
 		</h2>
 		<p class="text-xl font-semibold text-green-600">€ {product.price}</p>
-		<button class="btn">Toevoegen</button>
+		<button class="btn hover:btn-primary">Toevoegen</button>
 	</div>
 </div>

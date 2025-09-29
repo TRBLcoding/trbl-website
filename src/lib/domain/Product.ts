@@ -64,7 +64,8 @@ export class Product {
 		return this.imageIds.map(async (e) => {
 			return {
 				name: "name",
-				imageUrl:Product.imageToUrl(e)
+				imageUrl:Product.imageToUrl(e),
+				thumbnailUrl: Product.imageToThumbnailUrl(e)
 			}
 		})
 	}

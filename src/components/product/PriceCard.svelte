@@ -13,7 +13,7 @@
 
 <div class="sticky top-6">
 	<div class="flex flex-col px-5 py-4 bg-base-200 rounded-lg">
-		<h2 class="text-lg font-semibold">{product.name}</h2>
+		<h2 class="text-xl font-semibold">{product.name}</h2>
 		<span class="text-3xl mx-auto mt-4 mb-6 font-semibold text-green-600">
 			€ {product.price}
 		</span>

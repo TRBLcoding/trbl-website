@@ -66,10 +66,10 @@
 <div class="flex flex-col md:flex-row gap-6 mt-4 mb-5">
 	<div class="w-full md:w-2/3 flex flex-col gap-6">
 		<!-- Gallery -->
-		<div class="">
+		<div class="mb-2">
 			{#await Promise.all(product.createCarouselImages()) then images}
 				{#if images.length > 0}
-					<Carousel {images} background />
+					<Carousel {images} background thumbnails />
 				{/if}
 			{/await}
 		</div>
