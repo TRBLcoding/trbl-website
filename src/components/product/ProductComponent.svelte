@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
-	import Carousel from "$components/Carousel.svelte"
+	import Carousel from "$components/Carousel/Carousel.svelte"
 	import EditDropdown from "$components/EditDropdown.svelte"
 	import UserContentRenderer from "$components/UserContentRenderer.svelte"
 	import type { Product } from "$lib/domain/Product"
@@ -63,7 +63,7 @@
 	{/if}
 </div>
 
-<div class="flex flex-col md:flex-row gap-6 mt-4 mb-5">
+<div class="flex flex-col md:flex-row gap-6 mt-4 mb-10">
 	<div class="w-full md:w-2/3 flex flex-col gap-6">
 		<!-- Gallery -->
 		<div class="mb-2">

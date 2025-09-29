@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
-	import Carousel from "../components/Carousel.svelte"
+	import Carousel from "../components/Carousel/Carousel.svelte"
 	import Fa from "svelte-fa"
 	import Contact from "$components/Contact.svelte"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
