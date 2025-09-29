@@ -28,6 +28,7 @@
 	let categories: string[] = []
 	let type: string = ""
 	let description: string = ""
+	let maxOrderAmount: null | number = null
 
 	let product: Product | undefined | null
 
@@ -58,6 +59,7 @@
 			categories,
 			type,
 			description,
+			maxOrderAmount,
 			progressStore
 		)
 		haveValuesBeenSet = false
@@ -83,7 +85,8 @@
 			categories,
 			type,
 			visible,
-			images
+			images,
+			maxOrderAmount
 		)
 	}
 
@@ -112,6 +115,7 @@
 		categories = product.categories
 		type = product.type
 		description = product.description
+		maxOrderAmount = product.maxOrderAmount
 	}
 
 	// -- Page title --
@@ -166,6 +170,7 @@
 				bind:categories
 				bind:type
 				bind:description
+				bind:maxOrderAmount
 				newProduct={false}
 				submitLabel="Wijzig product"
 				onSave={updateProduct}

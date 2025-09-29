@@ -50,6 +50,7 @@
 		<li><a href="/products?{product.categories.map(e=>`filter=${e}`).join("&")}">{product.categories.join("+")}</a></li>
 	</ul>
 </div>
+
 <!-- Name -->
 <div class="flex flex-row items-center">
 	<h1 class="text-4xl font-semibold">{product.name || "Geen naam"}</h1>
@@ -63,7 +64,7 @@
 	{/if}
 </div>
 
-<div class="flex flex-col md:flex-row gap-6 mt-4 mb-10">
+<div class="flex flex-col md:flex-row gap-6 mt-6 mb-10">
 	<div class="w-full md:w-2/3 flex flex-col gap-6">
 		<!-- Gallery -->
 		<div class="mb-2">

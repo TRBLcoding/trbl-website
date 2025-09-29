@@ -3,6 +3,8 @@
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import {
 		faCreditCard,
+		faExclamation,
+		faExclamationTriangle,
 		faMinus,
 		faPlus,
 		faTruck,
@@ -36,7 +38,7 @@
 			€ {product.price}
 		</span>
 
-		<div class="join flex flex-1 w-full">
+		<div class="join flex flex-1 w-full mb-2">
 			<button
 				class="btn btn-lg btn-square btn-neutral join-item"
 				disabled={amount <= 1}
@@ -45,7 +47,9 @@
 			>
 				<Fa icon={faMinus} size="lg" />
 			</button>
-			<label class="input input-lg join-item flex-1">
+			<label
+				class="input input-lg join-item flex-1 bg-base-300! border-base-300!"
+			>
 				<input
 					class="text-center font-bold"
 					type="number"
@@ -53,19 +57,30 @@
 					min="1"
 					step="1"
 					required
+					disabled={product.maxOrderAmount === 1}
 				/>
 			</label>
 			<button
 				class="btn btn-lg btn-square btn-neutral join-item"
-				disabled={false}
+				disabled={product.maxOrderAmount !== null &&
+					amount >= product.maxOrderAmount}
 				type="button"
 				on:click={increase}
 			>
 				<Fa icon={faPlus} size="lg" />
 			</button>
 		</div>
+
+		{#if product.maxOrderAmount === amount}
+			<div class="flex w-full items-center justify-center">
+				<div class="flex gap-1 items-center opacity-60">
+					<Fa icon={faExclamationTriangle} class="w-5" />
+					<span class="text-sm">Maximum aantal producten bereikt</span>
+				</div>
+			</div>
+		{/if}
 		<button
-			class="btn btn-primary mt-6 mb-2"
+			class="btn btn-primary mt-4 mb-2"
 			type="button"
 			on:click={addProduct}>Toevoegen</button
 		>
