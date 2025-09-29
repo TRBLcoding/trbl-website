@@ -15,11 +15,18 @@
 	<div
 		tabindex="0"
 		role="button"
-		class="btn btn-square btn-ghost"
+		class="btn btn-square btn-ghost relative"
 		title="Winkelmandje"
 	>
-		<Fa icon={faCartShopping} size="lg" />
+		<Fa icon={faCartShopping} class="text-xl" />
+		<div
+			title={`1 nieuwe clubrecords`}
+			class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-primary border-2 border-base-100 rounded-full text-base-100"
+		>
+			11
+		</div>
 	</div>
+
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 	<ul
 		tabindex="0"
