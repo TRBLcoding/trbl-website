@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Product } from "$lib/domain/Product"
+	import { cartStore } from "$lib/stores/CartStore"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import {
 		faCreditCard,
@@ -25,7 +26,7 @@
 
 	function addProduct() {
 		if (!isPreview) {
-			console.log("Added to cart")
+			cartStore.addToCart(product, amount)
 			pushCreatedToast("Product toegevoegd aan winkelmandje")
 		}
 	}

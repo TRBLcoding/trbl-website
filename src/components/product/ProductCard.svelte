@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { Product } from "$lib/domain/Product"
+	import { cartStore } from "$lib/stores/CartStore"
+	import { pushCreatedToast } from "$lib/utils/Toast"
 
 	export let product: Product
+
+	function addProduct() {
+		cartStore.addToCart(product, 1)
+		pushCreatedToast("Product toegevoegd aan winkelmandje")
+	}
 </script>
 
 <div class="card bg-base-100 w-96 shadow-md">
@@ -19,6 +26,8 @@
 			>
 		</h2>
 		<p class="text-xl font-semibold text-green-600">€ {product.price}</p>
-		<button class="btn hover:btn-primary">Toevoegen</button>
+		<button class="btn hover:btn-primary" type="button" on:click={addProduct}>
+			Toevoegen
+		</button>
 	</div>
 </div>

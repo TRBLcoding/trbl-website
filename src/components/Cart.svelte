@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Fa from "svelte-fa"
 	import { faCartShopping, faXmark } from "@fortawesome/free-solid-svg-icons"
+	import { cartStore } from "$lib/stores/CartStore"
 
 	let items = [...Array(3)]
 
@@ -19,12 +20,13 @@
 		title="Winkelmandje"
 	>
 		<Fa icon={faCartShopping} class="text-xl" />
-		<div
-			title={`1 nieuwe clubrecords`}
-			class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-primary border-2 border-base-100 rounded-full text-base-100"
-		>
-			11
-		</div>
+		{#if $cartStore && $cartStore.length}
+			<div
+				class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-primary border-2 border-base-100 rounded-full text-base-100"
+			>
+				{$cartStore.length}
+			</div>
+		{/if}
 	</div>
 
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
