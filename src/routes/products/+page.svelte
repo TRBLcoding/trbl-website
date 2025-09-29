@@ -7,7 +7,8 @@
 		faTriangleExclamation,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-	import ProductCard from "../../components/product/ProductCard.svelte"
+	import ProductCard from "$components/product/ProductCard.svelte"
+	import { authStore } from "$lib/stores/AuthStore"
 
 	let sortOption = "Alfabetish oplopend"
 	let activeFilters = new Set<Category>()
@@ -65,14 +66,11 @@
 <div class="mx-4 lg:mx-12 my-5">
 	<div class="flex gap-3 mb-2">
 		<h1 class="text-4xl font-semibold">Producten</h1>
-		<a href="/products/new" class="btn btn-primary normal-case">
-			Nieuw product
-		</a>
-		<!-- {#await authStore.known then _}
-		{#if $authStore}
-			<a class="btn btn-sm btn-primary" href="/articles/new"> Nieuw artikel </a>
+		{#if $authStore && $authStore.isAdmin()}
+			<a href="/products/new" class="btn btn-primary">
+				Nieuw product
+			</a>
 		{/if}
-	{/await} -->
 	</div>
 
 	<hr class="h-px bg-base-300 border-none" />
