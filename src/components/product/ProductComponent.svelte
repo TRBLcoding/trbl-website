@@ -40,7 +40,7 @@
 <!-- Visibility -->
 {#if !product.visible}
 	<div class="flex items-center gap-2 underline mb-[-6px]">
-		<Fa icon={faEyeSlash} class="" /> Dit product is niet zichtbaar!
+		<Fa icon={faEyeSlash} /> Dit product is niet zichtbaar!
 	</div>
 {/if}
 
@@ -94,7 +94,7 @@
 
 {#if errorMessage}
 	<div class="text-error flex gap-2 items-center">
-		<Fa icon={faExclamationTriangle} class="" />
+		<Fa icon={faExclamationTriangle} />
 		{errorMessage}
 	</div>
 {:else if loading}

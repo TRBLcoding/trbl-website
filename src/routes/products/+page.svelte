@@ -170,7 +170,7 @@
 
 	{#if errorMessage}
 		<div class="text-error flex gap-2 items-center">
-			<Fa icon={faExclamationTriangle} class="" />
+			<Fa icon={faExclamationTriangle} />
 			{errorMessage}
 		</div>
 	{:else if loading}
