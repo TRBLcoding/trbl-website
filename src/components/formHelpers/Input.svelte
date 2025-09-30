@@ -91,7 +91,7 @@
 			<slot name="badge"></slot>
 		</div>
 	{/if}
-	<div class="relative w-full" class:join={isJoind}>
+	<div class="relative w-full" class:join={isJoined}>
 		{#if showIconLeft}
 			<div
 				class="flex items-center absolute inset-y-0 left-0 pl-3 pointer-events-none"
