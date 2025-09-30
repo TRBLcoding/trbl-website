@@ -41,18 +41,13 @@
 		title="Winkelmandje"
 	>
 		<Fa icon={faCartShopping} class="text-xl" />
-		{#await $cartStore}
-			waiting
-		{:then cartProducts}
-			<!-- promise was fulfilled -->
-			{#if cartProducts.length}
-				<div
-					class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-primary border-2 border-base-100 rounded-full text-base-100"
-				>
-					{cartProducts.length}
-				</div>
-			{/if}
-		{/await}
+		{#if $cartStore.length}
+			<div
+				class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-primary border-2 border-base-100 rounded-full text-base-100"
+			>
+				{$cartStore.length}
+			</div>
+		{/if}
 	</div>
 
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
