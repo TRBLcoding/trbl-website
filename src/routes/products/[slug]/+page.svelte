@@ -3,9 +3,7 @@
 	import type { Product } from "$lib/domain/Product"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { productStore } from "$lib/stores/ProductStore"
-	import {
-		faExclamationTriangle,
-	} from "@fortawesome/free-solid-svg-icons"
+	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import type { PageData } from "./$types"
 
@@ -59,9 +57,9 @@
 	{:else if product}
 		<ProductComponent {product} />
 	{:else}
-		<div class="flex items-center gap-2 text-error text-lg">
-			<Fa icon={faExclamationTriangle} class="" />
-			<span>Error: product met id "{data.id}" niet gevonden</span>
+		<div class="text-error flex gap-2 items-center text-lg">
+			<Fa icon={faExclamationTriangle} />
+			Error: product met ID <span class="font-bold">"{data.id}"</span> niet gevonden
 		</div>
 	{/if}
 </div>

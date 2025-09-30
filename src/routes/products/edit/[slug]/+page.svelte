@@ -177,9 +177,9 @@
 				progress={$progressStore}
 			/>
 		{:else}
-			<div class="text-error flex gap-2 items-center">
+			<div class="text-error flex gap-2 items-center text-lg">
 				<Fa icon={faExclamationTriangle} />
-				Product met ID <span class="font-bold">{data.id}</span>: niet gevonden
+				Error: product met ID <span class="font-bold">"{data.id}"</span> niet gevonden
 			</div>
 		{/if}
 	{/if}
