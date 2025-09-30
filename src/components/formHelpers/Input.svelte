@@ -32,7 +32,7 @@
 	$: showIconLeft = $$slots.iconLeft || iconLeft
 	$: showIconRight = $$slots.iconRight || iconRight || toggleText
 	$: hasBadge = $$slots.badge
-	$: isJoind = $$slots.join
+	$: isJoined = $$slots.join
 
 	// -- Value handling --
 	let internalValue = ""
