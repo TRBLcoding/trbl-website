@@ -98,7 +98,7 @@
         data-tip={tooltip}
       >
         <button class="btn btn-ghost btn-xs btn-circle">
-          <InfoCircle class="" />
+          <InfoCircle />
         </button>
       </div>
     {/if}

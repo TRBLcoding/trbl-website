@@ -155,7 +155,7 @@
 		<div class="flex max-w-3/4 mx-auto pt-5 gap-10">
 			<div class="text-xl flex-1">
 				<div class="text-xl font-semibold mb-1 flex items-center gap-2">
-					<Fa icon={faLocationDot} class="" />
+					<Fa icon={faLocationDot} />
 					Locatie
 				</div>
 

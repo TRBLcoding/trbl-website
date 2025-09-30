@@ -15,7 +15,7 @@
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 	import {
 		faInfinity,
-		faTriangleExclamation,
+		faExclamationTriangle,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
@@ -131,7 +131,7 @@
 	</div>
 	{#if errorMessage}
 		<div class="text-error flex gap-2 items-center mt-2">
-			<Fa icon={faTriangleExclamation} class="" />
+			<Fa icon={faExclamationTriangle} />
 			{errorMessage}
 		</div>
 	{/if}

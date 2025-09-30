@@ -8,7 +8,7 @@
 	import { productStore } from "$lib/stores/ProductStore"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import { faEyeSlash } from "@fortawesome/free-regular-svg-icons"
-	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import PriceCard from "./PriceCard.svelte"
 
@@ -40,7 +40,7 @@
 <!-- Visibility -->
 {#if !product.visible}
 	<div class="flex items-center gap-2 underline mb-[-6px]">
-		<Fa icon={faEyeSlash} class="" /> Dit product is niet zichtbaar!
+		<Fa icon={faEyeSlash} /> Dit product is niet zichtbaar!
 	</div>
 {/if}
 
@@ -94,7 +94,7 @@
 
 {#if errorMessage}
 	<div class="text-error flex gap-2 items-center">
-		<Fa icon={faTriangleExclamation} class="" />
+		<Fa icon={faExclamationTriangle} />
 		{errorMessage}
 	</div>
 {:else if loading}

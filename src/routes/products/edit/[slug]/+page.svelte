@@ -7,7 +7,7 @@
 	import { PreviewableFile } from "$lib/utils/PreviewableFile"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
-	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import { writable } from "svelte/store"
 	import type { PageData } from "./$types"
@@ -155,7 +155,7 @@
 		</div>
 		{#if errorMessage}
 			<div class="text-error flex gap-2 items-center">
-				<Fa icon={faTriangleExclamation} />
+				<Fa icon={faExclamationTriangle} />
 				{errorMessage}
 			</div>
 		{:else if loading}
@@ -177,9 +177,9 @@
 				progress={$progressStore}
 			/>
 		{:else}
-			<div class="text-error flex gap-2 items-center">
-				<Fa icon={faTriangleExclamation} />
-				Product met ID <span class="font-bold">{data.id}</span>: niet gevonden
+			<div class="text-error flex gap-2 items-center text-lg">
+				<Fa icon={faExclamationTriangle} />
+				Error: product met ID <span class="font-bold">"{data.id}"</span> niet gevonden
 			</div>
 		{/if}
 	{/if}

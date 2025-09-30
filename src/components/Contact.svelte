@@ -5,7 +5,7 @@
 
 <div class="max-w-lg">
 	<div class="text-xl font-semibold mb-1 flex items-center gap-2">
-		<Fa icon={faEnvelope} class="" />
+		<Fa icon={faEnvelope} />
 		Stuur een bericht
 	</div>
 	<div class="flex gap-6">
