@@ -25,8 +25,8 @@
 	}
 
 	function addProduct() {
-		if (!isPreview) {cartStore.add(product, amount)
-			pushCreatedToast("Product toegevoegd aan winkelmandje")
+		if (!isPreview) {
+			cartStore.add(product, amount)
 		}
 	}
 </script>
@@ -70,7 +70,6 @@
 				<Fa icon={faPlus} size="lg" />
 			</button>
 		</div>
-		{product.maxOrderAmount}
 		{#if product.maxOrderAmount === amount}
 			<div class="flex w-full items-center justify-center">
 				<div class="flex gap-1 items-center opacity-60">

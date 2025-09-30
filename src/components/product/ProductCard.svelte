@@ -7,7 +7,6 @@
 
 	function addProduct() {
 		cartStore.add(product, 1)
-		pushCreatedToast("Product toegevoegd aan winkelmandje")
 	}
 </script>
 

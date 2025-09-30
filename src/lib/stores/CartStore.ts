@@ -1,11 +1,13 @@
 import type { Product } from '$lib/domain/Product'
 import { persisted } from 'svelte-persisted-store'
-import { derived } from 'svelte/store'
+import { derived, writable } from 'svelte/store'
 import { productStore } from './ProductStore'
 import { browser } from '$app/environment'
 
 type CartItem = { id: number; amount: number }
 type CartProduct = { product: Product | undefined; amount: number }
+
+export const cartAddTrigger = writable<number>(0)
 
 function createCartStore() {
 	// Persists to localStorage
@@ -34,6 +36,7 @@ function createCartStore() {
 				const safeAmount = product.maxOrderAmount ? Math.min(amount, product.maxOrderAmount) : amount
 				products.push({ id: product.id, amount: safeAmount })
 			}
+			cartAddTrigger.update(n => n + 1)
 			return products
 		})
 	}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Product } from "$lib/domain/Product"
-	import { cartStore } from "$lib/stores/CartStore"
+	import { cartAddTrigger, cartStore } from "$lib/stores/CartStore"
 	import {
 		faBorderNone,
 		faCartShopping,
@@ -9,8 +9,11 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
-	function removeItem(product: Product | undefined) {
+	let dropdownButton: HTMLElement
+
+	function removeItem(product: Product | undefined, event: any) {
 		if (!product) return
+		dropdownButton.focus()
 		cartStore.remove(product)
 	}
 
@@ -20,10 +23,16 @@
 			0
 		)
 	)
+
+	$: showCartOnAdd($cartAddTrigger)
+	function showCartOnAdd(value: number) {
+		if (value) dropdownButton.focus()
+	}
 </script>
 
-<div class="dropdown dropdown-hover dropdown-end">
+<div class="dropdown dropdown-end">
 	<div
+		bind:this={dropdownButton}
 		tabindex="0"
 		role="button"
 		class="btn btn-square btn-ghost relative"
@@ -47,7 +56,7 @@
 	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 	<ul
 		tabindex="0"
-		class="list bg-base-100 rounded-box shadow-md dropdown-content w-96 mt-0!"
+		class="list bg-base-100 rounded-box shadow-md dropdown-content dropdown-open w-96 mt-0!"
 	>
 		<li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Winkelmandje</li>
 
@@ -69,22 +78,24 @@
 						<a
 							class="font-semibold hover:link"
 							href="/products/{cartProduct.product?.id}"
-							>{cartProduct.product?.name || "Product not found"}</a
+							on:click={blur}
 						>
+							{cartProduct.product?.name || "Product not found"}
+						</a>
 						<div
 							class="opacity-80 text-[13px] mt-[-2px] flex gap-1 items-baseline"
 						>
-							{cartProduct.amount}
-							<Fa icon={faXmark} size="xs" />
-							<span class="text-green-600 font-semibold"
-								>€{cartProduct.product?.price.toFixed(2)}</span
-							>
+							<span class="text-base-content">{cartProduct.amount}</span>
+							<Fa icon={faXmark} size="xs" class="text-base-content" />
+							<span class="text-green-600 font-semibold">
+								€{cartProduct.product?.price.toFixed(2)}
+							</span>
 						</div>
 					</div>
 					<button
 						class="btn btn-square btn-ghost"
 						aria-label="Remove item"
-						on:click={() => removeItem(cartProduct.product)}
+						on:click={(e) => removeItem(cartProduct.product, e)}
 					>
 						<Fa icon={faTrashCan} size="lg" />
 					</button>
