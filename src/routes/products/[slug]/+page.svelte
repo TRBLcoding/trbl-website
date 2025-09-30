@@ -5,7 +5,6 @@
 	import { productStore } from "$lib/stores/ProductStore"
 	import {
 		faExclamationTriangle,
-		faTriangleExclamation,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import type { PageData } from "./$types"
@@ -51,7 +50,7 @@
 <div class="mx-4 lg:mx-12 mt-3">
 	{#if errorMessage}
 		<div class="text-error flex gap-2 items-center">
-			<Fa icon={faTriangleExclamation} class="" />
+			<Fa icon={faExclamationTriangle} class="" />
 			{errorMessage}
 		</div>
 	{:else if loading}

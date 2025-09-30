@@ -8,7 +8,7 @@
 	import { productStore } from "$lib/stores/ProductStore"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import { faEyeSlash } from "@fortawesome/free-regular-svg-icons"
-	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import PriceCard from "./PriceCard.svelte"
 
@@ -94,7 +94,7 @@
 
 {#if errorMessage}
 	<div class="text-error flex gap-2 items-center">
-		<Fa icon={faTriangleExclamation} class="" />
+		<Fa icon={faExclamationTriangle} class="" />
 		{errorMessage}
 	</div>
 {:else if loading}

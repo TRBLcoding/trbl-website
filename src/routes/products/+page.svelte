@@ -9,7 +9,7 @@
 	import { productStore } from "$lib/stores/ProductStore"
 	import {
 		faBorderNone,
-		faTriangleExclamation,
+		faExclamationTriangle,
 	} from "@fortawesome/free-solid-svg-icons"
 	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
@@ -170,7 +170,7 @@
 
 	{#if errorMessage}
 		<div class="text-error flex gap-2 items-center">
-			<Fa icon={faTriangleExclamation} class="" />
+			<Fa icon={faExclamationTriangle} class="" />
 			{errorMessage}
 		</div>
 	{:else if loading}
