@@ -8,6 +8,7 @@
 	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
 	import CarouselThumnails from "./CarouselThumnails.svelte"
+	import { preferencesStore } from "$lib/stores/PreferencedStore"
 
 	export let images: { imageUrl: string; alt?: string; thumbnailUrl?: string }[]
 	export let height = ""
@@ -15,6 +16,7 @@
 	export let hideIndicators = false
 	export let fillWidth = false
 	export let duration = 10000
+	export let loop = false
 	export let background = false
 	export let thumbnails = false
 
@@ -41,8 +43,8 @@
 			setLoop()
 		}, duration)
 	}
-	//   $: if (mounted && loop && $preferencesStore.autoPlay) setLoop()
-	//   else clearTimeout(loopTimeout)
+	  $: if (mounted && loop && $preferencesStore.autoPlay) setLoop()
+	  else clearTimeout(loopTimeout)
 
 	function selectImage(i: number) {
 		counter = i

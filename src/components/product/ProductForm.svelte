@@ -13,7 +13,10 @@
 		type Type,
 	} from "$lib/domain/Product"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
-	import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+	import {
+		faInfinity,
+		faTriangleExclamation,
+	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
 	export let name = ""
@@ -23,6 +26,7 @@
 	export let categories: Category[] = []
 	export let type: Type = ""
 	export let description = ""
+	export let maxOrderAmount: null | number = null
 
 	export let submitLabel: string
 	export let onSave: () => Promise<void>
@@ -48,6 +52,10 @@
 		}
 		saving = false
 	}
+
+	function clearMaxAmount() {
+		maxOrderAmount = null
+	}
 </script>
 
 <form class="flex flex-col" on:submit={onSubmitWrapper}>
@@ -69,6 +77,25 @@
 				bind:value={price}
 				required
 			/>
+			<Input
+				type="number"
+				step="1"
+				min="1"
+				label="Max hoeveelheid:"
+				placeholder="Onbeperkt"
+				bind:value={maxOrderAmount}
+			>
+				<div slot="join">
+					<button
+						title="Clear"
+						class="btn btn-square join-item border-2 border-l-0 border-[#d1d1d1] dark:border-[#474e56]"
+						type="button"
+						on:click={clearMaxAmount}
+					>
+						<Fa icon={faInfinity} />
+					</button>
+				</div>
+			</Input>
 			<Dropzone
 				label="Afbeeldingen:"
 				bind:combinedImages

@@ -17,6 +17,7 @@ export class Product {
 		public type: Type,
 		public visible: boolean,
 		public imageIds: string[],
+		public maxOrderAmount: number | null,
 	) { }
 
 	toJSON() {
@@ -28,6 +29,7 @@ export class Product {
 			type: this.type,
 			visible: this.visible,
 			imageIds: this.imageIds,
+			maxOrderAmount: this.maxOrderAmount,
 		} as Database['public']['Tables']['products']['Insert']
 	}
 
@@ -41,6 +43,7 @@ export class Product {
 			json.type,
 			json.visible,
 			json.imageIds || [],
+			json.maxOrderAmount || null,
 		)
 	}
 
@@ -64,7 +67,7 @@ export class Product {
 		return this.imageIds.map(async (e) => {
 			return {
 				name: "name",
-				imageUrl:Product.imageToUrl(e),
+				imageUrl: Product.imageToUrl(e),
 				thumbnailUrl: Product.imageToThumbnailUrl(e)
 			}
 		})

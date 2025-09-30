@@ -20,6 +20,7 @@ export type Database = {
           description: string
           id: number
           imageIds: string[]
+          maxOrderAmount: number | null
           name: string
           price: number
           type: Database["public"]["Enums"]["Type"]
@@ -30,6 +31,7 @@ export type Database = {
           description: string
           id?: number
           imageIds: string[]
+          maxOrderAmount?: number | null
           name: string
           price: number
           type: Database["public"]["Enums"]["Type"]
@@ -40,6 +42,7 @@ export type Database = {
           description?: string
           id?: number
           imageIds?: string[]
+          maxOrderAmount?: number | null
           name?: string
           price?: number
           type?: Database["public"]["Enums"]["Type"]

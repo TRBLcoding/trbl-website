@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { Product } from "$lib/domain/Product"
+	import { cartStore } from "$lib/stores/CartStore"
+	import { pushCreatedToast } from "$lib/utils/Toast"
 
 	export let product: Product
+
+	function addProduct() {
+		cartStore.add(product, 1)
+	}
 </script>
 
 <div class="card bg-base-100 w-96 shadow-md">
@@ -18,7 +24,9 @@
 			<a class="link link-hover" href="/products/{product.id}">{product.name}</a
 			>
 		</h2>
-		<p class="text-xl font-semibold text-green-600">€ {product.price}</p>
-		<button class="btn hover:btn-primary">Toevoegen</button>
+		<p class="text-xl font-semibold text-green-600">€ {product.price.toFixed(2)}</p>
+		<button class="btn hover:btn-primary" type="button" on:click={addProduct}>
+			Toevoegen
+		</button>
 	</div>
 </div>
