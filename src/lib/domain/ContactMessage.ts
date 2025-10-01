@@ -1,4 +1,5 @@
 import { GOOGLE_ADMIN_EMAIL, GOOGLE_INTERMEDIARY_EMAIL } from "$env/static/private"
+import { getAdminContactFormTemplate } from "$lib/templates/contactFormTemplate"
 import { BadRequestError } from "$lib/utils/Errors"
 import type { Options } from "nodemailer/lib/mailer"
 
@@ -36,16 +37,14 @@ export class ContactMessage {
 		)
 	}
 
-	toEmail() {
-		const html = `<h2>Hi! ${this.firstName} ${this.lastName}</h2><pre>${this.message}</pre>`
-
+	toAdminEmail() {
 		const email: Options = {
 			from: GOOGLE_INTERMEDIARY_EMAIL,
 			to: GOOGLE_ADMIN_EMAIL,
 			subject: `TRBL Contactformulier: ${this.subject}`,
 			replyTo: this.emailAdress,
 			text: this.message,
-			html: html,
+			html: getAdminContactFormTemplate(this),
 		}
 		return email
 	}

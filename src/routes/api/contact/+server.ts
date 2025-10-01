@@ -6,7 +6,7 @@ import { json } from '@sveltejs/kit'
 export async function POST({ request }) {
 	try {
 		const message = ContactMessage.fromJSON(await request.json())
-		const response = await transporter.sendMail(message.toEmail())
+		const response = await transporter.sendMail(message.toAdminEmail())
 		console.log("Email sent successfully:", response)
 
 		return json({ success: true, message: "Email sent successfully" })
