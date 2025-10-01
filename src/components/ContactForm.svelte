@@ -18,6 +18,7 @@
 	let succesText: string = ""
 
 	async function onSubmitWrapper() {
+		saving = true
 		errorText = ""
 		succesText = ""
 		try {
