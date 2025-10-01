@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {
+	faCheck,
 		faEnvelope,
 		faExclamationTriangle,
 	} from "@fortawesome/free-solid-svg-icons"
@@ -14,12 +15,19 @@
 
 	let saving: boolean = false
 	let errorText: string = ""
+	let succesText: string = ""
 
 	async function onSubmitWrapper() {
 		errorText = ""
+		succesText = ""
 		try {
-			console.log("sending: ", subject)
 			await send()
+			firstName = ""
+			lastName = ""
+			emailAdress = ""
+			subject = ""
+			message = ""
+			succesText = "Bericht succesvol verzonden, we nemen zo snel mogelijk contact met je op."
 		} catch (error) {
 			console.error(error)
 			if (error instanceof Error) errorText = error.message
@@ -34,7 +42,7 @@
 		<Fa icon={faEnvelope} />
 		Stuur een bericht
 	</div>
-	<form class="flex flex-col" on:submit={onSubmitWrapper}>
+	<form class="flex flex-col" on:submit|preventDefault={onSubmitWrapper}>
 		<div class="flex gap-6">
 			<fieldset class="fieldset text-[15px] w-full">
 				<legend class="fieldset-legend">Voornaam</legend>
@@ -95,6 +103,12 @@
 			<div class="text-error flex gap-2 items-center mt-2">
 				<Fa icon={faExclamationTriangle} />
 				<span>{errorText}</span>
+			</div>
+		{/if}
+		{#if succesText}
+			<div class="text-success flex gap-2 items-center mt-2">
+				<Fa icon={faCheck} />
+				<span>{succesText}</span>
 			</div>
 		{/if}
 	</form>
