@@ -33,7 +33,7 @@ export function getAdminContactFormTemplate(message: ContactMessage) {
                             <strong>Naam:</strong> ${message.firstName} ${message.lastName}
                         </p>
                         <p style="color: #333333; font-size: 14px; margin: 0 0 10px 0;">
-                            <strong>E-mailadres:</strong> ${message.emailAdress}
+                            <strong>E-mailadres:</strong> ${message.emailAddress}
                         </p>
                         <p style="color: #333333; font-size: 14px; margin: 0;">
                             <strong>Onderwerp:</strong> ${message.subject}
@@ -100,7 +100,7 @@ export function getCustomerContactFormTemplate(message: ContactMessage) {
                             <strong>Naam:</strong> ${message.firstName} ${message.lastName}
                         </p>
                         <p style="color: #333333; font-size: 14px; margin: 0 0 10px 0;">
-                            <strong>E-mailadres:</strong> ${message.emailAdress}
+                            <strong>E-mailadres:</strong> ${message.emailAddress}
                         </p>
                         <p style="color: #333333; font-size: 14px; margin: 0;">
                             <strong>Onderwerp:</strong> ${message.subject}

@@ -50,7 +50,7 @@
 	// -- Contact --
 	let firstName: string = ""
 	let lastName: string = ""
-	let emailAdress: string = ""
+	let emailAddress: string = ""
 	let subject: string = ""
 	let message: string = ""
 
@@ -64,7 +64,7 @@
 		const body: ContactRequest = {
 			firstName,
 			lastName,
-			emailAdress,
+			emailAddress,
 			subject,
 			message,
 		}
@@ -211,7 +211,7 @@
 				<ContactForm
 					bind:firstName
 					bind:lastName
-					bind:emailAdress
+					bind:emailAddress
 					bind:subject
 					bind:message
 					{send}

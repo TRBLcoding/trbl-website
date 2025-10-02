@@ -6,7 +6,7 @@ import type { Options } from "nodemailer/lib/mailer"
 export type ContactRequest = {
 	firstName: string
 	lastName: string
-	emailAdress: string
+	emailAddress: string
 	subject: string
 	message: string
 }
@@ -15,13 +15,13 @@ export class ContactMessage {
 	constructor(
 		public firstName: string,
 		public lastName: string,
-		public emailAdress: string,
+		public emailAddress: string,
 		public subject: string,
 		public message: string
 	) { }
 
 	static fromJSON(json: any): ContactMessage {
-		const requiredFields = ['firstName', 'lastName', 'emailAdress', 'subject', 'message']
+		const requiredFields = ['firstName', 'lastName', 'emailAddress', 'subject', 'message']
 		const missingFields = requiredFields.filter(field => !json[field])
 
 		if (missingFields.length > 0) {
@@ -31,7 +31,7 @@ export class ContactMessage {
 		return new ContactMessage(
 			json.firstName,
 			json.lastName,
-			json.emailAdress,
+			json.emailAddress,
 			json.subject,
 			json.message
 		)
@@ -42,7 +42,7 @@ export class ContactMessage {
 			from: GOOGLE_INTERMEDIARY_EMAIL,
 			to: GOOGLE_ADMIN_EMAIL,
 			subject: `TRBL Contactformulier: ${this.subject}`,
-			replyTo: this.emailAdress,
+			replyTo: this.emailAddress,
 			text: this.message,
 			html: getAdminContactFormTemplate(this),
 		}
@@ -52,7 +52,7 @@ export class ContactMessage {
 	toCustomerEmail() {
 		const email: Options = {
 			from: GOOGLE_INTERMEDIARY_EMAIL,
-			to: this.emailAdress,
+			to: this.emailAddress,
 			subject: `No Reply TRBL Contactformulier: ${this.subject}`,
 			replyTo: "",
 			text: this.message,

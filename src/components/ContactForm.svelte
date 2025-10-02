@@ -10,27 +10,27 @@
 
 	export let firstName: string
 	export let lastName: string
-	export let emailAdress: string
+	export let emailAddress: string
 	export let subject: string
 	export let message: string
 	export let send: () => Promise<void>
 
 	let saving: boolean = false
 	let errorText: string = ""
-	let succesText: string = ""
+	let successText: string = ""
 
 	async function onSubmitWrapper() {
 		saving = true
 		errorText = ""
-		succesText = ""
+		successText = ""
 		try {
 			await send()
 			firstName = ""
 			lastName = ""
-			emailAdress = ""
+			emailAddress = ""
 			subject = ""
 			message = ""
-			succesText =
+			successText =
 				"Bericht succesvol verzonden, we nemen zo snel mogelijk contact met je op."
 		} catch (error) {
 			console.error(error)
@@ -44,7 +44,7 @@
 		if (!$authStore) return
 		firstName = $authStore.firstName
 		lastName = $authStore.lastName
-		emailAdress = $authStore.email
+		emailAddress = $authStore.email
 	}
 </script>
 
@@ -95,7 +95,7 @@
 				class="input w-full"
 				required
 				placeholder="Email"
-				bind:value={emailAdress}
+				bind:value={emailAddress}
 			/>
 		</fieldset>
 		<fieldset class="fieldset text-[15px]">
@@ -128,10 +128,10 @@
 				<span>{errorText}</span>
 			</div>
 		{/if}
-		{#if succesText}
+		{#if successText}
 			<div class="text-success flex gap-2 items-center mt-2">
 				<Fa icon={faCheck} />
-				<span>{succesText}</span>
+				<span>{successText}</span>
 			</div>
 		{/if}
 	</form>
