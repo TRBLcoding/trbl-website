@@ -25,10 +25,16 @@ cd trbl-website
 npm install
 ```
 
-Setup environement variables, [Supabase setup](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit)
+Setup environement variables
+- [Supabase setup](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit)
+- [Google app password](https://support.google.com/accounts/answer/185833)
 ```env
-VITE_SUPABASE_URL="..."
-VITE_SUPABASE_ANON_KEY="..."
+PUBLIC_SUPABASE_URL="..."
+PUBLIC_SUPABASE_ANON_KEY="..."
+
+GOOGLE_INTERMEDIARY_EMAIL="..."
+GOOGLE_ADMIN_EMAIL="..."
+GOOGLE_APP_PASSWORD="..."
 ```
 
 ## Developing

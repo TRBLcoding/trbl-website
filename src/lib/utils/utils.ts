@@ -11,7 +11,7 @@ export function clamp(number: number, min: number, max: number) {
 	return Math.min(Math.max(number, min), max)
 }
 
-export function sleep(time: number | undefined = 1000) {
+export function sleep(time: number = 1000) {
 	return new Promise<void>(resolve => {
 		setTimeout(() => {
 			resolve()
