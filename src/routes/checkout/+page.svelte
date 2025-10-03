@@ -21,12 +21,12 @@
 		<h1 class="text-2xl font-bold">Offerte aanvragen</h1>
 	</div>
 
-	<div class="flex flex-col md:flex-row w-full">
+	<div class="flex gap-20 flex-col md:flex-row w-full">
 		<div class="flex-1">
 			<!-- Invoice details -->
 			<InvoiceDetailsForm></InvoiceDetailsForm>
 			<!-- Rental information -->
-			<div class="flex flex-col gap-1 max-w-sm mt-4">
+			<div class="flex flex-col gap-1 mt-4">
 				<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
 					Verhuurgegevens
 				</h2>
@@ -35,6 +35,7 @@
 					label="Type evenement"
 					placeholder="Type evenement"
 					bind:value={firstName}
+					size="full"
 					required
 				/>
 				<Input
@@ -42,6 +43,7 @@
 					label="Huur periode"
 					placeholder="Van waneer tot wanneer"
 					bind:value={firstName}
+					size="full"
 					required
 				/>
 			</div>
@@ -51,7 +53,7 @@
 			<!-- Your order -->
 
 			<!-- Payment -->
-			<div class="flex flex-col gap-1 max-w-sm mt-4">
+			<div class="flex flex-col gap-1 mt-4">
 				<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
 					Betaling
 				</h2>
@@ -66,7 +68,7 @@
 				/>
 			</div>
 			<!-- Confirm -->
-			<div class="flex flex-col gap-1 max-w-sm mt-4">
+			<div class="flex flex-col gap-1 mt-4">
 				<span class="text-sm">
 					Uw data wordt enkel gebruikt voor het verbeteren van de site en voor
 					administratieve doeleinden. Lees meer in ons

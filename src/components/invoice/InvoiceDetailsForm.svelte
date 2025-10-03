@@ -87,10 +87,38 @@
 		selectedInvoiceDetails = index
 	}
 
-
+	let editing = false
+	function startEdit(invoiceDetails: InvoiceDetails) {
+		editing = true
+		firstName = invoiceDetails.fistName
+		lastName = invoiceDetails.lastName
+		emailAddress = invoiceDetails.emailAddress
+		phoneNumber = invoiceDetails.phoneNumber
+		companyName = invoiceDetails.companyName
+		btwNumber = invoiceDetails.BTWNumber
+		streetAndNumber = invoiceDetails.streetAndNumber
+		postalCode = invoiceDetails.postalCode
+		place = invoiceDetails.place
+		country = invoiceDetails.country
+		showForm = true
+	}
+	function startCreate() {
+		editing = false
+		firstName = ""
+		lastName = ""
+		emailAddress = ""
+		phoneNumber = ""
+		companyName = ""
+		btwNumber = null
+		streetAndNumber = ""
+		postalCode = ""
+		place = ""
+		country = ""
+		showForm = true
+	}
 </script>
 
-<div class="flex flex-col gap-1 max-w-sm">
+<div class="flex flex-col gap-1">
 	<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
 		Factuurgegevens
 	</h2>
@@ -126,6 +154,7 @@
 						<div class="absolute right-2 top-2">
 							<EditDropdown
 								size="xs"
+								editHandler={() => startEdit(invoiceDetails)}
 								deleteHandler={() => deleteInvoiceDetails(invoiceDetails)}
 							></EditDropdown>
 						</div>
@@ -146,11 +175,7 @@
 				{upperErrorMessage}
 			</div>
 		{/if}
-		<button
-			class="btn btn-ghost"
-			type="button"
-			on:click={() => (showForm = true)}
-		>
+		<button class="btn btn-ghost" type="button" on:click={startCreate}>
 			<Fa icon={faPlus} />
 			Factuurgegevens toevoegen
 		</button>
@@ -171,12 +196,15 @@
 				class="flex flex-col gap-1"
 				on:submit|preventDefault={onSubmitWrapper}
 			>
-				<h3 class="font-semibold mb-2">Nieuwe factuurgegevens</h3>
+				<h3 class="font-semibold mb-2">
+					{editing ? "Factuurgegevens aanpassen" : "Nieuwe factuurgegevens"}
+				</h3>
 				<Input
 					type="text"
 					label="Voornaam"
 					placeholder="Voornaam"
 					bind:value={firstName}
+					size="full"
 					required
 				/>
 				<Input
@@ -184,6 +212,7 @@
 					label="Achternaam"
 					placeholder="Achternaam"
 					bind:value={lastName}
+					size="full"
 					required
 				/>
 				<Input
@@ -191,6 +220,7 @@
 					label="Emailadres"
 					placeholder="Emailadres"
 					bind:value={emailAddress}
+					size="full"
 					required
 				/>
 				<Input
@@ -198,6 +228,7 @@
 					label="Telefoonnummer"
 					placeholder="Telefoonnummer"
 					bind:value={phoneNumber}
+					size="full"
 					required
 				/>
 				<Input
@@ -205,6 +236,7 @@
 					label="Bedrijfsnaam / Naam organisatie"
 					placeholder="Naam"
 					bind:value={companyName}
+					size="full"
 					required
 				/>
 				<Input
@@ -212,8 +244,9 @@
 					label="BTW-nummer (Optioneel)"
 					placeholder="BTW nummer"
 					bind:value={btwNumber}
+					size="full"
 				/>
-				<Select label="Land" bind:value={country} required>
+				<Select label="Land" bind:value={country} required size="full">
 					<option>Belgie</option>
 					<option>Nederland</option>
 				</Select>
@@ -222,6 +255,7 @@
 					label="Straatnaam en huisnummer"
 					placeholder="Straatnaam en huisnummer"
 					bind:value={streetAndNumber}
+					size="full"
 					required
 				/>
 				<Input
@@ -229,6 +263,7 @@
 					label="Postcode"
 					placeholder="Postcode"
 					bind:value={postalCode}
+					size="full"
 					required
 				/>
 				<Input
@@ -236,6 +271,7 @@
 					label="Plaats"
 					placeholder="Plaats"
 					bind:value={place}
+					size="full"
 					required
 				/>
 				<button
@@ -243,7 +279,7 @@
 					type="submit"
 					disabled={saving}
 				>
-					Factuurgegevens opslagen
+					Factuurgegevens {editing ? "aanpassen" : "aanmaken"}
 					<span class="loading loading-ring" class:hidden={!saving}></span>
 				</button>
 				{#if errorMessage}

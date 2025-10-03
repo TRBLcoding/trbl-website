@@ -121,7 +121,7 @@
 	</div>
 	<div class="w-fit" class:hover:cursor-wait={saving}>
 		<button
-			class="btn btn-primary mt-2 max-w-sm"
+			class="btn btn-primary mt-2"
 			type="submit"
 			disabled={saving}
 		>
