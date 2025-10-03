@@ -5,7 +5,6 @@
 	import { InvoiceDetails } from "$lib/domain/InvoiceDetails"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { invoiceDetailsStore } from "$lib/stores/InvoiceDetailsStore"
-	import { sleep } from "$lib/utils/Utils"
 	import {
 		faBorderNone,
 		faExclamationTriangle,
@@ -17,10 +16,14 @@
 
 	let firstName = "Lorin"
 	let lastName = "Speybrouck"
-	let emailAddress = ""
-	let phoneNumber = ""
+	let emailAddress = "lorin.speybrouck@proximus.be"
+	let phoneNumber = "+32 473 23 45 67"
 	let companyName = "TBRL 2"
-	let todo = ""
+	let btwNumber: string | null = ""
+	let streetAndNumber = "Spiedamstraat 25"
+	let postalCode = "1899"
+	let place = "Gent"
+	let country = "Belgie"
 
 	let showForm = true
 	let saving = false
@@ -41,10 +44,27 @@
 				userId,
 				firstName,
 				lastName,
-				companyName
+				phoneNumber,
+				emailAddress,
+				companyName,
+				btwNumber,
+				streetAndNumber,
+				postalCode,
+				place,
+				country
 			)
 			await invoiceDetailsStore.createInvoiceDetails(newInvoiceDetails)
-			// showForm = false
+			firstName = ""
+			lastName = ""
+			emailAddress = ""
+			phoneNumber = ""
+			companyName = ""
+			btwNumber = null
+			streetAndNumber = ""
+			postalCode = ""
+			place = ""
+			country = ""
+			showForm = false
 		} catch (error) {
 			console.error(error)
 			if (error instanceof Error) errorMessage = error.message
@@ -66,6 +86,8 @@
 	function selectInvoiceDetails(index: number) {
 		selectedInvoiceDetails = index
 	}
+
+
 </script>
 
 <div class="flex flex-col gap-1 max-w-sm">
@@ -74,16 +96,6 @@
 	</h2>
 	<div class="p-4 bg-base-200 rounded-lg mb-2">
 		<div class="flex flex-col gap-2 mb-2">
-			<!-- <div class="bg-base-100 p-2 rounded-lg flex-col border-2 border-[#d1d1d1] cursor-pointer">
-				<div class="text-sm italic"><span class="">Alternatief</span></div>
-				<div class="font-semibold">Lorin Speybrouck • TRBL light and sound</div>
-				<div class="text-sm">Handelsstraat 25 • 1840 Malderen • Belgie</div>
-			</div>
-			<div class="bg-base-100 p-2 rounded-lg flex-col border-2 border-[#d1d1d1] cursor-pointer">
-				<div class="text-sm italic"><span class="">Alternatief</span></div>
-				<div class="font-semibold">Lorin Speybrouck • TRBL light and sound</div>
-				<div class="text-sm">Handelsstraat 25 • 1840 Malderen • Belgie</div>
-			</div> -->
 			{#await invoiceDetailsStore.initPromise}
 				Loading
 			{:then}
@@ -97,16 +109,18 @@
 						>
 							<div class="text-sm italic">
 								{#if selectedInvoiceDetails === i}
-									<span class="text-success">Geselecteeerd</span> •
+									<span class="text-success">Geselecteeerd</span>
+								{:else}
+									Alternatief
 								{/if}
-								Standaard
 							</div>
 							<div class="font-semibold">
 								{invoiceDetails.fistName}
 								{invoiceDetails.lastName} • {invoiceDetails.companyName}
 							</div>
 							<div class="text-sm">
-								Handelsstraat 25 • 1840 Malderen • Belgie
+								{invoiceDetails.streetAndNumber} • {invoiceDetails.postalCode}
+								{invoiceDetails.place} • {invoiceDetails.country}
 							</div>
 						</button>
 						<div class="absolute right-2 top-2">
@@ -177,12 +191,14 @@
 					label="Emailadres"
 					placeholder="Emailadres"
 					bind:value={emailAddress}
+					required
 				/>
 				<Input
 					type="text"
 					label="Telefoonnummer"
 					placeholder="Telefoonnummer"
 					bind:value={phoneNumber}
+					required
 				/>
 				<Input
 					type="text"
@@ -195,9 +211,9 @@
 					type="text"
 					label="BTW-nummer (Optioneel)"
 					placeholder="BTW nummer"
-					bind:value={todo}
+					bind:value={btwNumber}
 				/>
-				<Select label="Land" bind:value={todo}>
+				<Select label="Land" bind:value={country} required>
 					<option>Belgie</option>
 					<option>Nederland</option>
 				</Select>
@@ -205,19 +221,22 @@
 					type="text"
 					label="Straatnaam en huisnummer"
 					placeholder="Straatnaam en huisnummer"
-					bind:value={todo}
+					bind:value={streetAndNumber}
+					required
 				/>
 				<Input
 					type="text"
 					label="Postcode"
 					placeholder="Postcode"
-					bind:value={todo}
+					bind:value={postalCode}
+					required
 				/>
 				<Input
 					type="text"
 					label="Plaats"
 					placeholder="Plaats"
-					bind:value={todo}
+					bind:value={place}
+					required
 				/>
 				<button
 					class="btn btn-primary mt-4 mb-1"
