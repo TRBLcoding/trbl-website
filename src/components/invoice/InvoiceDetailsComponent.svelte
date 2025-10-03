@@ -15,6 +15,10 @@
 	import Fa from "svelte-fa"
 	import { slide } from "svelte/transition"
 	import InvoiceDetailsForm from "./InvoiceDetailsForm.svelte"
+	import {
+		loginModalOpenStore,
+		loginModalStateStore,
+	} from "$lib/stores/LoginmodalStore"
 
 	let firstName = "Lorin"
 	let lastName = "Speybrouck"
@@ -106,6 +110,15 @@
 		place = ""
 		country = ""
 		showForm = true
+	}
+
+	function openLoginModal() {
+		$loginModalStateStore = "Login"
+		$loginModalOpenStore = true
+	}
+	function openSingupModal() {
+		$loginModalStateStore = "Register"
+		$loginModalOpenStore = true
 	}
 </script>
 
@@ -210,7 +223,7 @@
 		<div
 			class="p-6 bg-gradient-to-br from-base-200 to-base-300 rounded-xl mb-2 border border-base-300"
 		>
-			<div class="flex flex-col gap-4 items-center text-center">
+			<div class="flex flex-col gap-3 items-center text-center">
 				<div
 					class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
 				>
@@ -223,11 +236,17 @@
 						gebruik en sneller afrekenen.
 					</p>
 				</div>
-				<button class="btn btn-primary btn-wide gap-2">
+				<button
+					class="btn btn-primary btn-wide gap-2"
+					type="button"
+					on:click={openLoginModal}
+				>
 					<Fa icon={faUser} size="sm" />
 					Aanmelden
 				</button>
-				<a href="#" class="link text-sm">Nog geen account? Registreer hier</a>
+				<button type="button" class="link text-sm" on:click={openSingupModal}>
+					Nog geen account? Registreer hier
+				</button>
 			</div>
 		</div>
 		<InvoiceDetailsForm
