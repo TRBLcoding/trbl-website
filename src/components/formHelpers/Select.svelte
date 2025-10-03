@@ -6,10 +6,6 @@
 	export let size: "full" | "md" | "sm" | "xs" = "sm"
 
 	$: selectId = label?.replace(/[ :]/g, "").toLowerCase()
-
-	function removePlaceholderStyle(event: Event) {
-		;(event?.target as HTMLElement).classList.remove("placeholder-style")
-	}
 </script>
 
 <fieldset
@@ -27,12 +23,12 @@
 	<select
 		id={selectId}
 		{disabled}
-		class="select select-bordered border-2 placeholder-style w-full"
+		class="select border-2 w-full [&>option:not([value=''])]:text-base-content"
+		class:text-[#8b8b8c]={value === ""}
 		bind:value
-		on:change={removePlaceholderStyle}
 		{required}
 	>
-		<option disabled selected>Kies</option>
+		<option value="" disabled selected class="text-[#8b8b8c]!">Kies</option>
 		<slot />
 	</select>
 </fieldset>

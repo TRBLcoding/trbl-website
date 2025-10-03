@@ -57,7 +57,7 @@
 	// -- Type handling --
 	function typeAction(node: HTMLInputElement) {
 		// Replace email type with text type, because browser email validation is kinda crappy
-		if (type === "email") {
+		if (type === "email" && required) {
 			const oldValidate = validate
 			validate = (value) => validateEmail(value) || oldValidate(value)
 			node.type = "text"

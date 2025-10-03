@@ -156,7 +156,7 @@
 
 			<li class="mx-4 mt-1 mb-2 flex flex-row justify-between">
 				<a class="btn" href="/todo">Winkelmandje bekijken</a>
-				<a class="btn btn-primary" href="/todo">Afrekenen</a>
+				<a class="btn btn-primary" href="/checkout">Afrekenen</a>
 			</li>
 		{/if}
 	</ul>

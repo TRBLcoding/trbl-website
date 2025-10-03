@@ -204,10 +204,8 @@
 							type="submit"
 							disabled={loading}
 						>
-							Inloggen <span
-								class="loading loading-ring"
-								class:hidden={!loading}
-							></span>
+							Inloggen
+							<span class="loading loading-ring" class:hidden={!loading}></span>
 						</button>
 						{#if loginError}
 							<div class="text-center text-error">{loginError}</div>
