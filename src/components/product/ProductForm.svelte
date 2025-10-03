@@ -36,8 +36,7 @@
 	let saving = false
 	let errorMessage = ""
 
-	async function onSubmitWrapper(event: SubmitEvent) {
-		event.preventDefault()
+	async function onSubmitWrapper() {
 		saving = true
 		errorMessage = ""
 		try {
@@ -58,7 +57,7 @@
 	}
 </script>
 
-<form class="flex flex-col" on:submit={onSubmitWrapper}>
+<form class="flex flex-col" on:submit|preventDefault={onSubmitWrapper}>
 	<div class="flex flex-col lg:flex-row lg:gap-8 xl:gap-14">
 		<div class="flex-col flex-auto min-w-sm">
 			<Input
