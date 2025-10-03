@@ -21,7 +21,7 @@
 		<h1 class="text-2xl font-bold">Offerte aanvragen</h1>
 	</div>
 
-	<form action="" class="flex flex-col md:flex-row w-full">
+	<div class="flex flex-col md:flex-row w-full">
 		<div class="flex-1">
 			<!-- Invoice details -->
 			<InvoiceDetailsForm></InvoiceDetailsForm>
@@ -81,5 +81,5 @@
 				<button class="btn btn-primary mt-3">Offerte aanvragen</button>
 			</div>
 		</div>
-	</form>
+	</div>
 </div>

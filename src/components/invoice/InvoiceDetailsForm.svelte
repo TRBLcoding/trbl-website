@@ -1,6 +1,10 @@
 <script lang="ts">
+	import EditDropdown from "$components/EditDropdown.svelte"
 	import Input from "$components/formHelpers/Input.svelte"
 	import Select from "$components/formHelpers/Select.svelte"
+	import { InvoiceDetails } from "$lib/domain/InvoiceDetails"
+	import { authStore } from "$lib/stores/AuthStore"
+	import { invoiceDetailsStore } from "$lib/stores/InvoiceDetailsStore"
 	import { sleep } from "$lib/utils/Utils"
 	import {
 		faBorderNone,
@@ -11,26 +15,56 @@
 	import Fa from "svelte-fa"
 	import { slide } from "svelte/transition"
 
-	let firstName = ""
-	let lastName = ""
+	let firstName = "Lorin"
+	let lastName = "Speybrouck"
 	let emailAddress = ""
 	let phoneNumber = ""
+	let companyName = "TBRL 2"
 	let todo = ""
 
 	let showForm = true
 	let saving = false
 	let errorMessage = ""
+	let selectedInvoiceDetails: number | undefined = undefined
+
+	let upperErrorMessage = ""
 
 	async function onSubmitWrapper() {
 		saving = true
 		errorMessage = ""
 		try {
-			await sleep(1000)
-			showForm = false
+			if (!$authStore)
+				throw new Error("User must be logged in to create Invoice Details")
+			const userId = $authStore.auth_id
+			const newInvoiceDetails = new InvoiceDetails(
+				-1, // temporary id
+				userId,
+				firstName,
+				lastName,
+				companyName
+			)
+			await invoiceDetailsStore.createInvoiceDetails(newInvoiceDetails)
+			// showForm = false
 		} catch (error) {
-			errorMessage = "Unknown error occured"
+			console.error(error)
+			if (error instanceof Error) errorMessage = error.message
+			else errorMessage = "Unknown error occured"
 		}
 		saving = false
+	}
+	async function deleteInvoiceDetails(invoiceDetails: InvoiceDetails) {
+		upperErrorMessage = ""
+		try {
+			await invoiceDetailsStore.deleteInvoiceDetails(invoiceDetails)
+		} catch (error) {
+			console.error(error)
+			if (error instanceof Error) upperErrorMessage = error.message
+			else upperErrorMessage = "Unknown error occured"
+		}
+	}
+
+	function selectInvoiceDetails(index: number) {
+		selectedInvoiceDetails = index
 	}
 </script>
 
@@ -39,10 +73,65 @@
 		Factuurgegevens
 	</h2>
 	<div class="p-4 bg-base-200 rounded-lg mb-2">
-		<div class="flex flex-col gap-4 my-2 items-center">
-			<Fa icon={faBorderNone} size="2x" />
-			<span>Geen opgeslagen factuurgegevens</span>
+		<div class="flex flex-col gap-2 mb-2">
+			<!-- <div class="bg-base-100 p-2 rounded-lg flex-col border-2 border-[#d1d1d1] cursor-pointer">
+				<div class="text-sm italic"><span class="">Alternatief</span></div>
+				<div class="font-semibold">Lorin Speybrouck • TRBL light and sound</div>
+				<div class="text-sm">Handelsstraat 25 • 1840 Malderen • Belgie</div>
+			</div>
+			<div class="bg-base-100 p-2 rounded-lg flex-col border-2 border-[#d1d1d1] cursor-pointer">
+				<div class="text-sm italic"><span class="">Alternatief</span></div>
+				<div class="font-semibold">Lorin Speybrouck • TRBL light and sound</div>
+				<div class="text-sm">Handelsstraat 25 • 1840 Malderen • Belgie</div>
+			</div> -->
+			{#await invoiceDetailsStore.initPromise}
+				Loading
+			{:then}
+				{#each $invoiceDetailsStore as invoiceDetails, i}
+					<div class="relative">
+						<button
+							class="w-full flex flex-col items-start bg-base-100 p-2 rounded-lg border-2 border-[#d1d1d1] cursor-pointer hover:bg-base-300"
+							class:bg-base-300={selectedInvoiceDetails === i}
+							type="button"
+							on:click={() => selectInvoiceDetails(i)}
+						>
+							<div class="text-sm italic">
+								{#if selectedInvoiceDetails === i}
+									<span class="text-success">Geselecteeerd</span> •
+								{/if}
+								Standaard
+							</div>
+							<div class="font-semibold">
+								{invoiceDetails.fistName}
+								{invoiceDetails.lastName} • {invoiceDetails.companyName}
+							</div>
+							<div class="text-sm">
+								Handelsstraat 25 • 1840 Malderen • Belgie
+							</div>
+						</button>
+						<div class="absolute right-2 top-2">
+							<EditDropdown
+								size="xs"
+								deleteHandler={() => deleteInvoiceDetails(invoiceDetails)}
+							></EditDropdown>
+						</div>
+					</div>
+				{:else}
+					<div class="flex flex-col gap-4 my-2 items-center">
+						<Fa icon={faBorderNone} size="2x" />
+						<span>Geen opgeslagen factuurgegevens</span>
+					</div>
+				{/each}
+			{:catch error}
+				<div class="text-error">{error}</div>
+			{/await}
 		</div>
+		{#if upperErrorMessage}
+			<div class="text-error flex gap-2 items-center">
+				<Fa icon={faExclamationTriangle} />
+				{upperErrorMessage}
+			</div>
+		{/if}
 		<button
 			class="btn btn-ghost"
 			type="button"
@@ -59,12 +148,15 @@
 		>
 			<button
 				type="button"
-				class="btn btn-sm btn-square btn-ghost absolute right-3 top-3-"
+				class="btn btn-sm btn-square btn-ghost absolute right-3 top-3"
 				on:click={() => (showForm = false)}
 			>
 				<Fa icon={faXmark} />
 			</button>
-			<form class="flex flex-col gap-1" on:submit|preventDefault={onSubmitWrapper}>
+			<form
+				class="flex flex-col gap-1"
+				on:submit|preventDefault={onSubmitWrapper}
+			>
 				<h3 class="font-semibold mb-2">Nieuwe factuurgegevens</h3>
 				<Input
 					type="text"
@@ -92,12 +184,12 @@
 					placeholder="Telefoonnummer"
 					bind:value={phoneNumber}
 				/>
-
 				<Input
 					type="text"
-					label="Bedrijfsnaam (Optioneel)"
-					placeholder="Bedrijfsnaam"
-					bind:value={todo}
+					label="Bedrijfsnaam / Naam organisatie"
+					placeholder="Naam"
+					bind:value={companyName}
+					required
 				/>
 				<Input
 					type="text"
@@ -111,8 +203,8 @@
 				</Select>
 				<Input
 					type="text"
-					label="Straatnaam huisnummer"
-					placeholder="Straatnaam huisnummer"
+					label="Straatnaam en huisnummer"
+					placeholder="Straatnaam en huisnummer"
 					bind:value={todo}
 				/>
 				<Input

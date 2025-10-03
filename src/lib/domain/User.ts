@@ -1,6 +1,6 @@
 export class User {
 	constructor(
-		public id: string,
+		public auth_id: string,
 		public email: string,
 		public role: "User" | "Admin",
 		public firstName: string,
@@ -12,6 +12,6 @@ export class User {
 	}
 
 	toString() {
-		return `User(${this.id}, ${this.email}, ${this.role})`
+		return `User(${this.auth_id}, ${this.email}, ${this.role})`
 	}
 }
