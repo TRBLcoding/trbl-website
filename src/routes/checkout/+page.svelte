@@ -159,6 +159,7 @@
 					<Checkbox
 						label="Ik heb de algemene voorwaarden van de website gelezen en ga hiermee akkoord"
 						bind:value={visible}
+						size="full"
 						required
 					/>
 
