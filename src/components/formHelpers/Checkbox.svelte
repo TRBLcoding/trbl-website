@@ -34,14 +34,14 @@
 		class:checkbox-sm={size === "sm" || size === "full"}
 		class:checkbox-xs={size === "xs"}
 	/>
-	{#if label}
+	{#if label || $$slots.label}
 		<label
 			for={id}
 			class="label p-0 flex-1 whitespace-break-spaces"
 			class:opacity-50={disabled}
 		>
-			<span class={"label-text " + labelClass}>
-				{label}
+			<span class={labelClass}>
+				<slot name="label">{label}</slot>
 				{#if required}
 					<span class="text-red-500 font-bold">*</span>
 				{/if}

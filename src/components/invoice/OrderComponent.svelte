@@ -8,7 +8,6 @@
 	import Fa from "svelte-fa"
 
 	// Price calculation
-	const shippingCost = 25.0
 	$: combinedPrice = Promise.all($cartStore).then((cartItems) =>
 		cartItems.reduce(
 			(acc, item) => acc + (item.product?.price ?? 0) * item.amount,
@@ -104,7 +103,7 @@
 				>
 					<span>Totaal</span>
 					<span class="text-green-600"
-						>€ {(price + shippingCost)?.toFixed(2)}</span
+						>€ {(price)?.toFixed(2)}</span
 					>
 				</div>
 			{/await}
