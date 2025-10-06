@@ -5,11 +5,11 @@ import { json } from '@sveltejs/kit'
 
 export async function POST({ request }) {
 	try {
-		const message = ContactMessage.fromJSON(await request.json())
-		const response1 = await transporter.sendMail(message.toAdminEmail())
+		const contactMessage = ContactMessage.fromJSON(await request.json())
+		const response1 = await transporter.sendMail(contactMessage.toAdminEmail())
 		console.log("Email sent to admin:", response1)
-		const response2 = await transporter.sendMail(message.toCustomerEmail())
-		console.log("Email sent to customer successfully:", response2)
+		const response2 = await transporter.sendMail(contactMessage.toCustomerEmail())
+		console.log("Email sent to customer:", response2)
 
 		return json({ success: true, message: "Email sent successfully" })
 	} catch (error) {

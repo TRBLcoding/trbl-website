@@ -3,6 +3,7 @@ import { getAdminContactFormTemplate, getCustomerContactFormTemplate } from "$li
 import { BadRequestError } from "$lib/utils/Errors"
 import type { Options } from "nodemailer/lib/mailer"
 
+const CONTACT_REQUEST_REQUIRED_FIELDS: readonly (keyof ContactRequest)[] = ['firstName', 'lastName', 'emailAddress', 'subject', 'message']
 export type ContactRequest = {
 	firstName: string
 	lastName: string
@@ -20,13 +21,10 @@ export class ContactMessage {
 		public message: string
 	) { }
 
-	static fromJSON(json: any): ContactMessage {
-		const requiredFields = ['firstName', 'lastName', 'emailAddress', 'subject', 'message']
-		const missingFields = requiredFields.filter(field => !json[field])
-
-		if (missingFields.length > 0) {
+	static fromJSON(json: ContactRequest) {
+		const missingFields = CONTACT_REQUEST_REQUIRED_FIELDS.filter(field => !json[field])
+		if (missingFields.length > 0)
 			throw new BadRequestError(`Missing required fields: ${missingFields.join(', ')}`)
-		}
 
 		return new ContactMessage(
 			json.firstName,

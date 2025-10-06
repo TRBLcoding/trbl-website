@@ -4,7 +4,7 @@ export class InvoiceDetails {
 	constructor(
 		public id: number,
 		public authId: string,
-		public fistName: string,
+		public firstName: string,
 		public lastName: string,
 		public emailAddress: string,
 		public phoneNumber: string,
@@ -19,7 +19,7 @@ export class InvoiceDetails {
 	toJSON() {
 		return {
 			auth_id: this.authId,
-			first_name: this.fistName,
+			first_name: this.firstName,
 			last_name: this.lastName,
 			email_address: this.emailAddress,
 			phone_number: this.phoneNumber,
@@ -38,7 +38,7 @@ export class InvoiceDetails {
 			json.auth_id,
 			json.first_name,
 			json.last_name,
-			json.email_adress,
+			json.email_address,
 			json.phone_number,
 			json.company_name,
 			json.btw_number,
