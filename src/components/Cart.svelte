@@ -98,7 +98,7 @@
 								<span class="text-base-content">{cartProduct.amount}</span>
 								<Fa icon={faXmark} size="xs" class="text-base-content" />
 								<span class="text-green-600 font-semibold">
-									€{cartProduct.product?.price.toFixed(2)}
+									€ {cartProduct.product?.price.toFixed(2)}
 								</span>
 							</div>
 						</div>

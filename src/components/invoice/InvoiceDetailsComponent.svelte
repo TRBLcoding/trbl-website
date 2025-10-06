@@ -123,13 +123,13 @@
 	export let invoiceFormElement: HTMLFormElement
 </script>
 
-<div class="flex flex-col gap-1">
+<div class="flex flex-col">
 	<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
 		Factuurgegevens
 	</h2>
 
 	{#if $authStore}
-		<div class="p-4 bg-base-200 rounded-lg mb-2">
+		<div class="p-4 bg-base-200 rounded-lg mb-2 mt-2">
 			<div class="flex flex-col gap-2 mb-2">
 				{#await invoiceDetailsStore.initPromise}
 					Loading
