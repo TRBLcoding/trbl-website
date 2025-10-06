@@ -48,6 +48,12 @@
 		saving = false
 	}
 
+	    // Price calculation
+    const subtotal = 165.0
+    const shippingCost = 25.0
+    $: total = subtotal + (true ? shippingCost : 0)
+
+
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Algemene Voorwaarden")
 
@@ -102,9 +108,102 @@
 				</form>
 			</div>
 			<!-- Shipping -->
+			<div class="mt-4">
+				<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
+					Levering
+				</h2>
+				<Checkbox
+					label="Afhalen op Nederpolder 4 9000 Gent (LEZ)"
+					bind:value={visible}
+				/>
+				<Checkbox label="Laten Leveren" bind:value={visible} />
+			</div>
 		</div>
 		<div class="flex-1">
 			<!-- Your order -->
+			<!-- Your order -->
+			<div>
+				<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
+					Jouw besteling
+				</h2>
+
+				<div class="flex flex-col gap-3 mt-3 bg-base-200 rounded-lg p-4">
+					<!-- Product 1 -->
+					<div class="flex gap-3 pb-3 border-b border-base-300">
+						<img
+							src="https://placehold.co/80x80"
+							alt="Product"
+							class="w-20 h-20 object-cover rounded"
+						/>
+						<div class="flex-1 flex justify-between">
+							<div>
+								<h3 class="font-semibold">Stoelen</h3>
+								<p class="text-sm text-base-content/70">€ 40,00</p>
+								<div class="flex justify-between items-center mt-2">
+									<span class="text-sm badge badge-soft">Aantal: 20</span>
+								</div>
+							</div>
+							<span class="font-semibold">€ 40,00</span>
+						</div>
+					</div>
+
+					<!-- Product 2 -->
+					<div class="flex gap-3 pb-3 border-b border-base-300">
+						<img
+							src="https://placehold.co/80x80"
+							alt="Product"
+							class="w-20 h-20 object-cover rounded"
+						/>
+						<div class="flex-1 flex justify-between">
+							<div>
+								<h3 class="font-semibold">Stoelen</h3>
+								<p class="text-sm text-base-content/70">€ 40,00</p>
+								<div class="flex justify-between items-center mt-2">
+									<span class="text-sm badge badge-soft">Aantal: 20</span>
+								</div>
+							</div>
+							<span class="font-semibold">€ 40,00</span>
+						</div>
+					</div>
+
+					<!-- Product 3 -->
+					<div class="flex gap-3 pb-1 border-base-100">
+						<img
+							src="https://placehold.co/80x80"
+							alt="Product"
+							class="w-20 h-20 object-cover rounded"
+						/>
+						<div class="flex-1 flex justify-between">
+							<div>
+								<h3 class="font-semibold">Stoelen</h3>
+								<p class="text-sm text-base-content/70">€ 40,00</p>
+								<div class="flex justify-between items-center mt-2">
+									<span class="text-sm badge badge-soft">Aantal: 20</span>
+								</div>
+							</div>
+							<span class="font-semibold">€ 40,00</span>
+						</div>
+					</div>
+
+					<!-- Totaal -->
+                    <div class="flex flex-col gap-2 pt-2 border-t-2 border-base-300">
+                        <div class="flex justify-between items-center font-semibold">
+                            <span>Subtotaal</span>
+                            <span>€ {subtotal?.toFixed(2)}</span>
+                        </div>
+              
+                            <div class="flex justify-between items-center font-semibold">
+                                <span>Levering</span>
+                                <span>€ {shippingCost?.toFixed(2)}</span>
+                            </div>
+							
+                        <div class="flex justify-between items-center font-bold text-lg border-t border-base-300 pt-2">
+                            <span>Totaal</span>
+                            <span class="text-green-600">€ {total?.toFixed(2)}</span>
+                        </div>
+                    </div>
+				</div>
+			</div>
 
 			<!-- Payment -->
 			<form
