@@ -36,9 +36,15 @@
 		}
 		saving = false
 	}
+
+	export let invoiceFormElement: HTMLFormElement
 </script>
 
-<form class="flex flex-col gap-1" on:submit|preventDefault={onSubmitWrapper}>
+<form
+	bind:this={invoiceFormElement}
+	class="flex flex-col gap-1"
+	on:submit|preventDefault={onSubmitWrapper}
+>
 	<Input
 		type="text"
 		label="Voornaam"

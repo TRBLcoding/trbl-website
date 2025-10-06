@@ -1,10 +1,12 @@
 <script lang="ts">
 	import EditDropdown from "$components/EditDropdown.svelte"
-	import Input from "$components/formHelpers/Input.svelte"
-	import Select from "$components/formHelpers/Select.svelte"
 	import { InvoiceDetails } from "$lib/domain/InvoiceDetails"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { invoiceDetailsStore } from "$lib/stores/InvoiceDetailsStore"
+	import {
+		loginModalOpenStore,
+		loginModalStateStore,
+	} from "$lib/stores/LoginmodalStore"
 	import {
 		faBorderNone,
 		faExclamationTriangle,
@@ -15,24 +17,20 @@
 	import Fa from "svelte-fa"
 	import { slide } from "svelte/transition"
 	import InvoiceDetailsForm from "./InvoiceDetailsForm.svelte"
-	import {
-		loginModalOpenStore,
-		loginModalStateStore,
-	} from "$lib/stores/LoginmodalStore"
 
-	let firstName = "Lorin"
-	let lastName = "Speybrouck"
-	let emailAddress = "lorin.speybrouck@proximus.be"
-	let phoneNumber = "+32 473 23 45 67"
-	let companyName = "TBRL 2"
-	let btwNumber: string | null = ""
-	let streetAndNumber = "Spiedamstraat 25"
-	let postalCode = "1899"
-	let place = "Gent"
-	let country = "Belgie"
+	export let firstName = "Lorin"
+	export let lastName = "Speybrouck"
+	export let emailAddress = "lorin.speybrouck@proximus.be"
+	export let phoneNumber = "+32 473 23 45 67"
+	export let companyName = "TBRL 2"
+	export let btwNumber: string | null = ""
+	export let streetAndNumber = "Spiedamstraat 25"
+	export let postalCode = "1899"
+	export let place = "Gent"
+	export let country = "Belgie"
 
-	let showForm = true
-	let selectedInvoiceDetails: number | undefined = undefined
+	let showForm = false
+	let showLoginPrompt = true
 
 	let upperErrorMessage = ""
 
@@ -78,8 +76,9 @@
 		}
 	}
 
-	function selectInvoiceDetails(index: number) {
-		selectedInvoiceDetails = index
+	export let selectedInvoiceDetails: InvoiceDetails
+	function selectInvoiceDetails(invoiceDetails: InvoiceDetails) {
+		selectedInvoiceDetails = invoiceDetails
 	}
 
 	let editing = false
@@ -120,6 +119,8 @@
 		$loginModalStateStore = "Register"
 		$loginModalOpenStore = true
 	}
+
+	export let invoiceFormElement: HTMLFormElement
 </script>
 
 <div class="flex flex-col gap-1">
@@ -136,13 +137,14 @@
 					{#each $invoiceDetailsStore as invoiceDetails, i}
 						<div class="relative">
 							<button
-								class="w-full flex flex-col items-start bg-base-100 p-2 rounded-lg border-2 border-[#d1d1d1] cursor-pointer hover:bg-base-300"
-								class:bg-base-300={selectedInvoiceDetails === i}
+								class="w-full flex flex-col items-start bg-base-100 p-2 rounded-lg border-2 border-[#d1d1d1] dark:border-[#474e56] cursor-pointer hover:bg-base-300"
+								class:bg-base-300={selectedInvoiceDetails?.id ===
+									invoiceDetails.id}
 								type="button"
-								on:click={() => selectInvoiceDetails(i)}
+								on:click={() => selectInvoiceDetails(invoiceDetails)}
 							>
 								<div class="text-sm italic">
-									{#if selectedInvoiceDetails === i}
+									{#if selectedInvoiceDetails?.id === invoiceDetails.id}
 										<span class="text-success">Geselecteeerd</span>
 									{:else}
 										Alternatief
@@ -216,39 +218,48 @@
 						? "Factuurgegevens aanpassen"
 						: "Nieuwe factuurgegevens"}
 					onSave={save}
+					bind:invoiceFormElement
 				/>
 			</div>
 		{/if}
 	{:else}
-		<div
-			class="p-6 bg-gradient-to-br from-base-200 to-base-300 rounded-xl mb-2 border border-base-300"
-		>
-			<div class="flex flex-col gap-3 items-center text-center">
-				<div
-					class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
-				>
-					<Fa icon={faUser} class="text-primary" size="lg" />
-				</div>
-				<div class="flex flex-col gap-2">
-					<h3 class="font-semibold text-lg">Sla je factuurgegevens op</h3>
-					<p class="text-sm text-base-content/70 max-w-md">
-						Ingelogde gebruikers kunnen factuurgegevens opslaan voor later
-						gebruik en sneller afrekenen.
-					</p>
-				</div>
+		{#if showLoginPrompt}
+			<div class="px-6 py-6 bg-base-200 rounded-xl mb-2 relative">
 				<button
-					class="btn btn-primary btn-wide gap-2"
 					type="button"
-					on:click={openLoginModal}
+					class="btn btn-sm btn-square btn-ghost absolute right-3 top-3"
+					on:click={() => (showLoginPrompt = false)}
 				>
-					<Fa icon={faUser} size="sm" />
-					Aanmelden
+					<Fa icon={faXmark} />
 				</button>
-				<button type="button" class="link text-sm" on:click={openSingupModal}>
-					Nog geen account? Registreer hier
-				</button>
+
+				<div class="flex flex-col gap-3 items-center text-center">
+					<div
+						class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center"
+					>
+						<Fa icon={faUser} class="text-primary" size="lg" />
+					</div>
+					<div class="flex flex-col gap-2">
+						<h3 class="font-semibold text-lg">Sla je factuurgegevens op</h3>
+						<p class="text-sm text-base-content/70 max-w-md">
+							Ingelogde gebruikers kunnen factuurgegevens opslaan voor later
+							gebruik en sneller afrekenen.
+						</p>
+					</div>
+					<button
+						class="btn btn-primary btn-wide gap-2"
+						type="button"
+						on:click={openLoginModal}
+					>
+						<Fa icon={faUser} size="sm" />
+						Aanmelden
+					</button>
+					<button type="button" class="link text-sm" on:click={openSingupModal}>
+						Nog geen account? Registreer hier
+					</button>
+				</div>
 			</div>
-		</div>
+		{/if}
 		<InvoiceDetailsForm
 			bind:firstName
 			bind:lastName
@@ -262,6 +273,7 @@
 			bind:country
 			submitLabel={null}
 			onSave={save}
+			bind:invoiceFormElement
 		/>
 	{/if}
 </div>

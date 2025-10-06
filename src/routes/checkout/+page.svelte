@@ -2,13 +2,57 @@
 	import Checkbox from "$components/formHelpers/Checkbox.svelte"
 	import Input from "$components/formHelpers/Input.svelte"
 	import InvoiceDetailsComponent from "$components/invoice/InvoiceDetailsComponent.svelte"
+	import type { InvoiceDetails } from "$lib/domain/InvoiceDetails"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
+	let firstName = "Lorin"
+	let lastName = "Speybrouck"
+	let emailAddress = "lorin.speybrouck@proximus.be"
+	let phoneNumber = "+32 473 23 45 67"
+	let companyName = "TBRL 2"
+	let btwNumber: string | null = ""
+	let streetAndNumber = "Spiedamstraat 25"
+	let postalCode = "1899"
+	let place = "Gent"
+	let country = "Belgie"
+
+	let eventType = ""
+	let rentPeriod = ""
 	let todo = ""
 	let visible = false
 
+	let saving = false
+	let form2: HTMLFormElement
+	let form3: HTMLFormElement
+	async function onSubmitWrapper() {
+		// -- Validate forms(reverse order) --
+		form3.reportValidity()
+		form2.reportValidity()
+		invoiceFormElement.reportValidity()
+
+		if (
+			!invoiceFormElement.checkValidity() ||
+			!form2.checkValidity() ||
+			!form3.checkValidity()
+		)
+			return
+
+		saving = true
+		const body = {}
+		const response = await fetch("/api/invoice-request", {
+			method: "POST",
+			body: JSON.stringify(body),
+		})
+		const responseJson = await response.json()
+		console.log(responseJson)
+		saving = false
+	}
+
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Algemene Voorwaarden")
+
+	let invoiceFormElement: HTMLFormElement
+	let selectedInvoiceDetails: InvoiceDetails
 </script>
 
 <div class="xl:max-w-2/3 mx-auto mt-4 mb-8">
@@ -19,28 +63,43 @@
 	<div class="flex gap-20 flex-col md:flex-row w-full">
 		<div class="flex-1">
 			<!-- Invoice details -->
-			<InvoiceDetailsComponent></InvoiceDetailsComponent>
+			<InvoiceDetailsComponent
+				bind:invoiceFormElement
+				bind:selectedInvoiceDetails
+				bind:firstName
+				bind:lastName
+				bind:emailAddress
+				bind:phoneNumber
+				bind:companyName
+				bind:btwNumber
+				bind:streetAndNumber
+				bind:postalCode
+				bind:place
+				bind:country
+			></InvoiceDetailsComponent>
 			<!-- Rental information -->
 			<div class="flex flex-col gap-1 mt-4">
 				<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
 					Verhuurgegevens
 				</h2>
-				<Input
-					type="text"
-					label="Type evenement"
-					placeholder="Type evenement"
-					bind:value={todo}
-					size="full"
-					required
-				/>
-				<Input
-					type="text"
-					label="Huur periode"
-					placeholder="Van waneer tot wanneer"
-					bind:value={todo}
-					size="full"
-					required
-				/>
+				<form bind:this={form2}>
+					<Input
+						type="text"
+						label="Type evenement"
+						placeholder="Type evenement"
+						bind:value={eventType}
+						size="full"
+						required
+					/>
+					<Input
+						type="text"
+						label="Huur periode"
+						placeholder="Van waneer tot wanneer"
+						bind:value={rentPeriod}
+						size="full"
+						required
+					/>
+				</form>
 			</div>
 			<!-- Shipping -->
 		</div>
@@ -48,35 +107,44 @@
 			<!-- Your order -->
 
 			<!-- Payment -->
-			<div class="flex flex-col gap-1 mt-4">
-				<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
-					Betaling
-				</h2>
-				<Checkbox label="Betaling op factuur" bind:value={visible} />
-				<Checkbox label="Betaling bij levering" bind:value={visible} />
-				<Input
-					type="text"
-					label="Coupon"
-					placeholder="Van waneer tot wanneer"
-					bind:value={todo}
-					required
-				/>
-			</div>
-			<!-- Confirm -->
-			<div class="flex flex-col gap-1 mt-4">
-				<span class="text-sm">
-					Uw data wordt enkel gebruikt voor het verbeteren van de site en voor
-					administratieve doeleinden. Lees meer in ons
-					<a class="link" href="/tos">privacybeleid</a>
-					.
-				</span>
-				<Checkbox
-					label="Ik heb de algemene voorwaarden van de website gelezen en ga hiermee akkoord *"
-					bind:value={visible}
-				/>
+			<form
+				bind:this={form3}
+				on:submit|preventDefault={onSubmitWrapper}
+				novalidate
+			>
+				<div class="flex flex-col gap-1 mt-4">
+					<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
+						Betaling
+					</h2>
+					<Checkbox label="Betaling op factuur" bind:value={visible} />
+					<Checkbox label="Betaling bij levering" bind:value={visible} />
+					<Input
+						type="text"
+						label="Coupon"
+						placeholder="Van waneer tot wanneer"
+						bind:value={todo}
+					/>
+				</div>
+				<!-- Confirm -->
+				<div class="flex flex-col gap-1 mt-4">
+					<span class="text-sm">
+						Uw data wordt enkel gebruikt voor het verbeteren van de site en voor
+						administratieve doeleinden. Lees meer in ons
+						<a class="link" href="/tos">privacybeleid</a>
+						.
+					</span>
+					<Checkbox
+						label="Ik heb de algemene voorwaarden van de website gelezen en ga hiermee akkoord"
+						bind:value={visible}
+						required
+					/>
 
-				<button class="btn btn-primary mt-3">Offerte aanvragen</button>
-			</div>
+					<button class="btn btn-primary mt-3" type="submit" disabled={saving}>
+						Offerte aanvragen
+						<span class="loading loading-ring" class:hidden={!saving}></span>
+					</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
