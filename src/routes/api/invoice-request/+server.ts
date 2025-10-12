@@ -7,8 +7,8 @@ export async function POST({ request }) {
 	try {
 		const invoiceMessage = InvoiceMessage.fromJSON(await request.json())
 		console.log(invoiceMessage)
-		// const response1 = await transporter.sendMail(invoiceMessage.toAdminEmail())
-		// console.log("Email sent to admin:", response1)
+		const response1 = await transporter.sendMail(await invoiceMessage.toAdminEmail())
+		console.log("Email sent to admin:", response1)
 		// const response2 = await transporter.sendMail(invoiceMessage.toCustomerEmail())
 		// console.log("Email sent to customer:", response2)
 	

@@ -7,6 +7,7 @@
 	import type { InvoiceDetails } from "$lib/domain/InvoiceDetails"
 	import type { InvoiceRequest } from "$lib/domain/InvoiceRequest"
 	import { authStore } from "$lib/stores/AuthStore"
+	import { cartStore } from "$lib/stores/CartStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import {
 		faExclamationTriangle,
@@ -51,16 +52,16 @@
 		return true
 	}
 
-	const selectedProducts= [{id: 1, amount: 2}]
-
 	async function onSubmitWrapper() {
 		// -- Validate forms(reverse order) --
 		errorText = ""
 		if (!areFormsValid()) return
 		saving = true
-
 		try {
-			console.log(selectedInvoiceDetails)
+			const selectedProducts = (await Promise.all($cartStore)).map((e) => ({
+				id: e.product.id,
+				amount: e.amount,
+			}))
 			const body: InvoiceRequest = {
 				firstName: selectedInvoiceDetails.firstName,
 				lastName: selectedInvoiceDetails.lastName,

@@ -87,13 +87,13 @@ export class InvoiceMessage {
 		)
 	}
 
-	toAdminEmail() {
+	async toAdminEmail() {
 		const email: Options = {
 			from: GOOGLE_INTERMEDIARY_EMAIL,
 			to: GOOGLE_ADMIN_EMAIL,
 			subject: `TRBL Bestelling: aanvraag tot offerte`,
 			replyTo: this.emailAddress,
-			html: getAdminInvoiceRequestTemplate(this),
+			html: await getAdminInvoiceRequestTemplate(this),
 		}
 		return email
 	}

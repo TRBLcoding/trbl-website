@@ -209,7 +209,7 @@
 			{/if}
 			<button class="btn btn-ghost" type="button" on:click={startCreate}>
 				<Fa icon={faPlus} />
-				Factuurgegevens toevoegen
+				Factuurgegevens aanmaken
 			</button>
 		</div>
 		{#if showForm}
