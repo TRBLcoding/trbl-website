@@ -4,6 +4,7 @@
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "md" | "sm" | "xs" = "sm"
+	export let autocomplete: AutoFill = ""
 
 	$: selectId = label?.replace(/[ :]/g, "").toLowerCase()
 </script>
@@ -27,6 +28,7 @@
 		class:text-[#8b8b8c]={value === ""}
 		bind:value
 		{required}
+		{autocomplete}
 	>
 		<option value="" disabled selected class="text-[#8b8b8c]!">Kies</option>
 		<slot />

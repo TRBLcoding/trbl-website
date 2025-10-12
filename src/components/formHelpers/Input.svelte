@@ -16,6 +16,7 @@
 
 	export let type: "text" | "number" | "email" | "date" | "password"
 	export let placeholder = ""
+	export let autocomplete: AutoFill = ""
 	export let labelClass = ""
 	export let edited = false
 	export let validate: (value: string) => string | undefined = () => ""
@@ -111,6 +112,7 @@
 			{placeholder}
 			{required}
 			{disabled}
+			{autocomplete}
 			on:focusout={() => (edited = true)}
 			on:input={onInput}
 			class="input border-2 w-full hover:cursor-text flex-1 join-item"

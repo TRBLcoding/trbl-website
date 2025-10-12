@@ -52,6 +52,7 @@
 		bind:value={firstName}
 		size="full"
 		required
+		autocomplete="given-name"
 	/>
 	<Input
 		type="text"
@@ -60,6 +61,7 @@
 		bind:value={lastName}
 		size="full"
 		required
+		autocomplete="family-name"
 	/>
 	<Input
 		type="email"
@@ -92,8 +94,8 @@
 		bind:value={btwNumber}
 		size="full"
 	/>
-	<Select label="Land" bind:value={country} required size="full">
-		<option>Belgie</option>
+	<Select label="Land" bind:value={country} required size="full" autocomplete="country-name">
+		<option value="BE">Belgie</option>
 		<option>Nederland</option>
 	</Select>
 	<Input
@@ -103,6 +105,7 @@
 		bind:value={streetAndNumber}
 		size="full"
 		required
+		autocomplete="street-address"
 	/>
 	<Input
 		type="text"
@@ -111,6 +114,7 @@
 		bind:value={postalCode}
 		size="full"
 		required
+		autocomplete="postal-code"
 	/>
 	<Input
 		type="text"
@@ -119,6 +123,7 @@
 		bind:value={place}
 		size="full"
 		required
+		autocomplete="address-level2"
 	/>
 	{#if submitLabel}
 		<button class="btn btn-primary mt-4 mb-1" type="submit" disabled={saving}>
