@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { linkifyText } from "$lib/utils/utils"
+  import { linkifyText } from "$lib/utils/Utils"
 
   export let content: string
   export let placeHolder = "Geen inhoud"

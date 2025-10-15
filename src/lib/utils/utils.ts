@@ -141,3 +141,11 @@ export function linkifyText(text: string) {
 }
 
 export function doNothing() { }
+
+export function mapCountryCodeToName(code: string) {
+	switch (code) {
+		case 'BE': return 'België'
+		case 'NL': return 'Nederland'
+		default: return code
+	}
+}

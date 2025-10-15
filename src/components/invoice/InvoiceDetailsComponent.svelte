@@ -14,6 +14,7 @@
 	import { slide } from "svelte/transition"
 	import InvoiceDetailsForm from "./InvoiceDetailsForm.svelte"
 	import LoginPrompt from "$components/LoginPrompt.svelte"
+	import { mapCountryCodeToName } from "$lib/utils/Utils"
 
 	export let invoiceFormElement: HTMLFormElement
 	export let selectedInvoiceDetails: InvoiceDetails
@@ -127,6 +128,7 @@
 		)
 	}
 
+	// Create a local InvoiceDetails object when not logged in and form is valid
 	let debounceTimer: ReturnType<typeof setTimeout>
 	$: if (!$authStore && invoiceFormElement?.checkValidity()) {
 		clearTimeout(debounceTimer)
@@ -169,7 +171,7 @@
 							>
 								<div class="text-sm italic">
 									{#if selectedInvoiceDetails?.id === invoiceDetails.id}
-										<span class="text-success">Geselecteeerd</span>
+										<span class="text-success">Geselecteerd</span>
 									{:else}
 										Alternatief
 									{/if}
@@ -180,7 +182,7 @@
 								</div>
 								<div class="text-sm">
 									{invoiceDetails.streetAndNumber} • {invoiceDetails.postalCode}
-									{invoiceDetails.place} • {invoiceDetails.country}
+									{invoiceDetails.place} • {mapCountryCodeToName(invoiceDetails.country)}
 								</div>
 							</button>
 							<div class="absolute right-2 top-2">

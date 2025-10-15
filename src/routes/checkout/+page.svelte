@@ -213,6 +213,7 @@
 						bind:deliveryPlace
 						bind:deliveryCountry
 						{useSameAsInvoice}
+						invoiceSelected={selectedInvoiceDetails !== undefined}
 					></DeliveryComponent>
 				{/if}
 			</div>

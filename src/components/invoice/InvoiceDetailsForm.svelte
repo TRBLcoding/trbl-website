@@ -96,7 +96,7 @@
 	/>
 	<Select label="Land" bind:value={country} required size="full" autocomplete="country-name">
 		<option value="BE">Belgie</option>
-		<option>Nederland</option>
+		<option value="NL">Nederland</option>
 	</Select>
 	<Input
 		type="text"
