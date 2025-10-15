@@ -129,10 +129,9 @@
 	}
 
 	export function validateSelected() {
-		if (!selectedInvoiceDetails) 
+		if (!selectedInvoiceDetails)
 			errorMessage = "Selecteer een factuuradres of maak een nieuw adres aan"
-			return false
-
+		return false
 	}
 
 	// Create a local InvoiceDetails object when not logged in and form is valid
@@ -162,12 +161,12 @@
 </script>
 
 <div class="flex flex-col">
-	<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
+	<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-3">
 		Factuurgegevens
 	</h2>
 
 	{#if $authStore}
-		<div class="p-4 bg-base-200 rounded-lg mb-2 mt-2">
+		<div class="p-4 bg-base-200 rounded-lg mb-2">
 			<div class="flex flex-col gap-2 mb-2">
 				{#await invoiceDetailsStore.initPromise}
 					Loading
@@ -194,7 +193,9 @@
 								</div>
 								<div class="text-sm">
 									{invoiceDetails.streetAndNumber} • {invoiceDetails.postalCode}
-									{invoiceDetails.place} • {mapCountryCodeToName(invoiceDetails.country)}
+									{invoiceDetails.place} • {mapCountryCodeToName(
+										invoiceDetails.country
+									)}
 								</div>
 							</button>
 							<div class="absolute right-2 top-2">
@@ -260,6 +261,11 @@
 				/>
 			</div>
 		{/if}
+	{:else if $authStore === undefined}
+		<div class="px-6 py-6 bg-base-200 rounded-xl mb-2 relative">
+			 <div class="skeleton h-15 w-full mb-4"></div>
+			  <div class="skeleton h-15 w-full"></div>
+		</div>
 	{:else}
 		<LoginPrompt></LoginPrompt>
 		<InvoiceDetailsForm

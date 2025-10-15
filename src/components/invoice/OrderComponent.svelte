@@ -26,7 +26,10 @@
 
 	<div class="flex flex-col gap-3 mt-3 bg-base-200 rounded-lg p-4">
 		{#each $cartStore as productPromise, i}
-			{#await productPromise then cartProduct}
+			{#await productPromise}
+				<div class="skeleton h-15 w-full mb-2"></div>
+			{:then cartProduct}
+				<!-- promise was fulfilled -->
 				{#if cartProduct.product}
 					<div
 						class="flex gap-3 pb-3 border-b border-base-300"
@@ -83,32 +86,42 @@
 			{:catch error}
 				<p>Error loading product: {error.message}</p>
 			{/await}
+		{:else}
+			<div class="skeleton h-15 w-full mb-2"></div>
+			<div class="skeleton h-15 w-full mb-2"></div>
 		{/each}
 
 		<!-- Totaal -->
 		<div class="flex flex-col gap-2">
-			{#await combinedPrice then price}
-				<div class="flex justify-between items-center font-semibold">
-					<span>Subtotaal</span>
+			<div class="flex justify-between items-center font-semibold">
+				<span>Subtotaal</span>
+				{#await combinedPrice}
+					<div class="skeleton h-6 w-20"></div>
+				{:then price}
 					<span>€ {price?.toFixed(2)}</span>
-				</div>
-			{/await}
+				{/await}
+			</div>
 
 			<div class="flex justify-between items-center font-semibold">
 				<span>Levering</span>
-				<span>{deliveryMethod === "pick-up" ? "n.v.t.": "t.b.d."}</span>
+				{#await combinedPrice}
+					<div class="skeleton h-6 w-20"></div>
+				{:then _}
+					<!-- promise was fulfilled -->
+					<span>{deliveryMethod === "pick-up" ? "n.v.t." : "t.b.d."}</span>
+				{/await}
 			</div>
 
-			{#await combinedPrice then price}
-				<div
-					class="flex justify-between items-center font-bold text-xl border-t border-base-300 pt-2"
-				>
-					<span>Totaal</span>
-					<span class="text-green-600"
-						>€ {(price)?.toFixed(2)}</span
-					>
-				</div>
-			{/await}
+			<div
+				class="flex justify-between items-center font-bold text-xl border-t border-base-300 pt-2"
+			>
+				<span>Totaal</span>
+				{#await combinedPrice}
+					<div class="skeleton h-8 w-30"></div>
+				{:then price}
+					<span class="text-green-600">€ {price?.toFixed(2)}</span>
+				{/await}
+			</div>
 		</div>
 	</div>
 </div>
