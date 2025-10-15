@@ -128,6 +128,13 @@
 		)
 	}
 
+	export function validateSelected() {
+		if (!selectedInvoiceDetails) 
+			errorMessage = "Selecteer een factuuradres of maak een nieuw adres aan"
+			return false
+
+	}
+
 	// Create a local InvoiceDetails object when not logged in and form is valid
 	let debounceTimer: ReturnType<typeof setTimeout>
 	$: if (!$authStore && invoiceFormElement?.checkValidity()) {
@@ -146,6 +153,11 @@
 				country
 			)
 		}, 300)
+	}
+
+	// Auto select the first invoice details when logged in
+	$: if ($authStore && $invoiceDetailsStore && !selectedInvoiceDetails) {
+		selectedInvoiceDetails = $invoiceDetailsStore[0]
 	}
 </script>
 

@@ -39,9 +39,14 @@
 	let form3: HTMLFormElement
 
 	function areFormsValid() {
+		errorText = ""
 		form3.reportValidity()
 		form2.reportValidity()
 		if (!$authStore) invoiceFormElement.reportValidity()
+		else if (!selectedInvoiceDetails) {
+			errorText = "Geen factuurgegevens geselecteerd"
+			return false
+		}
 
 		if (
 			(!$authStore && !invoiceFormElement.checkValidity()) ||
