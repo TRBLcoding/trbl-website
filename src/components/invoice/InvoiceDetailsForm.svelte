@@ -45,24 +45,26 @@
 	class="flex flex-col gap-1"
 	on:submit|preventDefault={onSubmitWrapper}
 >
-	<Input
-		type="text"
-		label="Voornaam"
-		placeholder="Voornaam"
-		bind:value={firstName}
-		size="full"
-		required
-		autocomplete="given-name"
-	/>
-	<Input
-		type="text"
-		label="Achternaam"
-		placeholder="Achternaam"
-		bind:value={lastName}
-		size="full"
-		required
-		autocomplete="family-name"
-	/>
+	<div class="flex flex-col xs:flex-row gap-2">
+		<Input
+			type="text"
+			label="Voornaam"
+			placeholder="Voornaam"
+			bind:value={firstName}
+			size="full"
+			required
+			autocomplete="given-name"
+		/>
+		<Input
+			type="text"
+			label="Achternaam"
+			placeholder="Achternaam"
+			bind:value={lastName}
+			size="full"
+			required
+			autocomplete="family-name"
+		/>
+	</div>
 	<Input
 		type="email"
 		label="Emailadres"
@@ -94,10 +96,6 @@
 		bind:value={btwNumber}
 		size="full"
 	/>
-	<Select label="Land" bind:value={country} required size="full" autocomplete="country-name">
-		<option value="BE">Belgie</option>
-		<option value="NL">Nederland</option>
-	</Select>
 	<Input
 		type="text"
 		label="Straatnaam en huisnummer"
@@ -107,24 +105,36 @@
 		required
 		autocomplete="street-address"
 	/>
-	<Input
-		type="text"
-		label="Postcode"
-		placeholder="Postcode"
-		bind:value={postalCode}
-		size="full"
+	<div class="flex flex-col xs:flex-row gap-2">
+		<Input
+			type="text"
+			label="Postcode"
+			placeholder="Postcode"
+			bind:value={postalCode}
+			size="full"
+			required
+			autocomplete="postal-code"
+		/>
+		<Input
+			type="text"
+			label="Plaats"
+			placeholder="Plaats"
+			bind:value={place}
+			size="full"
+			required
+			autocomplete="address-level2"
+		/>
+	</div>
+	<Select
+		label="Land"
+		bind:value={country}
 		required
-		autocomplete="postal-code"
-	/>
-	<Input
-		type="text"
-		label="Plaats"
-		placeholder="Plaats"
-		bind:value={place}
 		size="full"
-		required
-		autocomplete="address-level2"
-	/>
+		autocomplete="country-name"
+	>
+		<option value="BE">Belgie</option>
+		<option value="NL">Nederland</option>
+	</Select>
 	{#if submitLabel}
 		<button class="btn btn-primary mt-4 mb-1" type="submit" disabled={saving}>
 			{submitLabel}
