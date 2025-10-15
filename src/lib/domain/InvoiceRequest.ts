@@ -98,13 +98,13 @@ export class InvoiceMessage {
 		return email
 	}
 
-	toCustomerEmail() {
+	async toCustomerEmail() {
 		const email: Options = {
 			from: GOOGLE_INTERMEDIARY_EMAIL,
 			to: this.emailAddress,
 			subject: `No Reply TRBL Bestelling: aanvraag tot offerte`,
 			replyTo: "",
-			html: getCustomerInvoiceRequestTemplate(this),
+			html: await getCustomerInvoiceRequestTemplate(this),
 		}
 		return email
 	}

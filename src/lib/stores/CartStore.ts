@@ -48,10 +48,17 @@ function createCartStore() {
 		})
 	}
 
+	function clear() {
+		update(() => {
+			return []
+		})
+	}
+
 	return {
 		subscribe,
 		add,
-		remove
+		remove,
+		clear
 	}
 }
 
