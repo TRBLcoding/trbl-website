@@ -7,6 +7,8 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
+	export let deliveryMethod: "pick-up" | "delivery"
+
 	// Price calculation
 	$: combinedPrice = Promise.all($cartStore).then((cartItems) =>
 		cartItems.reduce(
@@ -94,7 +96,7 @@
 
 			<div class="flex justify-between items-center font-semibold">
 				<span>Levering</span>
-				<span>n.v.t.</span>
+				<span>{deliveryMethod === "pick-up" ? "n.v.t.": "t.b.d."}</span>
 			</div>
 
 			{#await combinedPrice then price}

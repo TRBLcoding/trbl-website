@@ -226,7 +226,7 @@
 
 		<div class="flex-1 max-w-lg">
 			<!-- Order details -->
-			<OrderComponent></OrderComponent>
+			<OrderComponent {deliveryMethod}></OrderComponent>
 
 			<!-- Coupon -->
 			{#if !showCouponInput}

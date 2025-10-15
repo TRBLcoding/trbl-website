@@ -28,7 +28,7 @@
 	let streetAndNumber = "Spiedamstraat 25"
 	let postalCode = "1899"
 	let place = "Gent"
-	let country = "Belgie"
+	let country = "BE"
 
 	let showForm = false
 	let errorMessage = ""
