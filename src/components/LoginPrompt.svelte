@@ -19,7 +19,7 @@
 </script>
 
 {#if showLoginPrompt}
-	<div class="px-6 py-6 bg-base-200 rounded-xl mb-2 relative">
+	<div class="p-4 bg-base-200 rounded-xl mb-2 relative">
 		<button
 			type="button"
 			class="btn btn-sm btn-square btn-ghost absolute right-3 top-3"

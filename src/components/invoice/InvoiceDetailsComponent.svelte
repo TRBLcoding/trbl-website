@@ -19,16 +19,16 @@
 	export let invoiceFormElement: HTMLFormElement
 	export let selectedInvoiceDetails: InvoiceDetails
 
-	let firstName = "Lorin"
-	let lastName = "Speybrouck"
-	let emailAddress = "lorin.speybrouck@proximus.be"
-	let phoneNumber = "+32 473 23 45 67"
-	let companyName = "TBRL 2"
+	let firstName = ""
+	let lastName = ""
+	let emailAddress = ""
+	let phoneNumber = ""
+	let companyName = ""
 	let btwNumber: string | null = ""
-	let streetAndNumber = "Spiedamstraat 25"
-	let postalCode = "1899"
-	let place = "Gent"
-	let country = "BE"
+	let streetAndNumber = ""
+	let postalCode = ""
+	let place = ""
+	let country = ""
 
 	let showForm = false
 	let errorMessage = ""

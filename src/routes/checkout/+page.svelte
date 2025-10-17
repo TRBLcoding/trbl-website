@@ -27,13 +27,13 @@
 	let deliveryPlace = ""
 	let deliveryCountry = ""
 
-	let eventType = "Bedrijfsfeest"
-	let rentPeriod = "Ooit"
+	let eventType = ""
+	let rentPeriod = ""
 	let paymentMethod: "bank-transfer" | "cash" = "bank-transfer"
 	let deliveryMethod: "pick-up" | "delivery" = "pick-up"
 	let couponCode = ""
 	let appliedCouponCode: string | null = null
-	let acceptedTOS = true
+	let acceptedTOS = false
 
 	let showCouponInput = false
 	let saving = false
@@ -107,8 +107,6 @@
 				body: JSON.stringify(body),
 			})
 			const responseJson = await response.json()
-			console.log(responseJson)
-			await sleep(1000)
 			cartSnapshot = $cartStore
 			succesFullySubmitted = true
 			cartStore.clear()
@@ -131,6 +129,7 @@
 	}
 
 	function useSameAsInvoice() {
+		if (!$authStore && !invoiceFormElement.reportValidity()) return
 		deliveryFirstName = selectedInvoiceDetails.firstName
 		deliveryLastName = selectedInvoiceDetails.lastName
 		deliveryStreetAndNumber = selectedInvoiceDetails.streetAndNumber
@@ -147,7 +146,7 @@
 	<h1 class="text-2xl font-bold mb-1">Offerte aanvragen</h1>
 	{#if $cartStore === undefined}
 		Loading <span class="loading loading-ring"></span>
-	{:else if $cartStore.length > 0}
+	{:else if $cartStore.length > 0 || cartSnapshot.length > 0}
 		<!-- else if content here -->
 		<div class="flex md:gap-20 flex-col md:flex-row w-full">
 			<div class="flex-1">
