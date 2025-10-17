@@ -11,13 +11,13 @@ export const cartAddTrigger = writable<number>(0)
 
 function createCartStore() {
 	// Persists to localStorage
-	const innerStore = persisted<CartItem[]>('cart', [])
+	const innerStore = persisted<CartItem[] | undefined>('cart', undefined)
 	const { update } = innerStore
 
 	// Derived store that transforms CartItems to CartProducts
-	const subscribe = derived<Persisted<CartItem[]>, Promise<CartProduct>[]>(innerStore, (cartItems) => {
-		if (!browser) return []
-		const cartProducts = cartItems.map(async e => {
+	const subscribe = derived<Persisted<CartItem[] | undefined>, Promise<CartProduct>[] | undefined>(innerStore, (cartItems) => {
+		if (!browser) return undefined
+		const cartProducts = cartItems?.map(async e => {
 			const product = await productStore.getProductById(e.id)
 			if (!product)
 				console.warn("Product not found for id", e.id)
@@ -28,13 +28,13 @@ function createCartStore() {
 
 	function add(product: Product, amount: number) {
 		update((products) => {
-			const existingProduct = products.find((p) => p.id === product.id)
+			const existingProduct = products?.find((p) => p.id === product.id)
 			if (existingProduct) {
 				const safeAmount = product.maxOrderAmount ? Math.min(existingProduct.amount + amount, product.maxOrderAmount) : existingProduct.amount + amount
 				existingProduct.amount = safeAmount
 			} else {
-				const safeAmount = product.maxOrderAmount ? Math.min(amount, product.maxOrderAmount) : amount
-				products.push({ id: product.id, amount: safeAmount })
+				const safeAmount = product.maxOrderAmount ? Math.min(amount, product.maxOrderAmount) : amount;
+				(products || []).push({ id: product.id, amount: safeAmount })
 			}
 			cartAddTrigger.update(n => n + 1)
 			return products
@@ -43,7 +43,7 @@ function createCartStore() {
 
 	function remove(productToRemove: Product) {
 		update((products) => {
-			const newProducts = products.filter((e) => e.id !== productToRemove.id)
+			const newProducts = products?.filter((e) => e.id !== productToRemove.id)
 			return newProducts
 		})
 	}

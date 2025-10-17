@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Checkbox from "$components/formHelpers/Checkbox.svelte"
 	import Input from "$components/formHelpers/Input.svelte"
+	import RadioGroup from "$components/formHelpers/RadioGroup.svelte"
 	import DeliveryComponent from "$components/invoice/DeliveryComponent.svelte"
 	import InvoiceDetailsComponent from "$components/invoice/InvoiceDetailsComponent.svelte"
 	import OrderComponent from "$components/invoice/OrderComponent.svelte"
@@ -11,6 +12,7 @@
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { sleep } from "$lib/utils/Utils"
 	import {
+		faCartShopping,
 		faCheckCircle,
 		faExclamationTriangle,
 		faTicket,
@@ -65,7 +67,7 @@
 		// -- Validate forms(reverse order) --
 		errorText = ""
 		succesFullySubmitted = false
-		if (!areFormsValid()) return
+		if (!$cartStore || !areFormsValid()) return
 		saving = true
 		try {
 			const selectedProducts = (await Promise.all($cartStore)).map((e) => ({
@@ -119,9 +121,6 @@
 		saving = false
 	}
 
-	// -- Page title --
-	pageHeadStore.updatePageTitle("Offerte aanvragen")
-
 	let invoiceFormElement: HTMLFormElement
 	let selectedInvoiceDetails: InvoiceDetails
 
@@ -139,234 +138,215 @@
 		deliveryPlace = selectedInvoiceDetails.place
 		deliveryCountry = selectedInvoiceDetails.country
 	}
+
+	// -- Page title --
+	pageHeadStore.updatePageTitle("Offerte aanvragen")
 </script>
 
 <div class="xl:max-w-2/3 mx-auto mt-4 mb-8 p-4">
 	<h1 class="text-2xl font-bold mb-1">Offerte aanvragen</h1>
+	{#if $cartStore === undefined}
+		Loading <span class="loading loading-ring"></span>
+	{:else if $cartStore.length > 0}
+		<!-- else if content here -->
+		<div class="flex md:gap-20 flex-col md:flex-row w-full">
+			<div class="flex-1">
+				<!-- Invoice details -->
+				<InvoiceDetailsComponent
+					bind:invoiceFormElement
+					bind:selectedInvoiceDetails
+				></InvoiceDetailsComponent>
 
-	<div class="flex md:gap-20 flex-col md:flex-row w-full">
-		<div class="flex-1">
-			<!-- Invoice details -->
-			<InvoiceDetailsComponent
-				bind:invoiceFormElement
-				bind:selectedInvoiceDetails
-			></InvoiceDetailsComponent>
-			<!-- Rental information -->
-			<div class="flex flex-col gap-1 mt-4">
-				<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
-					Verhuurgegevens
-				</h2>
-				<form bind:this={form2}>
-					<Input
-						type="text"
-						label="Type evenement"
-						placeholder="Type evenement"
-						bind:value={eventType}
-						size="full"
-						required
-					/>
-					<Input
-						type="text"
-						label="Huur periode"
-						placeholder="Van waneer tot wanneer"
-						bind:value={rentPeriod}
-						size="full"
-						required
-					/>
-				</form>
-			</div>
-			<!-- Shipping -->
-			<div class="mt-4">
-				<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
-					Levering
-				</h2>
+				<!-- Rental information -->
+				<div class="flex flex-col gap-1 mt-4">
+					<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
+						Verhuurgegevens
+					</h2>
+					<form bind:this={form2}>
+						<Input
+							type="text"
+							label="Type evenement"
+							placeholder="Type evenement"
+							bind:value={eventType}
+							size="full"
+							required
+						/>
+						<Input
+							type="text"
+							label="Huur periode"
+							placeholder="Van waneer tot wanneer"
+							bind:value={rentPeriod}
+							size="full"
+							required
+						/>
+					</form>
+				</div>
 
-				<label
-					class="flex items-start gap-3 cursor-pointer p-3 rounded-lg hover:bg-base-200"
-				>
-					<input
-						type="radio"
-						name="delivery"
-						class="radio radio-primary mt-0.5"
-						value="pick-up"
-						bind:group={deliveryMethod}
-					/>
-					<span class="flex-1">
-						<span class="font-medium"> Afhalen in Gent </span>
-						<span class="block text-sm text-base-content/70 mt-1">
+				<!-- Shipping -->
+				<div class="mt-4">
+					<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
+						Levering
+					</h2>
+					<RadioGroup
+						value1="pick-up"
+						value2="delivery"
+						bind:groupValue={deliveryMethod}
+					>
+						<span slot="title1">Afhalen in Gent</span>
+						<span slot="content1">
 							Adres: Nederpolder 4 9000 Gent. Opgepast LEZ(Lage Emissie Zone)!
 						</span>
-					</span>
-				</label>
-
-				<label
-					class="flex items-start gap-3 cursor-pointer p-3 rounded-lg hover:bg-base-200"
-				>
-					<input
-						type="radio"
-						name="delivery"
-						class="radio radio-primary mt-0.5"
-						value="delivery"
-						bind:group={deliveryMethod}
-					/>
-					<span class="flex-1">
-						<span class="font-medium">Laten Leveren</span>
-						<span class="block text-sm text-base-content/70 mt-1">
+						<span slot="title2">Laten Leveren</span>
+						<span slot="content2">
 							Verzendkosten worden berekend bij opmaken van Offerte, afhankelijk
 							van materiaal en afstand
 						</span>
-					</span>
-				</label>
+					</RadioGroup>
 
-				{#if deliveryMethod === "delivery"}
-					<DeliveryComponent
-						bind:deliveryFirstName
-						bind:deliveryLastName
-						bind:deliveryStreetAndNumber
-						bind:deliveryPostalCode
-						bind:deliveryPlace
-						bind:deliveryCountry
-						{useSameAsInvoice}
-						invoiceSelected={selectedInvoiceDetails !== undefined}
-					></DeliveryComponent>
-				{/if}
+					{#if deliveryMethod === "delivery"}
+						<DeliveryComponent
+							bind:deliveryFirstName
+							bind:deliveryLastName
+							bind:deliveryStreetAndNumber
+							bind:deliveryPostalCode
+							bind:deliveryPlace
+							bind:deliveryCountry
+							{useSameAsInvoice}
+							invoiceSelected={selectedInvoiceDetails !== undefined}
+						></DeliveryComponent>
+					{/if}
+				</div>
 			</div>
-		</div>
 
-		<div class="flex-1 max-w-lg">
-			<!-- Order details -->
-			<OrderComponent
-				cartItems={succesFullySubmitted ? cartSnapshot : $cartStore}
-				{deliveryMethod}
-			></OrderComponent>
+			<div class="flex-1 max-w-lg">
+				<!-- Order details -->
+				<OrderComponent
+					cartItems={succesFullySubmitted ? cartSnapshot : $cartStore}
+					{deliveryMethod}
+				></OrderComponent>
 
-			<!-- Coupon -->
-			{#if !showCouponInput}
-				<div class="w-full flex items-end">
-					<button
-						type="button"
-						class="btn btn-ghost btn-sm mt-2 ml-auto items-center"
-						on:click={() => (showCouponInput = true)}
-					>
-						<Fa icon={faTicket} class="" /> Heb je een coupon?
-					</button>
-				</div>
-			{/if}
-			{#if showCouponInput}
-				<div class="mb-3 mt-4">
-					<Input
-						type="text"
-						placeholder="Coupon code"
-						size="full"
-						bind:value={couponCode}
-					>
-						<div slot="join">
-							<button
-								title="Toepassen"
-								class="btn join-item border-2 border-l-0 border-[#d1d1d1] dark:border-[#474e56]"
-								type="button"
-								on:click={applyCoupon}
-							>
-								Toepassen
-							</button>
-						</div>
-					</Input>
-					<button
-						type="button"
-						class="btn btn-ghost btn-sm mt-2"
-						on:click={() => (showCouponInput = false)}
-					>
-						Annuleren
-					</button>
-				</div>
-			{/if}
+				<!-- Coupon -->
+				{#if !showCouponInput}
+					<div class="w-full flex items-end">
+						<button
+							type="button"
+							class="btn btn-ghost btn-sm mt-2 ml-auto items-center"
+							on:click={() => (showCouponInput = true)}
+						>
+							<Fa icon={faTicket} class="" /> Heb je een coupon?
+						</button>
+					</div>
+				{/if}
+				{#if showCouponInput}
+					<div class="mb-3 mt-4">
+						<Input
+							type="text"
+							placeholder="Coupon code"
+							size="full"
+							bind:value={couponCode}
+						>
+							<div slot="join">
+								<button
+									title="Toepassen"
+									class="btn join-item border-2 border-l-0 border-[#d1d1d1] dark:border-[#474e56]"
+									type="button"
+									on:click={applyCoupon}
+								>
+									Toepassen
+								</button>
+							</div>
+						</Input>
+						<button
+							type="button"
+							class="btn btn-ghost btn-sm mt-2"
+							on:click={() => (showCouponInput = false)}
+						>
+							Annuleren
+						</button>
+					</div>
+				{/if}
 
-			<!-- Payment -->
-			<form
-				bind:this={form3}
-				on:submit|preventDefault={onSubmitWrapper}
-				novalidate
-			>
-				<div class="flex flex-col gap-1">
-					<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
-						Betaling
-					</h2>
-					<label
-						class="flex items-start gap-3 cursor-pointer p-3 rounded-lg hover:bg-base-200"
-					>
-						<input
-							type="radio"
-							name="payment"
-							class="radio radio-primary mt-0.5"
-							value="bank-transfer"
-							bind:group={paymentMethod}
-						/>
-						<span class="flex-1">
-							<span class="font-medium">Betaling op factuur</span>
-							<span class="block text-sm text-base-content/70 mt-1">
+				<!-- Payment -->
+				<form
+					bind:this={form3}
+					on:submit|preventDefault={onSubmitWrapper}
+					novalidate
+				>
+					<div class="flex flex-col gap-1">
+						<h2
+							class="text-lg font-semibold pb-1 border-b border-base-300 mb-1"
+						>
+							Betaling
+						</h2>
+						<RadioGroup
+							value1="bank-transfer"
+							value2="cash"
+							bind:groupValue={paymentMethod}
+						>
+							<span slot="title1">Betaling op factuur</span>
+							<span slot="content1">
 								Maak je betaling rechtstreeks over op onze bankrekening. Gebruik
 								je factuurnummer als betalingsreferentie
 							</span>
-						</span>
-					</label>
-
-					<label
-						class="flex items-start gap-3 cursor-pointer p-3 rounded-lg hover:bg-base-200"
-					>
-						<input
-							type="radio"
-							name="payment"
-							class="radio radio-primary mt-0.5"
-							value="cash"
-							bind:group={paymentMethod}
-						/>
-						<span class="flex-1">
-							<span class="font-medium">Betaling bij levering</span>
-							<span class="block text-sm text-base-content/70 mt-1">
+							<span slot="title2">Betaling bij levering</span>
+							<span slot="content2">
 								Contant betalen bij aflevering (Cash of Payconic/Wero)
 							</span>
+						</RadioGroup>
+					</div>
+					<div class="flex flex-col gap-3 mt-4">
+						<span class="text-sm">
+							Uw data wordt enkel gebruikt voor het verbeteren van de site en
+							voor administratieve doeleinden. Lees meer in ons
+							<a class="link" href="/tos">privacybeleid</a>.
 						</span>
-					</label>
-				</div>
-				<!-- Confirm -->
-				<div class="flex flex-col gap-3 mt-4">
-					<span class="text-sm">
-						Uw data wordt enkel gebruikt voor het verbeteren van de site en voor
-						administratieve doeleinden. Lees meer in ons
-						<a class="link" href="/tos">privacybeleid</a>.
-					</span>
-					<Checkbox bind:value={acceptedTOS} size="full" required>
-						<span slot="label" class="whitespace-normal">
-							Ik heb de <a class="link" href="/tos">algemene voorwaarden</a> van
-							de website gelezen en ga hiermee akkoord
-						</span>
-					</Checkbox>
+						<Checkbox bind:value={acceptedTOS} size="full" required>
+							<span slot="label" class="whitespace-normal">
+								Ik heb de <a class="link" href="/tos">algemene voorwaarden</a> van
+								de website gelezen en ga hiermee akkoord
+							</span>
+						</Checkbox>
 
-					<button
-						class="btn btn-primary mt-2"
-						type="submit"
-						disabled={saving || succesFullySubmitted}
-					>
-						Offerte aanvragen
-						<span class="loading loading-ring" class:hidden={!saving}></span>
-					</button>
-					{#if errorText}
-						<div class="text-error flex gap-2 items-center mt-2">
-							<Fa icon={faExclamationTriangle} />
-							<span>{errorText}</span>
-						</div>
-					{/if}
-					{#if succesFullySubmitted}
-						<div class="text-success flex gap-2 items-center mt-2">
-							<Fa icon={faCheckCircle} />
-							<span
-								>Uw aanvraag tot offerte is succesvol verstuurd, uw ontvangt
-								binnenkort ook een bevestiging via mail.</span
-							>
-						</div>
-					{/if}
-				</div>
-			</form>
+						<button
+							class="btn btn-primary mt-2"
+							type="submit"
+							disabled={saving || succesFullySubmitted}
+						>
+							Offerte aanvragen
+							<span class="loading loading-ring" class:hidden={!saving}></span>
+						</button>
+						{#if errorText}
+							<div class="text-error flex gap-2 items-center mt-2">
+								<Fa icon={faExclamationTriangle} />
+								<span>{errorText}</span>
+							</div>
+						{/if}
+						{#if succesFullySubmitted}
+							<div class="text-success flex gap-2 items-center mt-2">
+								<Fa icon={faCheckCircle} />
+								<span>
+									Uw aanvraag tot offerte is succesvol verstuurd, uw ontvangt
+									binnenkort ook een bevestiging via mail.
+								</span>
+							</div>
+						{/if}
+					</div>
+				</form>
+			</div>
 		</div>
-	</div>
+	{:else}
+		<div class="flex justify-center bg-base-200 rounded-xl py-12 mt-3">
+			<div class="max-w-md flex items-center flex-col gap-4 text-center">
+				<Fa icon={faCartShopping} size="4x" />
+				<h2 class="text-3xl font-bold">Uw winkelwagen is leeg</h2>
+				<p class="text-lg mb-2">
+					Voeg eerst producten toe aan uw winkelmandje om een offerte aan te
+					vragen.
+				</p>
+				<a href="/products" class="btn btn-primary btn-lg gap-2">
+					Bekijk ons aanbod
+				</a>
+			</div>
+		</div>
+	{/if}
 </div>

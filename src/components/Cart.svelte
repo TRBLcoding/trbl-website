@@ -19,12 +19,14 @@
 		cartStore.remove(product)
 	}
 
-	$: combinedPrice = Promise.all($cartStore).then((cartItems) =>
-		cartItems.reduce(
-			(acc, item) => acc + (item.product?.price ?? 0) * item.amount,
-			0
-		)
-	)
+	$: combinedPrice = $cartStore
+		? Promise.all($cartStore).then((cartItems) =>
+				cartItems.reduce(
+					(acc, item) => acc + (item.product?.price ?? 0) * item.amount,
+					0
+				)
+			)
+		: 0
 
 	$: showCartOnAdd($cartAddTrigger)
 	function showCartOnAdd(value: number) {
@@ -41,7 +43,7 @@
 		title="Winkelmandje"
 	>
 		<Fa icon={faCartShopping} class="text-xl" />
-		{#if $cartStore.length}
+		{#if $cartStore && $cartStore.length}
 			<div
 				class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-primary border-2 border-base-100 rounded-full text-base-100"
 			>
@@ -128,11 +130,11 @@
 			{/await}
 		{:else}
 			<div class="flex flex-col gap-4 p-4 pb-4 mt-1 items-center">
-				<Fa icon={faBorderNone} size="2x" />
+				<Fa icon={faCartShopping} size="2x" />
 				<div class="flex flex-col gap-2 items-center">
-					<span>Geen items in winkelmandje</span>
+					<span>Uw winkelwagen is leeg</span>
 					<span>
-						Ondek onze producten op de
+						Ondek al onze producten op de
 						<a href="/products" class="link">verhuur</a>
 						pagina
 					</span>
@@ -140,7 +142,7 @@
 			</div>
 		{/each}
 
-		{#if $cartStore.length > 0}
+		{#if $cartStore && $cartStore.length > 0}
 			<div
 				class="p-3 px-4 m-1 pb-2 flex flex-row justify-between interaction items-center border-t-2 border-base-300"
 			>
