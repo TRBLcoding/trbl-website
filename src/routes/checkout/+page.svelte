@@ -7,11 +7,11 @@
 	import type { InvoiceDetails } from "$lib/domain/InvoiceDetails"
 	import type { InvoiceRequest } from "$lib/domain/InvoiceRequest"
 	import { authStore } from "$lib/stores/AuthStore"
-	import { cartStore } from "$lib/stores/CartStore"
+	import { cartStore, type CartProduct } from "$lib/stores/CartStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { sleep } from "$lib/utils/Utils"
 	import {
-	faCheckCircle,
+		faCheckCircle,
 		faExclamationTriangle,
 		faTicket,
 	} from "@fortawesome/free-solid-svg-icons"
@@ -59,11 +59,12 @@
 		return true
 	}
 
+	let cartSnapshot: Promise<CartProduct>[] = []
 	let succesFullySubmitted = false
 	async function onSubmitWrapper() {
 		// -- Validate forms(reverse order) --
 		errorText = ""
-		succesFullySubmitted=false
+		succesFullySubmitted = false
 		if (!areFormsValid()) return
 		saving = true
 		try {
@@ -106,8 +107,9 @@
 			const responseJson = await response.json()
 			console.log(responseJson)
 			await sleep(1000)
+			cartSnapshot = $cartStore
 			succesFullySubmitted = true
-			//cartStore.clear()
+			cartStore.clear()
 		} catch (error) {
 			console.error(error)
 			if (error instanceof Error) errorText = error.message
@@ -233,7 +235,10 @@
 
 		<div class="flex-1 max-w-lg">
 			<!-- Order details -->
-			<OrderComponent {deliveryMethod}></OrderComponent>
+			<OrderComponent
+				cartItems={succesFullySubmitted ? cartSnapshot : $cartStore}
+				{deliveryMethod}
+			></OrderComponent>
 
 			<!-- Coupon -->
 			{#if !showCouponInput}
@@ -337,7 +342,11 @@
 						</span>
 					</Checkbox>
 
-					<button class="btn btn-primary mt-2" type="submit" disabled={saving || succesFullySubmitted}>
+					<button
+						class="btn btn-primary mt-2"
+						type="submit"
+						disabled={saving || succesFullySubmitted}
+					>
 						Offerte aanvragen
 						<span class="loading loading-ring" class:hidden={!saving}></span>
 					</button>
@@ -350,7 +359,10 @@
 					{#if succesFullySubmitted}
 						<div class="text-success flex gap-2 items-center mt-2">
 							<Fa icon={faCheckCircle} />
-							<span>Uw aanvraag tot offerte is succesvol verstuurd, uw ontvangt binnenkort ook een bevestiging via mail.</span>
+							<span
+								>Uw aanvraag tot offerte is succesvol verstuurd, uw ontvangt
+								binnenkort ook een bevestiging via mail.</span
+							>
 						</div>
 					{/if}
 				</div>

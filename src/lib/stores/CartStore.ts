@@ -1,11 +1,11 @@
+import { browser } from '$app/environment'
 import type { Product } from '$lib/domain/Product'
-import { persisted } from 'svelte-persisted-store'
+import { persisted, type Persisted } from 'svelte-persisted-store'
 import { derived, writable } from 'svelte/store'
 import { productStore } from './ProductStore'
-import { browser } from '$app/environment'
 
-type CartItem = { id: number; amount: number }
-type CartProduct = { product: Product | undefined; amount: number }
+export type CartItem = { id: number; amount: number }
+export type CartProduct = { product: Product; amount: number }
 
 export const cartAddTrigger = writable<number>(0)
 
@@ -15,7 +15,7 @@ function createCartStore() {
 	const { update } = innerStore
 
 	// Derived store that transforms CartItems to CartProducts
-	const subscribe = derived(innerStore, (cartItems) => {
+	const subscribe = derived<Persisted<CartItem[]>, Promise<CartProduct>[]>(innerStore, (cartItems) => {
 		if (!browser) return []
 		const cartProducts = cartItems.map(async e => {
 			const product = await productStore.getProductById(e.id)

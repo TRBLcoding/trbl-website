@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { cartStore } from "$lib/stores/CartStore"
+	import { type CartProduct } from "$lib/stores/CartStore"
 	import {
 		faExclamationTriangle,
 		faImage,
@@ -8,9 +8,10 @@
 	import Fa from "svelte-fa"
 
 	export let deliveryMethod: "pick-up" | "delivery"
+	export let cartItems: Promise<CartProduct>[]
 
 	// Price calculation
-	$: combinedPrice = Promise.all($cartStore).then((cartItems) =>
+	$: combinedPrice = Promise.all(cartItems).then((cartItems) =>
 		cartItems.reduce(
 			(acc, item) => acc + (item.product?.price ?? 0) * item.amount,
 			0
@@ -25,7 +26,7 @@
 	</h2>
 
 	<div class="flex flex-col gap-3 mt-3 bg-base-200 rounded-lg p-4">
-		{#each $cartStore as productPromise, i}
+		{#each cartItems as productPromise, i}
 			{#await productPromise}
 				<div class="skeleton h-15 w-full mb-2"></div>
 			{:then cartProduct}
