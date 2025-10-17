@@ -129,7 +129,14 @@
 		{:else}
 			<div class="flex flex-col gap-4 p-4 pb-4 mt-1 items-center">
 				<Fa icon={faBorderNone} size="2x" />
-				<span>Geen items in winkelmandje</span>
+				<div class="flex flex-col gap-2 items-center">
+					<span>Geen items in winkelmandje</span>
+					<span>
+						Ondek onze producten op de
+						<a href="/products" class="link">verhuur</a>
+						pagina
+					</span>
+				</div>
 			</div>
 		{/each}
 

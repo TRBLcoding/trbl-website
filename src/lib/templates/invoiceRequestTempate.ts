@@ -34,7 +34,7 @@ export async function getAdminInvoiceRequestTemplate(invoiceMessage: InvoiceMess
 				</p>
 				
 				<p style="color: #555555; font-size: 16px; margin: 0 0 30px 0;">
-					Er is een nieuwe aanvraag tot offerte binnengekomen via <a href="https://trbl.be/">trbl.be</a>
+					Er is een nieuwe aanvraag tot offerte binnengekomen via <a href="https://trbl.be/" style="color: #007bff; text-decoration: none;">trbl.be</a>
 				</p>
 				
 				<!-- Customer Details -->
@@ -259,7 +259,7 @@ export async function getCustomerInvoiceRequestTemplate(invoiceMessage: InvoiceM
 				</p>
 				
 				<p style="color: #555555; font-size: 16px; margin: 0 0 15px 0;">
-					Hartelijk dank voor uw offerte-aanvraag via <a href="https://trbl.be/">trbl.be</a>. We hebben uw gegevens goed ontvangen en zullen zo spoedig mogelijk contact met u opnemen met een passende offerte.
+					Hartelijk dank voor uw offerte-aanvraag via <a href="https://trbl.be/" style="color: #007bff; text-decoration: none;">trbl.be</a>. We hebben uw gegevens goed ontvangen en zullen zo spoedig mogelijk contact met u opnemen met een passende offerte.
 				</p>
 
 				<p style="color: #555555; font-size: 16px; margin: 0 0 30px 0;">
