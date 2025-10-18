@@ -5,14 +5,14 @@
 <div id="error" class="h-full flex items-center mt-8 md:mt-20">
 	<div class="error mx-auto">
 		<div class="error-status">
-			<h3>{$page.error?.message} Error</h3>
-			<h1 class="unselectable">
+			<h3 class="uppercase tracking-[3px] pl-1.5 font-bold">{$page.error?.message} Error</h3>
+			<h1 class="unselectable absolute left-1/2 top-1/2 font-['Montserrat',sans-serif] uppercase font-black text-[252px]">
 				{#each $page.status.toString().split("") as letter}
 					<span>{letter}</span>
 				{/each}
 			</h1>
 		</div>
-		<h2 class="text-gray-600">De gevraagde pagina bevatte een probleem</h2>
+		<h2 class="text-xl mb-6">De gevraagde pagina bevatte een probleem</h2>
 
 		{#if $page.status === 404}
 			<a href="/" class="btn btn-primary normal-case"
@@ -50,45 +50,16 @@
 	}
 
 	.error .error-status h1 {
-		font-family: "Montserrat", sans-serif;
-		position: absolute;
-		left: 50%;
-		top: 50%;
 		-webkit-transform: translate(-50%, -50%);
 		-ms-transform: translate(-50%, -50%);
 		transform: translate(-50%, -50%);
-		font-size: 252px;
-		font-weight: 900;
-		margin: 0px;
 		color: #262626;
-		text-transform: uppercase;
 		letter-spacing: -0.15em;
 		margin-left: -20px;
 	}
 
 	.error .error-status h1 > span {
 		text-shadow: -8px 0px 0px #5c5c5c;
-	}
-
-	.error .error-status h3 {
-		font-family: "Cabin", sans-serif;
-		position: relative;
-		font-size: 16px;
-		font-weight: 700;
-		text-transform: uppercase;
-		color: #262626;
-		margin: 0px;
-		letter-spacing: 3px;
-		padding-left: 6px;
-	}
-
-	.error h2 {
-		font-family: "Cabin", sans-serif;
-		font-size: 20px;
-		font-weight: 400;
-		color: #000;
-		margin-top: 0px;
-		margin-bottom: 25px;
 	}
 
 	@media only screen and (max-width: 767px) {
