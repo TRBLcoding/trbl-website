@@ -134,7 +134,7 @@
 				<div class="flex flex-col gap-2 items-center">
 					<span>Uw winkelwagen is leeg</span>
 					<span>
-						Ondek al onze producten op de
+						Ontdek al onze producten op de
 						<a href="/products" class="link">verhuur</a>
 						pagina
 					</span>
