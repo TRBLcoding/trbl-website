@@ -76,7 +76,6 @@
 			if (error instanceof Error) errorMessage = error.message
 			else errorMessage = "Unknown error occured"
 		}
-		firstName
 	}
 
 	let editing = false
