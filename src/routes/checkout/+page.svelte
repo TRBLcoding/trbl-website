@@ -173,7 +173,7 @@
 						<Input
 							type="text"
 							label="Huur periode"
-							placeholder="Van waneer tot wanneer"
+							placeholder="Van wanneer tot wanneer"
 							bind:value={rentPeriod}
 							size="full"
 							required
