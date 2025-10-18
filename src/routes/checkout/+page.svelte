@@ -324,7 +324,7 @@
 							<div class="text-success flex gap-2 items-center mt-2">
 								<Fa icon={faCheckCircle} />
 								<span>
-									Uw aanvraag tot offerte is succesvol verstuurd, uw ontvangt
+									Uw aanvraag tot offerte is succesvol verstuurd, u ontvangt
 									binnenkort ook een bevestiging via mail.
 								</span>
 							</div>
