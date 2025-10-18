@@ -13,6 +13,7 @@
 	import type { PageData } from "./$types"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { goto } from "$app/navigation"
+	import type { User } from "$lib/domain/User"
 
 	export let data: PageData
 
@@ -121,7 +122,7 @@
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Product wijzigen")
 	// -- Authguard --
-	$: if ($authStore === null || ($authStore && !$authStore.isAdmin())) goto("/")
+	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin())) goto("/")
 </script>
 
 <div class="mx-6 mt-3 mb-8">

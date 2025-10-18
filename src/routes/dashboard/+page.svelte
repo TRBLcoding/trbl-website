@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
+	import type { User } from "$lib/domain/User"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faUserPen } from "@fortawesome/free-solid-svg-icons"
@@ -8,7 +9,7 @@
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Dashboard")
 	// -- Authguard --
-	$: if ($authStore === null || ($authStore && !$authStore.isAdmin())) goto("/")
+	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin())) goto("/")
 </script>
 
 <div class="mx-6 mt-3">

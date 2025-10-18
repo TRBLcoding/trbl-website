@@ -142,7 +142,7 @@
 					<div class="collapse-title">Verhuur</div>
 				</div>
 			</a>
-			<a href="/todo">
+			<a href="/profile">
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Mijn account</div>
 				</div>
