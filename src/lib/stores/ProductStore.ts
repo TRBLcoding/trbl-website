@@ -50,7 +50,23 @@ function createProductStore() {
 		// -- Get product --
 		await initPromise
 		const products = get(store)
-		return products?.find((e) => e.id === id)
+		const foundProduct =  products?.find((e) => e.id === id)
+		if(foundProduct) return foundProduct
+		const { data, error } = await supabase
+			.from('products')
+			.select()
+			.eq('id', id)
+			.single()
+		if (error) {
+			console.error(error)
+			throw new Error(`Error fetching product by ID: ${error?.message}`)
+		}
+		if (!data) throw new Error(`No product found`)
+		const product = Product.fromJSON(data)
+		update((products) => {
+			return [...(products || []), product].sort((a, b) => a.name.localeCompare(b.name))
+		})
+		return product
 	}
 
 	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, newMaxOrderAmount: null | number, progressStore: Writable<UploadProgress[]>) {

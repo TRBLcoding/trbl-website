@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      invoice_details: {
+        Row: {
+          auth_id: string
+          btw_number: string | null
+          company_name: string
+          country: string
+          email_address: string
+          first_name: string
+          id: number
+          last_name: string
+          phone_number: string
+          place: string
+          postal_code: string
+          street_and_number: string
+        }
+        Insert: {
+          auth_id: string
+          btw_number?: string | null
+          company_name: string
+          country: string
+          email_address: string
+          first_name: string
+          id?: number
+          last_name: string
+          phone_number: string
+          place: string
+          postal_code: string
+          street_and_number: string
+        }
+        Update: {
+          auth_id?: string
+          btw_number?: string | null
+          company_name?: string
+          country?: string
+          email_address?: string
+          first_name?: string
+          id?: number
+          last_name?: string
+          phone_number?: string
+          place?: string
+          postal_code?: string
+          street_and_number?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_details_auth_id_fkey"
+            columns: ["auth_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["auth_id"]
+          },
+        ]
+      }
       products: {
         Row: {
           categories: Database["public"]["Enums"]["Category"][]

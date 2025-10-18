@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"tobermory.es6-string-html",
+		"svelte.svelte-vscode",
+		"codezombiech.gitignore",
+		"supabase.vscode-supabase-extension",
+		"bradlc.vscode-tailwindcss",
+		"pflannery.vscode-versionlens"
+	]
+}

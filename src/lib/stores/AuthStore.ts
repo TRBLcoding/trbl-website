@@ -13,7 +13,7 @@ function createAuthStore() {
 			const { data } = supabase.auth.onAuthStateChange((event, session) => {
 				if (event === 'SIGNED_IN' && session && session.user) {
 					const user = get(innerStore)
-					if (!user || user.id !== session.user.id) {
+					if (!user || user.auth_id !== session.user.id) {
 						// Using an immediately invoked async function, because the onAuthStateChange callback doesnt execute when async
 						(async () => {
 							const { error, data } = await supabase.from("users")

@@ -19,12 +19,14 @@
 		cartStore.remove(product)
 	}
 
-	$: combinedPrice = Promise.all($cartStore).then((cartItems) =>
-		cartItems.reduce(
-			(acc, item) => acc + (item.product?.price ?? 0) * item.amount,
-			0
-		)
-	)
+	$: combinedPrice = $cartStore
+		? Promise.all($cartStore).then((cartItems) =>
+				cartItems.reduce(
+					(acc, item) => acc + (item.product?.price ?? 0) * item.amount,
+					0
+				)
+			)
+		: 0
 
 	$: showCartOnAdd($cartAddTrigger)
 	function showCartOnAdd(value: number) {
@@ -41,7 +43,7 @@
 		title="Winkelmandje"
 	>
 		<Fa icon={faCartShopping} class="text-xl" />
-		{#if $cartStore.length}
+		{#if $cartStore && $cartStore.length}
 			<div
 				class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-primary border-2 border-base-100 rounded-full text-base-100"
 			>
@@ -98,7 +100,7 @@
 								<span class="text-base-content">{cartProduct.amount}</span>
 								<Fa icon={faXmark} size="xs" class="text-base-content" />
 								<span class="text-green-600 font-semibold">
-									€{cartProduct.product?.price.toFixed(2)}
+									€ {cartProduct.product?.price.toFixed(2)}
 								</span>
 							</div>
 						</div>
@@ -128,12 +130,19 @@
 			{/await}
 		{:else}
 			<div class="flex flex-col gap-4 p-4 pb-4 mt-1 items-center">
-				<Fa icon={faBorderNone} size="2x" />
-				<span>Geen items in winkelmandje</span>
+				<Fa icon={faCartShopping} size="2x" />
+				<div class="flex flex-col gap-2 items-center">
+					<span>Uw winkelwagen is leeg</span>
+					<span>
+						Ontdek al onze producten op de
+						<a href="/products" class="link">verhuur</a>
+						pagina
+					</span>
+				</div>
 			</div>
 		{/each}
 
-		{#if $cartStore.length > 0}
+		{#if $cartStore && $cartStore.length > 0}
 			<div
 				class="p-3 px-4 m-1 pb-2 flex flex-row justify-between interaction items-center border-t-2 border-base-300"
 			>
@@ -156,7 +165,7 @@
 
 			<li class="mx-4 mt-1 mb-2 flex flex-row justify-between">
 				<a class="btn" href="/todo">Winkelmandje bekijken</a>
-				<a class="btn btn-primary" href="/todo">Afrekenen</a>
+				<a class="btn btn-primary" href="/checkout">Afrekenen</a>
 			</li>
 		{/if}
 	</ul>

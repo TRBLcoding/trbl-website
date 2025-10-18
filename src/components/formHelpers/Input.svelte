@@ -16,6 +16,7 @@
 
 	export let type: "text" | "number" | "email" | "date" | "password"
 	export let placeholder = ""
+	export let autocomplete: AutoFill = ""
 	export let labelClass = ""
 	export let edited = false
 	export let validate: (value: string) => string | undefined = () => ""
@@ -57,7 +58,7 @@
 	// -- Type handling --
 	function typeAction(node: HTMLInputElement) {
 		// Replace email type with text type, because browser email validation is kinda crappy
-		if (type === "email") {
+		if (type === "email" && required) {
 			const oldValidate = validate
 			validate = (value) => validateEmail(value) || oldValidate(value)
 			node.type = "text"
@@ -111,6 +112,7 @@
 			{placeholder}
 			{required}
 			{disabled}
+			{autocomplete}
 			on:focusout={() => (edited = true)}
 			on:input={onInput}
 			class="input border-2 w-full hover:cursor-text flex-1 join-item"

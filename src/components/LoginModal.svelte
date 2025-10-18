@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { page } from "$app/state"
 	import { authStore } from "$lib/stores/AuthStore"
+	import {
+		loginModalOpenStore,
+		loginModalStateStore,
+		type ModalState,
+	} from "$lib/stores/LoginmodalStore"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import { sleep } from "$lib/utils/Utils"
 	import {
@@ -22,7 +27,6 @@
 	let password: string
 	let loginError: string
 
-	let showModal = false
 	let loading = false
 	let formSubmitted = false
 
@@ -57,7 +61,7 @@
 		loginError = ""
 		try {
 			await authStore.signIn(email, password)
-			showModal = false
+			$loginModalOpenStore = false
 			email = ""
 			password = ""
 		} catch (error) {
@@ -110,12 +114,10 @@
 		loading = false
 	}
 
-	type ModalState = "Login" | "Register" | "RequestReset" | "Reset" | "Confirm"
-	let modalState: ModalState = "Login"
 	function switchState(newState: ModalState) {
 		loading = false
 		loginError = ""
-		modalState = newState
+		$loginModalStateStore = newState
 		formSubmitted = false
 	}
 
@@ -127,20 +129,23 @@
 			pushCreatedToast("Wachtwoord reset link is ongeldig of vervalen")
 			console.error("Password reset link invalid or expired")
 		} else if (page.url.searchParams.get("action") === "reset") {
-			modalState = "Reset"
-			showModal = true
+			$loginModalStateStore = "Reset"
+			$loginModalOpenStore = true
 		} else if (page.url.searchParams.get("action") === "confirm") {
-			modalState = "Confirm"
-			showModal = true
+			$loginModalStateStore = "Confirm"
+			$loginModalOpenStore = true
 		}
 	})
 
-	$: resetModal(showModal)
+	$: resetModal($loginModalOpenStore)
 	async function resetModal(state: boolean) {
-		if (!state && (modalState === "Confirm" || modalState === "Reset")) {
+		if (
+			!state &&
+			($loginModalStateStore === "Confirm" || $loginModalStateStore === "Reset")
+		) {
 			console.log(state)
 			await sleep(300)
-			modalState = "Login"
+			$loginModalStateStore = "Login"
 		}
 	}
 </script>
@@ -148,9 +153,10 @@
 <input
 	type="checkbox"
 	id={loginModalID}
-	bind:checked={showModal}
+	bind:checked={$loginModalOpenStore}
 	class="modal-toggle"
 />
+
 <div class="modal" role="dialog">
 	<div class="modal-box custom-width w-11/12 max-w-2xl">
 		<label
@@ -163,7 +169,7 @@
 				<img src="/TRBL_Logo.avif" alt="TRBL logo" class="pr-6" />
 			</div>
 
-			{#if modalState === "Login"}
+			{#if $loginModalStateStore === "Login"}
 				<!-- Login Form -->
 				<div class="w-full">
 					<div class="mb-4">
@@ -204,10 +210,8 @@
 							type="submit"
 							disabled={loading}
 						>
-							Inloggen <span
-								class="loading loading-ring"
-								class:hidden={!loading}
-							></span>
+							Inloggen
+							<span class="loading loading-ring" class:hidden={!loading}></span>
 						</button>
 						{#if loginError}
 							<div class="text-center text-error">{loginError}</div>
@@ -228,7 +232,7 @@
 						</button>
 					</div>
 				</div>
-			{:else if modalState === "Register"}
+			{:else if $loginModalStateStore === "Register"}
 				<!-- Register form -->
 				<div class="w-full">
 					<div class="mb-4">
@@ -324,7 +328,7 @@
 						</button>
 					</div>
 				</div>
-			{:else if modalState === "RequestReset"}
+			{:else if $loginModalStateStore === "RequestReset"}
 				<!-- Request password reset form -->
 				<div class="w-full">
 					<div class="mb-4">
@@ -388,7 +392,7 @@
 						</button>
 					</div>
 				</div>
-			{:else if modalState === "Reset"}
+			{:else if $loginModalStateStore === "Reset"}
 				<!-- Reset form -->
 				<div class="w-full">
 					<div class="mb-4">
@@ -419,8 +423,8 @@
 								>Wachtwoord veranderen <span
 									class="loading loading-ring"
 									class:hidden={!loading}
-								></span></button
-							>
+								></span>
+							</button>
 							{#if loginError}
 								<div class="text-center text-error">{loginError}</div>
 							{/if}
@@ -432,7 +436,7 @@
 						</div>
 					{/if}
 				</div>
-			{:else if modalState === "Confirm"}
+			{:else if $loginModalStateStore === "Confirm"}
 				<!-- Confirm -->
 				<div class="w-full">
 					<div class="mb-4">
@@ -449,7 +453,7 @@
 						<button
 							class="btn btn-primary mt-2"
 							type="button"
-							on:click={() => (showModal = false)}>Ok</button
+							on:click={() => ($loginModalOpenStore = false)}>Ok</button
 						>
 					</div>
 				</div>

@@ -1,7 +1,7 @@
 import { ContactMessage } from '$lib/domain/ContactMessage'
 
 export function getAdminContactFormTemplate(message: ContactMessage) {
-    return `
+    return /*html*/`
         <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; line-height: 1.6;">
             <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 <!-- Header -->
@@ -68,7 +68,7 @@ export function getAdminContactFormTemplate(message: ContactMessage) {
 }
 
 export function getCustomerContactFormTemplate(message: ContactMessage) {
-    return `
+    return /*html*/`
         <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; line-height: 1.6;">
             <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 <!-- Header -->
