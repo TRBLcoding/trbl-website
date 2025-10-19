@@ -298,11 +298,11 @@
 								class="btn btn-primary mt-2"
 								type="submit"
 								disabled={loading}
-								>Registreren <span
-									class="loading loading-ring"
-									class:hidden={!loading}
-								></span></button
 							>
+								Registreren
+								<span class="loading loading-ring" class:hidden={!loading}>
+								</span>
+							</button>
 							{#if loginError}
 								<div class="text-center text-error">{loginError}</div>
 							{/if}

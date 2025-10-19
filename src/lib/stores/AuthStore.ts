@@ -2,6 +2,8 @@ import { browser } from '$app/environment'
 import { User } from '$lib/domain/User'
 import { supabase } from '$lib/supabase/supabaseClient'
 import { get, writable } from 'svelte/store'
+import { handleSupabaseError } from './ProductStore'
+import type { Database } from '$lib/supabase/database.types'
 
 function createAuthStore() {
 	// Value can be: undefined (not known yet), null (not logged in) or User (logged in)
@@ -22,7 +24,7 @@ function createAuthStore() {
 								.single()
 							if (error)
 								throw error
-							const newUser = new User(session.user.id, session.user.email!, data.role, data.first_name, data.last_name)
+							const newUser = new User(data.id, session.user.id, session.user.email!, data.role, data.first_name, data.last_name)
 							update(() => newUser)
 						})()
 					}
@@ -84,7 +86,25 @@ function createAuthStore() {
 		}
 	}
 
-	// async function updateCurrentUserEmail(email: string) {
+	async function updateProfile(firstName: string, lastName: string) {
+		const user = get(innerStore)
+		if (!user) throw new Error("No user logged in")
+		// -- Update product --
+		const { data, error } = await supabase
+			.from('users')
+			.update({
+				first_name: firstName,
+				last_name: lastName,
+			} as Database['public']['Tables']['users']['Update'])
+			.eq('id', user.id)
+			.select('id')
+		handleSupabaseError(error, data, "user")
+
+		// -- Update store --
+		update((user) => user)
+	}
+
+	// async function updaterEmail(email: string) {
 	// 	if (!auth.currentUser) return
 
 	// 	// -- Update authUser --
@@ -101,28 +121,12 @@ function createAuthStore() {
 	// 	await updateDoc(userRef, { email: email })
 	// }
 
-	// async function updateCurrentUserPassword(password: string) {
+	// async function updaterPassword(password: string) {
 	// 	if (!auth.currentUser) return
 
 	// 	// -- Update authUser --
 	// 	const { updatePassword } = await import('firebase/auth')
 	// 	await updatePassword(auth.currentUser, password)
-	// }
-
-	// async function updateCurrentUserName(displayName: string) {
-	// 	if (!auth.currentUser) return
-
-	// 	// -- Update authUser --
-	// 	const { updateProfile } = await import('firebase/auth')
-	// 	await updateProfile(auth.currentUser, { displayName: displayName })
-
-	// 	// -- Update dbUser --
-	// 	const { firebaseApp } = await import('$lib/firebase/Firebase')
-	// 	const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-	// 	const firestore = getFirestore(firebaseApp)
-
-	// 	const userRef = doc(firestore, Collections.USERS, auth.currentUser.uid)
-	// 	await updateDoc(userRef, { displayName: displayName })
 	// }
 
 	return {
@@ -132,9 +136,9 @@ function createAuthStore() {
 		signOut,
 		requestPasswordReset,
 		resetPassword,
-		// updateCurrentUserEmail,
-		// updateCurrentUserPassword,
-		// updateCurrentUserName
+		updateProfile,
+		// updateEmail,
+		// updatePassword,
 	}
 }
 

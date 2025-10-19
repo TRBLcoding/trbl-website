@@ -7,6 +7,21 @@ import type { Database } from '../supabase/database.types'
 import { arrayDifference, arraysContainSameElements } from '../utils/Array'
 import { convertAndUploadImages, deleteImages, type UploadProgress } from '../utils/UploadProgress'
 
+export function handleSupabaseError(error: any, data: any, type: string) {
+	if (error) {
+		console.error(error)
+		if (error.message === "TypeError: Failed to fetch")
+			throw new Error(`Network error while updating ${type}: ${error?.message}`)
+		throw new Error(`Error updating ${type}: ${error?.message}`)
+	}
+	else if (!data || data.length === 0) {
+		throw new Error(`No ${type} items updated. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
+	}
+	else if (data.length > 1) {
+		throw new Error(`Multiple (${data.length}) ${type} items updated. This should not happen because ID is unique`)
+	}
+}
+
 function createProductStore() {
 	const store = writable<Product[]>(undefined)
 	const { subscribe, update } = store
@@ -50,8 +65,8 @@ function createProductStore() {
 		// -- Get product --
 		await initPromise
 		const products = get(store)
-		const foundProduct =  products?.find((e) => e.id === id)
-		if(foundProduct) return foundProduct
+		const foundProduct = products?.find((e) => e.id === id)
+		if (foundProduct) return foundProduct
 		const { data, error } = await supabase
 			.from('products')
 			.select()
@@ -96,20 +111,7 @@ function createProductStore() {
 			} as Database['public']['Tables']['products']['Update'])
 			.eq('id', product.id)
 			.select('id')
-
-		if (error) {
-			console.error(error)
-			if (error.message === "TypeError: Failed to fetch")
-				throw new Error(`Network error while updating products: ${error?.message}`)
-			throw new Error(`Error updating product: ${error?.message}`)
-		}
-		else if (!data || data.length === 0) {
-			throw new Error(`No products updated. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
-		}
-		else if (data.length > 1) {
-			throw new Error(`Multiple (${data.length}) products updated. This should not happen because product ID is unique`)
-		}
-
+		handleSupabaseError(error, data, "product")
 
 		// -- Update store --
 		product.name = newName

@@ -1,5 +1,6 @@
 export class User {
 	constructor(
+		public id: number,
 		public auth_id: string,
 		public email: string,
 		public role: "User" | "Admin",
