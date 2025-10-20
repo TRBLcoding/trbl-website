@@ -64,7 +64,7 @@
 
 <!-- Security -->
 <label class="tab [--tab-bg:var(--color-base-200)]">
-	<input type="radio" name="profile-tabs" checked={true} />
+	<input type="radio" name="profile-tabs" />
 	<Fa icon={faShield} class="me-2" />
 	Beveiliging
 </label>

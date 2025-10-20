@@ -130,6 +130,17 @@ function createAuthStore() {
 		update((user) => user)
 	}
 
+	async function deleteProfile() {
+		const user = get(innerStore)
+		if (!user) throw new Error("No user logged in")
+		// -- Update user --
+supabase.functions.invoke("a")
+		handleSupabaseError(error, data, "user")
+
+		// -- Update store --
+		update((user) => user)
+	}
+
 	return {
 		subscribe,
 		signUp,
@@ -140,6 +151,7 @@ function createAuthStore() {
 		updateProfile,
 		updateEmail,
 		updatePassword,
+		deleteProfile
 	}
 }
 
