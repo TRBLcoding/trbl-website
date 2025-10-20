@@ -8,6 +8,10 @@
 		faUser,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import type { TabType } from "./TabType"
+
+	export let checked: boolean = false
+	export let setTab: (tab: TabType) => void
 
 	let newFirstName = ""
 	let newLastName = ""
@@ -44,7 +48,12 @@
 
 <!-- Personal details -->
 <label class="tab [--tab-bg:var(--color-base-200)]">
-	<input type="radio" name="profile-tabs" />
+	<input
+		type="radio"
+		name="profile-tabs"
+		{checked}
+		on:change={() => setTab("personal")}
+	/>
 	<Fa icon={faUser} class="me-2" />
 	Persoonlijke gegevens
 </label>

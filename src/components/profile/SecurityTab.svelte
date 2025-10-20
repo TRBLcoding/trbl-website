@@ -8,6 +8,10 @@
 		faShield,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import type { TabType } from "./TabType"
+
+	export let checked: boolean = false
+	export let setTab: (tab: TabType) => void
 
 	let newPassword = ""
 	let confirmPassword = ""
@@ -64,7 +68,12 @@
 
 <!-- Security -->
 <label class="tab [--tab-bg:var(--color-base-200)]">
-	<input type="radio" name="profile-tabs" />
+	<input
+		type="radio"
+		name="profile-tabs"
+		{checked}
+		on:change={() => setTab("security")}
+	/>
 	<Fa icon={faShield} class="me-2" />
 	Beveiliging
 </label>
@@ -118,7 +127,8 @@
 					<div class="text-success flex gap-2 items-center mt-2">
 						<Fa icon={faCheckCircle} />
 						<span>
-							Email wijziging succesvol aangevraagd. Bevestig de verandering zowel op het oude als nieuwe e-mailadres
+							Email wijziging succesvol aangevraagd. Bevestig de verandering
+							zowel op het oude als nieuwe e-mailadres
 						</span>
 					</div>
 				{/if}

@@ -134,8 +134,8 @@ function createAuthStore() {
 		const user = get(innerStore)
 		if (!user) throw new Error("No user logged in")
 		// -- Update user --
-supabase.functions.invoke("a")
-		handleSupabaseError(error, data, "user")
+		// supabase.functions.invoke("a")
+		// handleSupabaseError(error, data, "user")
 
 		// -- Update store --
 		update((user) => user)

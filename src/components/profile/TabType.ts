@@ -1,0 +1,1 @@
+export type TabType = "personal" | "security" | "invoice" | "delete"

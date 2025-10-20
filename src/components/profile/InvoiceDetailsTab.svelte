@@ -3,6 +3,10 @@
 	import type { InvoiceDetails } from "$lib/domain/InvoiceDetails"
 	import { faFileInvoice } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import type { TabType } from "./TabType"
+
+	export let checked: boolean = false
+	export let setTab: (tab: TabType) => void
 
 	let invoiceFormElement: HTMLFormElement
 	let selectedInvoiceDetails: InvoiceDetails
@@ -10,7 +14,12 @@
 
 <!-- Invoice details -->
 <label class="tab [--tab-bg:var(--color-base-200)]">
-	<input type="radio" name="profile-tabs" />
+	<input
+		type="radio"
+		name="profile-tabs"
+		{checked}
+		on:change={() => setTab("invoice")}
+	/>
 	<Fa icon={faFileInvoice} class="me-2" />
 	Factuurgegevens
 </label>
@@ -22,8 +31,6 @@
 		>
 	</div>
 
-	<InvoiceDetailsComponent
-		bind:invoiceFormElement
-		bind:selectedInvoiceDetails
+	<InvoiceDetailsComponent bind:invoiceFormElement bind:selectedInvoiceDetails
 	></InvoiceDetailsComponent>
 </div>
