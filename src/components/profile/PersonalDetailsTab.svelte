@@ -20,11 +20,11 @@
 	}
 	$: if (!initialized && $authStore) initPage($authStore)
 
-	let loading1 = false
+	let loading = false
 	let error = ""
 	let succes = false
 	async function updateProfile() {
-		loading1 = true
+		loading = true
 		succes = false
 		try {
 			await authStore.updateProfile(newFirstName, newLastName)
@@ -38,7 +38,7 @@
 				error = "Unknown error updating profile"
 			}
 		}
-		loading1 = false
+		loading = false
 	}
 </script>
 
@@ -92,15 +92,15 @@
 			<button
 				type="submit"
 				class="btn btn-primary sm:self-start mt-2"
-				disabled={loading1}
+				disabled={loading}
 			>
 				Gegevens wijzigen
-				<span class="loading loading-ring" class:hidden={!loading1}></span>
+				<span class="loading loading-ring" class:hidden={!loading}></span>
 			</button>
 			{#if succes && !error}
 				<div class="text-success flex gap-2 items-center mt-2">
 					<Fa icon={faCheckCircle} />
-					<span> Gegevens succesvol bijgewerkt </span>
+					<span>Gegevens succesvol bijgewerkt</span>
 				</div>
 			{/if}
 		</div>

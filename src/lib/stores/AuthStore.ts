@@ -89,7 +89,7 @@ function createAuthStore() {
 	async function updateProfile(firstName: string, lastName: string) {
 		const user = get(innerStore)
 		if (!user) throw new Error("No user logged in")
-		// -- Update product --
+		// -- Update user --
 		const { data, error } = await supabase
 			.from('users')
 			.update({
@@ -104,30 +104,31 @@ function createAuthStore() {
 		update((user) => user)
 	}
 
-	// async function updaterEmail(email: string) {
-	// 	if (!auth.currentUser) return
+	async function updateEmail(newEmail: string) {
+		const user = get(innerStore)
+		if (!user) throw new Error("No user logged in")
+		// -- Update user --
+		const { data, error } = await supabase.auth.updateUser({
+			email: newEmail
+		})
+		handleSupabaseError(error, data, "user")
 
-	// 	// -- Update authUser --
-	// 	const { updateEmail } = await import('firebase/auth')
+		// -- Update store --
+		update((user) => user)
+	}
 
-	// 	await updateEmail(auth.currentUser, email)
+	async function updatePassword(newPassword: string) {
+		const user = get(innerStore)
+		if (!user) throw new Error("No user logged in")
+		// -- Update user --
+		const { data, error } = await supabase.auth.updateUser({
+			password: newPassword
+		})
+		handleSupabaseError(error, data, "user")
 
-	// 	// -- Update dbUser --
-	// 	const { firebaseApp } = await import('$lib/firebase/Firebase')
-	// 	const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-	// 	const firestore = getFirestore(firebaseApp)
-
-	// 	const userRef = doc(firestore, Collections.USERS, auth.currentUser.uid)
-	// 	await updateDoc(userRef, { email: email })
-	// }
-
-	// async function updaterPassword(password: string) {
-	// 	if (!auth.currentUser) return
-
-	// 	// -- Update authUser --
-	// 	const { updatePassword } = await import('firebase/auth')
-	// 	await updatePassword(auth.currentUser, password)
-	// }
+		// -- Update store --
+		update((user) => user)
+	}
 
 	return {
 		subscribe,
@@ -137,8 +138,8 @@ function createAuthStore() {
 		requestPasswordReset,
 		resetPassword,
 		updateProfile,
-		// updateEmail,
-		// updatePassword,
+		updateEmail,
+		updatePassword,
 	}
 }
 
