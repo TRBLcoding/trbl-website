@@ -121,13 +121,24 @@
 		formSubmitted = false
 	}
 
+	const configmMessage =
+		"Confirmation link accepted. Please proceed to confirm link sent to the other email"
 	// -- Reset link Check --
+	const hashParams = new URLSearchParams(page.url.hash.substring(1))
 	onMount(() => {
-		const hashParams = new URLSearchParams(page.url.hash.substring(1))
+		//const hashParams = new URLSearchParams(page.url.hash.substring(1))
+		console.log(hashParams.toString())
 		if (hashParams.get("error") === "access_denied") {
 			window.history.replaceState({}, document.title, location.origin)
 			pushCreatedToast("Wachtwoord reset link is ongeldig of vervalen")
 			console.error("Password reset link invalid or expired")
+		} else if (hashParams.get("type") === "email_change") {
+			console.log("email changed")
+			$loginModalStateStore = "Email2"
+			$loginModalOpenStore = true
+		} else if (hashParams.get("message") === configmMessage) {
+			$loginModalStateStore = "Email1"
+			$loginModalOpenStore = true
 		} else if (page.url.searchParams.get("action") === "reset") {
 			$loginModalStateStore = "Reset"
 			$loginModalOpenStore = true
@@ -141,11 +152,12 @@
 	async function resetModal(state: boolean) {
 		if (
 			!state &&
-			($loginModalStateStore === "Confirm" || $loginModalStateStore === "Reset")
+			($loginModalStateStore === "Confirm" ||
+				$loginModalStateStore === "Reset" ||
+				$loginModalStateStore === "Email1")
 		) {
-			console.log(state)
 			await sleep(300)
-			$loginModalStateStore = "Login"
+			if (!$loginModalOpenStore) $loginModalStateStore = "Login"
 		}
 	}
 </script>
@@ -435,6 +447,50 @@
 							<span> Uw wachtwoord is succesvol veranderd </span>
 						</div>
 					{/if}
+				</div>
+			{:else if $loginModalStateStore === "Email1"}
+				<div class="w-full">
+					<div class="mb-4">
+						<h1 class="font-bold text-xl flex items-center gap-2">
+							<Fa icon={faCircleCheck} class="text-success" /> Email 1 bevestigd
+						</h1>
+						<h2 class="text-sm text-gray-400">
+							Bevest nu ook uw andere email adress
+						</h2>
+					</div>
+					<div class="mb-5 flex flex-col gap-3">
+						<p>
+							Om veiligheidsredenen moet een verandering van email zowel op het
+							oude als het nieuwe adres bevestigd worden.
+						</p>
+						<button
+							class="btn btn-primary mt-2"
+							type="button"
+							on:click={() => ($loginModalOpenStore = false)}>Ok</button
+						>
+					</div>
+				</div>
+			{:else if $loginModalStateStore === "Email2"}
+				<div class="w-full">
+					<div class="mb-4">
+						<h1 class="font-bold text-xl flex items-center gap-2">
+							<Fa icon={faCircleCheck} class="text-success" /> Email 2 bevestigd
+						</h1>
+						<h2 class="text-sm text-gray-400">
+							Email adress succesvol veranderd
+						</h2>
+					</div>
+					<div class="mb-5 flex flex-col gap-3">
+						<p>
+							Uw email adress is succesvol veranderd, vanaf nu moet u met dit
+							nieuwe adress inloggen.
+						</p>
+						<button
+							class="btn btn-primary mt-2"
+							type="button"
+							on:click={() => ($loginModalOpenStore = false)}>Ok</button
+						>
+					</div>
 				</div>
 			{:else if $loginModalStateStore === "Confirm"}
 				<!-- Confirm -->

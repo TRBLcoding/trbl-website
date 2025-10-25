@@ -144,7 +144,18 @@
 
 	<!-- Change Password -->
 	<div class="mt-6">
-		<h3 class="text-lg font-semibold mb-2">Wachtwoord wijzigen</h3>
+		<div class="flex items-start w-fit">
+			<h3 class="text-lg font-semibold mb-2">Wachtwoord wijzigen</h3>
+			<div
+				class="tooltip ml-auto tooltip-left sm:tooltip-bottom mt-[-6px]"
+				data-tip={"Een verandering van wachtwoord word direct doorgevoerd"}
+			>
+				<button class="btn btn-ghost btn-xs btn-circle">
+					<InfoCircle class="" />
+				</button>
+			</div>
+		</div>
+
 		<form class="flex flex-col gap-4" on:submit|preventDefault={updatePassword}>
 			<Input
 				type="password"
