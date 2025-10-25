@@ -126,9 +126,7 @@
 	// -- Reset link Check --
 	const hashParams = new URLSearchParams(page.url.hash.substring(1))
 	onMount(() => {
-		//const hashParams = new URLSearchParams(page.url.hash.substring(1))
-		console.log(hashParams.toString())
-		if (hashParams.get("error") === "access_denied") {
+		if (hashParams.get("error") === "access_denied") {									
 			window.history.replaceState({}, document.title, location.origin)
 			pushCreatedToast("Wachtwoord reset link is ongeldig of vervalen")
 			console.error("Password reset link invalid or expired")

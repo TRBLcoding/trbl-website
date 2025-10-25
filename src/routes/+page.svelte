@@ -1,10 +1,10 @@
 <script lang="ts">
 	import ContactForm from "$components/ContactForm.svelte"
+	import type { ContactRequest } from "$lib/domain/ContactMessage"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import Carousel from "../components/Carousel/Carousel.svelte"
-	import type { ContactRequest } from "./api/contact/+server"
 
 	const imageUrl =
 		"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:300/h:300/q:90/rt:fill/g:ce/f:best/https://trbl.be/files/2023/01/SpeakSet1_Blurred-BG.jpg"

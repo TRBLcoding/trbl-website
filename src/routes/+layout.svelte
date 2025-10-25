@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Footer from "$components/Footer.svelte"
+	import LoginModal from "$components/LoginModal.svelte"
+	import ProfileDropdown from "$components/ProfileDropdown.svelte"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import {
@@ -9,16 +11,25 @@
 		faYoutube,
 	} from "@fortawesome/free-brands-svg-icons"
 	import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
-	import { faBars, faRightToBracket, faUser, faXmark } from "@fortawesome/free-solid-svg-icons"
+	import {
+		faBars,
+		faRightToBracket,
+		faXmark,
+	} from "@fortawesome/free-solid-svg-icons"
 	import { SvelteToast } from "@zerodevx/svelte-toast"
+	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
 	import "../app.css"
 	import Cart from "../components/Cart.svelte"
-	import LoginModal from "$components/LoginModal.svelte"
-	import ProfileDropdown from "$components/ProfileDropdown.svelte"
 
 	let showMenu = true
 	const loginModalID = "login-modal"
+
+	// Fix toasts rendering only on client side, otherwise they dont have proper positioning styles
+	let toasts = false
+	onMount(() => {
+		toasts = true
+	})
 
 	// Make sure user is always loaded, by subscribing to authStore
 	$authStore
@@ -27,8 +38,6 @@
 <svelte:head>
 	<title>{$pageHeadStore.getFullTitle()}</title>
 </svelte:head>
-
-<SvelteToast options={{ reversed: true, intro: { y: 192 } }} />
 
 <div class="min-h-screen flex flex-col">
 	<div class="relative z-20 bg-base-100">
@@ -101,7 +110,11 @@
 					<a class="btn btn-primary px-6" href="/products">Verhuur</a>
 					<Cart></Cart>
 					{#if !$authStore}
-						<label for={loginModalID} class="btn btn-square btn-ghost" title="Account">
+						<label
+							for={loginModalID}
+							class="btn btn-square btn-ghost"
+							title="Account"
+						>
 							<Fa icon={faRightToBracket} size="lg" />
 						</label>
 					{:else}
@@ -163,13 +176,15 @@
 	<div class="flex-1">
 		<slot />
 	</div>
-	
+
 	<Footer />
 </div>
 
-
-
 <LoginModal {loginModalID} />
+
+{#if toasts}
+	<SvelteToast />
+{/if}
 
 <style lang="postcss">
 	@reference "../app.css";
