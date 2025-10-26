@@ -15,7 +15,7 @@
 	let confirmDeleteModal: HTMLDialogElement
 
 	let loading = false
-	let error = ""
+	let errorMessage = ""
 	let succes = false
 	async function deleteProfile() {
 		loading = true
@@ -26,10 +26,11 @@
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error("Error updating profile:", error)
-				error = error.message
+				errorMessage = error.message
+				console.log(error)
 			} else {
-				console.error("Unknown error updating profile")
-				error = "Unknown error updating profile"
+				console.error(error)
+				errorMessage = "Unknown error updating profile"
 			}
 		}
 		loading = false
@@ -54,7 +55,7 @@
 			Door je account te verwijderen, worden al je gegevens permanent
 			verwijderd. Deze actie kan niet ongedaan worden gemaakt.
 		</p>
-		<div class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+		<div class="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center">
 			<button
 				type="button"
 				class="btn btn-primary sm:self-start mt-2"
@@ -64,7 +65,10 @@
 				Account permanent verwijderen
 				<span class="loading loading-ring" class:hidden={!loading}></span>
 			</button>
-			{#if succes && !error}
+			{#if true}
+				<div class="text-error">{errorMessage}</div>
+			{/if}
+			{#if succes && !errorMessage}
 				<div class="text-success flex gap-2 items-center mt-2">
 					<Fa icon={faCheckCircle} />
 					<span>Account verwijderd</span>

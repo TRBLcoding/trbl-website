@@ -4,6 +4,7 @@ import { supabase } from '$lib/supabase/supabaseClient'
 import { get, writable } from 'svelte/store'
 import { handleSupabaseError } from './ProductStore'
 import type { Database } from '$lib/supabase/database.types'
+import { createPostgrestErrorFromObject } from '$lib/utils/SupabaseUtils'
 
 function createAuthStore() {
 	// Value can be: undefined (not known yet), null (not logged in) or User (logged in)
@@ -133,6 +134,23 @@ function createAuthStore() {
 	async function deleteProfile() {
 		const user = get(innerStore)
 		if (!user) throw new Error("No user logged in")
+
+		const { error, count } = await supabase
+			.from('users')
+			.delete({ count: 'exact' })
+			.eq('id', user.id)
+		if (error) {
+			if (error instanceof Error)
+				throw error
+			throw createPostgrestErrorFromObject(error)
+		}
+		else if (!count || count === 0) {
+			throw new Error(`No user deleted. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
+		}
+		else if (count > 1) {
+			throw new Error(`Multiple (${count}) users deleted. This should not happen because user ID is unique`)
+		}
+
 		// -- Update user --
 		// supabase.functions.invoke("a")
 		// handleSupabaseError(error, data, "user")
