@@ -152,7 +152,7 @@
 			!state &&
 			($loginModalStateStore === "Confirm" ||
 				$loginModalStateStore === "Reset" ||
-				$loginModalStateStore === "Email1")
+				$loginModalStateStore === "Email1" || $loginModalStateStore === "Email2")
 		) {
 			await sleep(300)
 			if (!$loginModalOpenStore) $loginModalStateStore = "Login"
