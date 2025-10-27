@@ -58,8 +58,8 @@
 	Persoonlijke gegevens
 </label>
 <div class="tab-content bg-base-200 border-base-300 p-6">
-	<div class="flex gap-2 items-baseline">
-		<h2 class="text-xl font-semibold mb-4">Persoonlijke gegevens</h2>
+	<div class="flex gap-2 items-baseline mb-4">
+		<h2 class="text-xl font-semibold">Persoonlijke gegevens</h2>
 		{#if $authStore?.isAdmin()}
 			<div class="badge badge-primary text-base-100 font-semibold">Admin</div>
 		{/if}

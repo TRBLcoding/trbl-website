@@ -51,11 +51,11 @@
 	Account verwijderen
 </label>
 <div class="tab-content bg-base-200 border-base-300 p-6">
-	<div class="flex flex-col gap-4">
+	<div class="flex flex-col gap-6">
 		<h2 class="text-xl font-semibold text-error">Account verwijderen</h2>
 		<p class="opacity-90">
 			Door je account te verwijderen, worden al je gegevens permanent
-			verwijderd. Deze actie kan niet ongedaan worden gemaakt.
+			verwijderd. Deze actie word onmiddelijk uitgevoerd en kan niet ongedaan worden gemaakt.
 		</p>
 		<div class="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center">
 			<button
