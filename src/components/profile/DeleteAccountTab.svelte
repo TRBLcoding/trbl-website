@@ -11,18 +11,20 @@
 
 	export let checked: boolean = false
 	export let setTab: (tab: TabType) => void
+	export let deletedProfile: boolean = false
 
 	let confirmDeleteModal: HTMLDialogElement
+	let deletedModal: HTMLDialogElement
 
 	let loading = false
 	let errorMessage = ""
-	let succes = false
 	async function deleteProfile() {
 		loading = true
-		succes = false
 		try {
 			await authStore.deleteProfile()
-			succes = true
+			deletedProfile = true
+			deletedModal.showModal()
+			await authStore.signOut()
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error("Error updating profile:", error)
@@ -68,12 +70,6 @@
 			{#if true}
 				<div class="text-error">{errorMessage}</div>
 			{/if}
-			{#if succes && !errorMessage}
-				<div class="text-success flex gap-2 items-center mt-2">
-					<Fa icon={faCheckCircle} />
-					<span>Account verwijderd</span>
-				</div>
-			{/if}
 		</div>
 	</div>
 </div>
@@ -102,4 +98,22 @@
 	<form method="dialog" class="modal-backdrop">
 		<button>close</button>
 	</form>
+</dialog>
+
+<dialog bind:this={deletedModal} id="deletedModald" class="modal">
+	<div class="modal-box">
+		<h3 class="text-lg font-bold text-success flex items-center gap-2">
+			<Fa icon={faCheckCircle} />
+			Account verwijderd
+		</h3>
+		<p class="opacity-80 mt-4">
+			Je account en bijbehorende gegevens zijn succesvol verwijderd. We vinden
+			het jammer je te zien vertrekken. Bedankt voor het vertrouwen in onze
+			service.
+		</p>
+
+		<div class="modal-action">
+			<a href="/" class="btn btn-primary">Terug naar homepagina</a>
+		</div>
+	</div>
 </dialog>

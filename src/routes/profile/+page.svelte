@@ -9,6 +9,7 @@
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
+	let deletedProfile = false
 	$: currentTab = ($page.url.searchParams.get("tab") || "personal") as TabType
 	function setTab(tab: TabType) {
 		goto(`?tab=${tab}`, { replaceState: true, keepFocus: true })
@@ -17,7 +18,7 @@
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Profiel")
 	// -- Authguard --
-	$: if ($authStore === null) goto("/")
+	$: if ($authStore === null && !deletedProfile) goto("/")
 </script>
 
 <div class="max-w-4xl mx-auto p-6">
@@ -26,6 +27,6 @@
 		<PersonalDetailsTab checked={currentTab == "personal"} {setTab} />
 		<SecurityTab checked={currentTab == "security"} {setTab} />
 		<InvoiceDetailsTab checked={currentTab == "invoice"} {setTab} />
-		<DeleteAccountTab checked={currentTab == "delete"} {setTab} />
+		<DeleteAccountTab checked={currentTab == "delete"} {setTab} bind:deletedProfile />
 	</div>
 </div>

@@ -14,6 +14,7 @@ function createAuthStore() {
 		function init() {
 			if (!browser) return
 			const { data } = supabase.auth.onAuthStateChange((event, session) => {
+				console.log(event)
 				if (event === 'SIGNED_IN' && session && session.user) {
 					const user = get(innerStore)
 					if (!user || user.auth_id !== session.user.id) {
@@ -150,13 +151,6 @@ function createAuthStore() {
 		else if (count > 1) {
 			throw new Error(`Multiple (${count}) users deleted. This should not happen because user ID is unique`)
 		}
-
-		// -- Update user --
-		// supabase.functions.invoke("a")
-		// handleSupabaseError(error, data, "user")
-
-		// -- Update store --
-		update((user) => user)
 	}
 
 	return {
