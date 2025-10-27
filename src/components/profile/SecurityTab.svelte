@@ -24,6 +24,8 @@
 		loadingEmailForm = true
 		succesEmailForm = false
 		try {
+			if(newEmail === $authStore?.email) 
+				throw new Error("Het nieuwe e-mailadres mag niet hetzelfde zijn als het huidige e-mailadres")
 			await authStore.updateEmail(newEmail)
 			succesEmailForm = true
 		} catch (error) {
