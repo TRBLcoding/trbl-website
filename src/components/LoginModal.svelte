@@ -453,7 +453,7 @@
 							<Fa icon={faCircleCheck} class="text-success" /> Email 1 bevestigd
 						</h1>
 						<h2 class="text-sm text-gray-400">
-							Bevest nu ook uw andere email adress
+							Bevest nu ook uw andere email adres
 						</h2>
 					</div>
 					<div class="mb-5 flex flex-col gap-3">
@@ -475,13 +475,13 @@
 							<Fa icon={faCircleCheck} class="text-success" /> Email 2 bevestigd
 						</h1>
 						<h2 class="text-sm text-gray-400">
-							Email adress succesvol veranderd
+							Email adres succesvol veranderd
 						</h2>
 					</div>
 					<div class="mb-5 flex flex-col gap-3">
 						<p>
-							Uw email adress is succesvol veranderd, vanaf nu moet u met dit
-							nieuwe adress inloggen.
+							Uw email adres is succesvol veranderd, vanaf nu moet u met dit
+							nieuwe adres inloggen.
 						</p>
 						<button
 							class="btn btn-primary mt-2"
