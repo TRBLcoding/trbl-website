@@ -27,9 +27,9 @@
 	export let toggled = false
 	export let step = ""
 	export let min = ""
-
+	
 	$: inputId = label?.replace(/[ :]/g, "").toLowerCase() || "input-field"
-	$: error = validate(value)
+	$: error = edited ? validate(value) : ""
 	$: showIconLeft = $$slots.iconLeft || iconLeft
 	$: showIconRight = $$slots.iconRight || iconRight || toggleText
 	$: hasBadge = $$slots.badge
