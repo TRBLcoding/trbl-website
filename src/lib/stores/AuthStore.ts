@@ -2,9 +2,8 @@ import { browser } from '$app/environment'
 import { User } from '$lib/domain/User'
 import { supabase } from '$lib/supabase/supabaseClient'
 import { get, writable } from 'svelte/store'
-import { handleSupabaseError } from './ProductStore'
 import type { Database } from '$lib/supabase/database.types'
-import { createPostgrestErrorFromObject } from '$lib/utils/SupabaseUtils'
+import { createPostgrestErrorFromObject, handleSupabaseDeleteError, handleSupabaseUpdateError } from '$lib/utils/SupabaseUtils'
 
 function createAuthStore() {
 	// Value can be: undefined (not known yet), null (not logged in) or User (logged in)
@@ -14,7 +13,6 @@ function createAuthStore() {
 		function init() {
 			if (!browser) return
 			const { data } = supabase.auth.onAuthStateChange((event, session) => {
-				console.log(event)
 				if (event === 'SIGNED_IN' && session && session.user) {
 					const user = get(innerStore)
 					if (!user || user.auth_id !== session.user.id) {
@@ -56,6 +54,8 @@ function createAuthStore() {
 	}
 
 	async function signIn(email: string, password: string) {
+		// -- Sign in user --
+		// Acutal user data will be set by the onAuthStateChange listener
 		const { data, error } = await supabase.auth.signInWithPassword({
 			email: email,
 			password: password,
@@ -81,17 +81,10 @@ function createAuthStore() {
 		}
 	}
 
-	async function resetPassword(password: string) {
-		const { data, error } = await supabase.auth.updateUser({ password })
-		if (error) {
-			throw error
-		}
-	}
-
 	async function updateProfile(firstName: string, lastName: string) {
 		const existingUser = get(innerStore)
 		if (!existingUser) throw new Error("No user logged in")
-		
+
 		// -- Update user --
 		const { data, error } = await supabase
 			.from('users')
@@ -101,7 +94,7 @@ function createAuthStore() {
 			} as Database['public']['Tables']['users']['Update'])
 			.eq('id', existingUser.id)
 			.select('id')
-		handleSupabaseError(error, data, "user")
+		handleSupabaseUpdateError(error, data, "user")
 
 		// -- Update store --
 		existingUser.firstName = firstName
@@ -117,7 +110,7 @@ function createAuthStore() {
 		const { data, error } = await supabase.auth.updateUser({
 			email: newEmail
 		})
-		handleSupabaseError(error, data, "user")
+		handleSupabaseUpdateError(error, data, "user")
 
 		// -- Update store --
 		existingUser.email = newEmail
@@ -132,7 +125,7 @@ function createAuthStore() {
 		const { data, error } = await supabase.auth.updateUser({
 			password: newPassword
 		})
-		handleSupabaseError(error, data, "user")
+		handleSupabaseUpdateError(error, data, "user")
 	}
 
 	async function deleteProfile() {
@@ -143,17 +136,7 @@ function createAuthStore() {
 			.from('users')
 			.delete({ count: 'exact' })
 			.eq('id', existingUser.id)
-		if (error) {
-			if (error instanceof Error)
-				throw error
-			throw createPostgrestErrorFromObject(error)
-		}
-		else if (!count || count === 0) {
-			throw new Error(`No user deleted. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
-		}
-		else if (count > 1) {
-			throw new Error(`Multiple (${count}) users deleted. This should not happen because user ID is unique`)
-		}
+		handleSupabaseDeleteError(error, count, "user")
 	}
 
 	return {
@@ -162,7 +145,6 @@ function createAuthStore() {
 		signIn,
 		signOut,
 		requestPasswordReset,
-		resetPassword,
 		updateProfile,
 		updateEmail,
 		updatePassword,

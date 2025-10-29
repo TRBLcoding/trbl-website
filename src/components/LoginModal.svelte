@@ -51,7 +51,7 @@
 				error.message ===
 				"New password should be different from the old password."
 			)
-				return "Nieuw wachtwoord moet anders zijn dan voriger wachtwoord"
+				return "Nieuw wachtwoord moet anders zijn dan vorige wachtwoord"
 		}
 		return "Unknown error occurred"
 	}
@@ -104,7 +104,7 @@
 		loading = true
 		loginError = ""
 		try {
-			await authStore.resetPassword(password)
+			await authStore.updatePassword(password)
 			email = ""
 			password = ""
 			formSubmitted = true
@@ -131,7 +131,6 @@
 			pushCreatedToast("Wachtwoord reset link is ongeldig of vervalen")
 			console.error("Password reset link invalid or expired")
 		} else if (hashParams.get("type") === "email_change") {
-			console.log("email changed")
 			$loginModalStateStore = "Email2"
 			$loginModalOpenStore = true
 		} else if (hashParams.get("message") === configmMessage) {

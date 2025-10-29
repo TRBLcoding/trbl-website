@@ -29,7 +29,6 @@
 			if (error instanceof Error) {
 				console.error("Error updating profile:", error)
 				errorMessage = error.message
-				console.log(error)
 			} else {
 				console.error(error)
 				errorMessage = "Unknown error updating profile"
