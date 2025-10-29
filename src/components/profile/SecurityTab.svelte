@@ -24,20 +24,27 @@
 		loadingEmailForm = true
 		succesEmailForm = false
 		try {
-			if(newEmail === $authStore?.email) 
-				throw new Error("Het nieuwe e-mailadres mag niet hetzelfde zijn als het huidige e-mailadres")
-			await authStore.updateEmail(newEmail)
+			if (newEmail === $authStore?.email)
+				throw new Error(
+					"Het nieuwe e-mailadres mag niet hetzelfde zijn als het huidige e-mailadres"
+				)
+			await authStore.requestEmailChange(newEmail)
 			succesEmailForm = true
 		} catch (error) {
-			if (error instanceof Error) {
-				console.error("Error updating profile:", error)
-				errorEmailForm = error.message
-			} else {
-				console.error("Unknown error updating profile")
-				errorEmailForm = "Unknown error updating profile"
-			}
+			errorEmailForm = formatUpdateEmailError(error)
 		}
 		loadingEmailForm = false
+	}
+	function formatUpdateEmailError(error: any) {
+		if (error instanceof Error) {
+			console.error("Error updating email:", error)
+			const emailMatch = error.message.match(/Email address "(.*)" is invalid/)
+			if (emailMatch) return `Email adres "${emailMatch[1]}" is ongeldig`
+			return error.message
+		} else {
+			console.error("Unknown error updating email")
+			return "Ongekende error bij het updaten van email"
+		}
 	}
 
 	function testPasswords() {
@@ -57,15 +64,23 @@
 			await authStore.updatePassword(newPassword)
 			succesPasswordForm = true
 		} catch (error) {
-			if (error instanceof Error) {
-				console.error("Error updating profile:", error)
-				errorPasswordForm = error.message
-			} else {
-				console.error("Unknown error updating profile")
-				errorPasswordForm = "Unknown error updating profile"
-			}
+			errorPasswordForm = formatUpdatePasswordError(error)
 		}
 		loadingPasswordForm = false
+	}
+	function formatUpdatePasswordError(error: any) {
+		if (error instanceof Error) {
+			console.error("Error updating password:", error)
+			const passwordLengthMatch = error.message.match(
+				/Password should be at least (.*) characters./
+			)
+			if (passwordLengthMatch)
+				return `Wachtwoord moet minstens ${passwordLengthMatch[1]} tekens lang zijn`
+			return error.message
+		} else {
+			console.error("Unknown error updating password")
+			return "Ongekende error bij het updaten van paswoord"
+		}
 	}
 </script>
 
@@ -108,7 +123,7 @@
 				disabled
 			/>
 			<Input
-				type="text"
+				type="email"
 				label="Nieuw e-mailadres"
 				placeholder="Nieuw e-mailadres"
 				bind:value={newEmail}
