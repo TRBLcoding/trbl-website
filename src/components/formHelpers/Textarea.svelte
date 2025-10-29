@@ -31,7 +31,7 @@
 		</div>
 	{/if}
 	<textarea
-		class="input border-2 w-full h-70"
+		class="input border-2 w-full h-74"
 		{required}
 		{placeholder}
 		bind:value
