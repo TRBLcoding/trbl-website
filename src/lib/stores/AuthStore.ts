@@ -81,28 +81,7 @@ function createAuthStore() {
 		}
 	}
 
-	async function updateProfile(firstName: string, lastName: string) {
-		const existingUser = get(innerStore)
-		if (!existingUser) throw new Error("No user logged in")
-
-		// -- Update user --
-		const { data, error } = await supabase
-			.from('users')
-			.update({
-				first_name: firstName,
-				last_name: lastName,
-			} as Database['public']['Tables']['users']['Update'])
-			.eq('id', existingUser.id)
-			.select('id')
-		handleSupabaseUpdateError(error, data, "user")
-
-		// -- Update store --
-		existingUser.firstName = firstName
-		existingUser.lastName = lastName
-		update(() => existingUser.clone())
-	}
-
-	async function updateEmail(newEmail: string) {
+	async function requestEmailChange(newEmail: string) {
 		const existingUser = get(innerStore)
 		if (!existingUser) throw new Error("No user logged in")
 
@@ -111,9 +90,26 @@ function createAuthStore() {
 			email: newEmail
 		})
 		handleSupabaseUpdateError(error, data, "user")
+	}
+
+	async function updateProfile(newFirstName: string, newLastName: string) {
+		const existingUser = get(innerStore)
+		if (!existingUser) throw new Error("No user logged in")
+
+		// -- Update user --
+		const { data, error } = await supabase
+			.from('users')
+			.update({
+				first_name: newFirstName,
+				last_name: newLastName,
+			} as Database['public']['Tables']['users']['Update'])
+			.eq('id', existingUser.id)
+			.select('id')
+		handleSupabaseUpdateError(error, data, "user")
 
 		// -- Update store --
-		existingUser.email = newEmail
+		existingUser.firstName = newFirstName
+		existingUser.lastName = newLastName
 		update(() => existingUser.clone())
 	}
 
@@ -145,8 +141,8 @@ function createAuthStore() {
 		signIn,
 		signOut,
 		requestPasswordReset,
+		requestEmailChange,
 		updateProfile,
-		updateEmail,
 		updatePassword,
 		deleteProfile
 	}
