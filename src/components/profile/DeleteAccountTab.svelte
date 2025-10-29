@@ -67,7 +67,7 @@
 				Account permanent verwijderen
 				<span class="loading loading-ring" class:hidden={!loading}></span>
 			</button>
-			{#if true}
+			{#if errorMessage}
 				<div class="text-error">{errorMessage}</div>
 			{/if}
 		</div>

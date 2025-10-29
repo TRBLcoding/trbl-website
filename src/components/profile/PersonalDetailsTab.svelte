@@ -67,7 +67,7 @@
 
 	<form class="flex flex-col gap-4" on:submit|preventDefault={updateProfile}>
 		<div class="flex flex-col sm:flex-row gap-2">
-			{#if initialized && true}
+			{#if initialized}
 				<Input
 					type="text"
 					label="Voornaam"
