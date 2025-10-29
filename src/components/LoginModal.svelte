@@ -48,6 +48,11 @@
 			)
 			if (securityMatch)
 				return `U kunt dit om veiligheidsredenen pas na ${securityMatch[1]} seconden opnieuw aanvragen.`
+			const passwordLengthMatch = error.message.match(
+				/Password should be at least (.*) characters./
+			)
+			if (passwordLengthMatch)
+				return `Wachtwoord moet minstens ${passwordLengthMatch[1]} tekens lang zijn`
 			if (
 				error.message ===
 				"New password should be different from the old password."
