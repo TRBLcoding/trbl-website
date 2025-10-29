@@ -16,6 +16,7 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
+	import Input from "./formHelpers/Input.svelte"
 
 	export let loginModalID: string
 
@@ -126,7 +127,7 @@
 	// -- Reset link Check --
 	const hashParams = new URLSearchParams(page.url.hash.substring(1))
 	onMount(() => {
-		if (hashParams.get("error") === "access_denied") {									
+		if (hashParams.get("error") === "access_denied") {
 			window.history.replaceState({}, document.title, location.origin)
 			pushCreatedToast("Wachtwoord reset link is ongeldig of vervalen")
 			console.error("Password reset link invalid or expired")
@@ -151,7 +152,8 @@
 			!state &&
 			($loginModalStateStore === "Confirm" ||
 				$loginModalStateStore === "Reset" ||
-				$loginModalStateStore === "Email1" || $loginModalStateStore === "Email2")
+				$loginModalStateStore === "Email1" ||
+				$loginModalStateStore === "Email2")
 		) {
 			await sleep(300)
 			if (!$loginModalOpenStore) $loginModalStateStore = "Login"
@@ -189,31 +191,24 @@
 						on:submit|preventDefault={submitLogin}
 						class="mb-3 flex flex-col gap-3"
 					>
-						<div>
-							<label class="input w-full">
-								<Fa icon={faEnvelope} class="h-[1em] opacity-50" />
-								<input
-									type="email"
-									placeholder="Email"
-									bind:value={email}
-									class:input-error={loginError}
-									required
-									autocomplete="email"
-								/>
-							</label>
-						</div>
-						<div>
-							<label class="input w-full">
-								<Fa icon={faKey} class="h-[1em] opacity-50" />
-								<input
-									type="password"
-									placeholder="Wachtwoord"
-									bind:value={password}
-									class:input-error={loginError}
-									required
-								/>
-							</label>
-						</div>
+						<Input
+							type="email"
+							placeholder="Email"
+							bind:value={email}
+							size="full"
+							required
+							autocomplete="email"
+							iconLeft={faEnvelope}
+						/>
+						<Input
+							type="password"
+							placeholder="Wachtwoord"
+							bind:value={password}
+							size="full"
+							required
+							autocomplete="current-password"
+							iconLeft={faKey}
+						/>
 						<button
 							class="btn btn-primary mt-2"
 							type="submit"
@@ -253,56 +248,42 @@
 							on:submit|preventDefault={submitRegister}
 							class="mb-5 flex flex-col gap-3"
 						>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faUser} class="h-[1em] opacity-50" />
-									<input
-										type="text"
-										placeholder="Voornaam"
-										bind:value={firstName}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faUser} class="h-[1em] opacity-50" />
-									<input
-										type="text"
-										placeholder="Achternaam"
-										bind:value={lastName}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faEnvelope} class="h-[1em] opacity-50" />
-									<input
-										type="email"
-										placeholder="Email"
-										bind:value={email}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faKey} class="h-[1em] opacity-50" />
-									<input
-										type="password"
-										placeholder="Wachtwoord"
-										bind:value={password}
-										class:input-error={loginError}
-										required
-										minlength={minimumPasswordLength}
-									/>
-								</label>
-							</div>
-
+							<Input
+								type="text"
+								placeholder="Voornaam"
+								bind:value={firstName}
+								size="full"
+								required
+								autocomplete="given-name"
+								iconLeft={faUser}
+							/>
+							<Input
+								type="text"
+								placeholder="Achternaam"
+								bind:value={lastName}
+								size="full"
+								required
+								autocomplete="family-name"
+								iconLeft={faUser}
+							/>
+							<Input
+								type="email"
+								placeholder="Email"
+								bind:value={email}
+								size="full"
+								required
+								autocomplete="email"
+								iconLeft={faEnvelope}
+							/>
+							<Input
+								type="password"
+								placeholder="Wachtwoord"
+								bind:value={password}
+								size="full"
+								required
+								autocomplete="new-password"
+								iconLeft={faKey}
+							/>
 							<button
 								class="btn btn-primary mt-2"
 								type="submit"
@@ -349,18 +330,15 @@
 							on:submit|preventDefault={submitRequestPasswordReset}
 							class="mb-5 flex flex-col gap-3"
 						>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faEnvelope} class="h-[1em] opacity-50" />
-									<input
-										type="email"
-										placeholder="Email"
-										bind:value={email}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
+							<Input
+								type="email"
+								placeholder="Email"
+								bind:value={email}
+								size="full"
+								required
+								autocomplete="email"
+								iconLeft={faEnvelope}
+							/>
 							<button
 								class="btn btn-primary mt-2"
 								type="submit"
@@ -413,18 +391,15 @@
 							on:submit|preventDefault={submitResetPassword}
 							class="mb-5 flex flex-col gap-3"
 						>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faKey} class="h-[1em] opacity-50" />
-									<input
-										type="password"
-										placeholder="Nieuw wachtwoord"
-										bind:value={password}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
+							<Input
+								type="password"
+								placeholder="Nieuw wachtwoord"
+								bind:value={password}
+								size="full"
+								required
+								autocomplete="new-password"
+								iconLeft={faKey}
+							/>
 							<button
 								class="btn btn-primary mt-2"
 								type="submit"
@@ -452,7 +427,7 @@
 							<Fa icon={faCircleCheck} class="text-success" /> Email 1 bevestigd
 						</h1>
 						<h2 class="text-sm text-gray-400">
-							Bevest nu ook uw andere email adres
+							Bevestig nu ook uw andere email adres
 						</h2>
 					</div>
 					<div class="mb-5 flex flex-col gap-3">

@@ -28,7 +28,7 @@
 	export let step = ""
 	export let min = ""
 
-	$: inputId = label?.replace(/[ :]/g, "").toLowerCase()
+	$: inputId = label?.replace(/[ :]/g, "").toLowerCase() || "input-field"
 	$: error = validate(value)
 	$: showIconLeft = $$slots.iconLeft || iconLeft
 	$: showIconRight = $$slots.iconRight || iconRight || toggleText
@@ -74,7 +74,7 @@
 </script>
 
 <div
-	class="form-control w-full"
+	class="w-full"
 	class:max-w-md={size === "md"}
 	class:max-w-sm={size === "sm"}
 	class:max-w-xs={size === "xs"}
@@ -95,11 +95,11 @@
 	<div class="relative w-full" class:join={isJoined}>
 		{#if showIconLeft}
 			<div
-				class="flex items-center absolute inset-y-0 left-0 pl-3 pointer-events-none"
+				class="flex items-center absolute inset-y-0 left-0 pl-3 pointer-events-none z-10"
 			>
 				<slot name="iconLeft">
 					{#if iconLeft}
-						<Fa icon={iconLeft} class="text-gray-500" />
+						<Fa icon={iconLeft} class="opacity-50" />
 					{/if}
 				</slot>
 			</div>
