@@ -42,7 +42,7 @@ function createAuthStore() {
 	const { subscribe, update } = innerStore
 
 	async function signUp(email: string, password: string, firstName: string, lastName: string) {
-		const { error, data } = await supabase.auth.signUp({
+		const { data, error } = await supabase.auth.signUp({
 			email: email,
 			password: password,
 			options: {
@@ -56,7 +56,7 @@ function createAuthStore() {
 	}
 
 	async function signIn(email: string, password: string) {
-		const { error, data } = await supabase.auth.signInWithPassword({
+		const { data, error } = await supabase.auth.signInWithPassword({
 			email: email,
 			password: password,
 		})
@@ -89,8 +89,9 @@ function createAuthStore() {
 	}
 
 	async function updateProfile(firstName: string, lastName: string) {
-		const user = get(innerStore)
-		if (!user) throw new Error("No user logged in")
+		const existingUser = get(innerStore)
+		if (!existingUser) throw new Error("No user logged in")
+		
 		// -- Update user --
 		const { data, error } = await supabase
 			.from('users')
@@ -98,17 +99,20 @@ function createAuthStore() {
 				first_name: firstName,
 				last_name: lastName,
 			} as Database['public']['Tables']['users']['Update'])
-			.eq('id', user.id)
+			.eq('id', existingUser.id)
 			.select('id')
 		handleSupabaseError(error, data, "user")
 
 		// -- Update store --
-		update((user) => user)
+		existingUser.firstName = firstName
+		existingUser.lastName = lastName
+		update(() => existingUser.clone())
 	}
 
 	async function updateEmail(newEmail: string) {
-		const user = get(innerStore)
-		if (!user) throw new Error("No user logged in")
+		const existingUser = get(innerStore)
+		if (!existingUser) throw new Error("No user logged in")
+
 		// -- Update user --
 		const { data, error } = await supabase.auth.updateUser({
 			email: newEmail
@@ -116,30 +120,29 @@ function createAuthStore() {
 		handleSupabaseError(error, data, "user")
 
 		// -- Update store --
-		update((user) => user)
+		existingUser.email = newEmail
+		update(() => existingUser.clone())
 	}
 
 	async function updatePassword(newPassword: string) {
-		const user = get(innerStore)
-		if (!user) throw new Error("No user logged in")
+		const existingUser = get(innerStore)
+		if (!existingUser) throw new Error("No user logged in")
+
 		// -- Update user --
 		const { data, error } = await supabase.auth.updateUser({
 			password: newPassword
 		})
 		handleSupabaseError(error, data, "user")
-
-		// -- Update store --
-		update((user) => user)
 	}
 
 	async function deleteProfile() {
-		const user = get(innerStore)
-		if (!user) throw new Error("No user logged in")
+		const existingUser = get(innerStore)
+		if (!existingUser) throw new Error("No user logged in")
 
 		const { error, count } = await supabase
 			.from('users')
 			.delete({ count: 'exact' })
-			.eq('id', user.id)
+			.eq('id', existingUser.id)
 		if (error) {
 			if (error instanceof Error)
 				throw error
