@@ -51,6 +51,7 @@
 	async function updatePassword() {
 		loadingPasswordForm = true
 		succesPasswordForm = false
+		errorPasswordForm = ""
 		try {
 			testPasswords()
 			await authStore.updatePassword(newPassword)
