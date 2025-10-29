@@ -33,7 +33,7 @@ function createInvoiceDetailsStore() {
 		if (error)
 			throw createPostgrestErrorFromObject(error)
 		newInvoideDetails.id = data[0].id
-		console.log("Created new invoice details with ID " + newInvoideDetails.id)
+
 		// -- Update store --
 		update((products) => {
 			return [...(products || []), newInvoideDetails]

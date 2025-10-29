@@ -3,6 +3,7 @@
 	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import ProductForm from "$components/product/ProductForm.svelte"
 	import { Product, type Category, type Type } from "$lib/domain/Product"
+	import type { User } from "$lib/domain/User"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { productStore } from "$lib/stores/ProductStore"
@@ -51,7 +52,7 @@
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Nieuw product")
 	// -- Authguard --
-	$: if ($authStore === null || ($authStore && !$authStore.isAdmin())) goto("/")
+	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin())) goto("/")
 </script>
 
 <div class="mx-2 lg:mx-6 mt-3 mb-8">

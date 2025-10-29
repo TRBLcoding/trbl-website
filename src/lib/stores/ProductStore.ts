@@ -1,6 +1,6 @@
 import { browser } from '$app/environment'
 import { supabase } from "$lib/supabase/supabaseClient"
-import { createPostgrestErrorFromObject } from '$lib/utils/SupabaseUtils'
+import { createPostgrestErrorFromObject, handleSupabaseDeleteError, handleSupabaseUpdateError } from '$lib/utils/SupabaseUtils'
 import { get, writable, type Writable } from 'svelte/store'
 import { Product, type Category, type Type } from '../domain/Product'
 import type { Database } from '../supabase/database.types'
@@ -47,11 +47,13 @@ function createProductStore() {
 	}
 
 	async function getProductById(id: number) {
-		// -- Get product --
+		// -- Get product from store --
 		await initPromise
 		const products = get(store)
-		const foundProduct =  products?.find((e) => e.id === id)
-		if(foundProduct) return foundProduct
+		const foundProduct = products?.find((e) => e.id === id)
+		if (foundProduct) return foundProduct
+		
+		// -- Get product from database --
 		const { data, error } = await supabase
 			.from('products')
 			.select()
@@ -63,9 +65,12 @@ function createProductStore() {
 		}
 		if (!data) throw new Error(`No product found`)
 		const product = Product.fromJSON(data)
+		
+		// -- Update store --
 		update((products) => {
 			return [...(products || []), product].sort((a, b) => a.name.localeCompare(b.name))
 		})
+
 		return product
 	}
 
@@ -96,20 +101,7 @@ function createProductStore() {
 			} as Database['public']['Tables']['products']['Update'])
 			.eq('id', product.id)
 			.select('id')
-
-		if (error) {
-			console.error(error)
-			if (error.message === "TypeError: Failed to fetch")
-				throw new Error(`Network error while updating products: ${error?.message}`)
-			throw new Error(`Error updating product: ${error?.message}`)
-		}
-		else if (!data || data.length === 0) {
-			throw new Error(`No products updated. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
-		}
-		else if (data.length > 1) {
-			throw new Error(`Multiple (${data.length}) products updated. This should not happen because product ID is unique`)
-		}
-
+		handleSupabaseUpdateError(error, data, "product")
 
 		// -- Update store --
 		product.name = newName
@@ -133,14 +125,7 @@ function createProductStore() {
 			.from('products')
 			.delete({ count: 'exact' })
 			.eq('id', product.id)
-		if (error)
-			throw error
-		else if (!count || count === 0) {
-			throw new Error(`No products deleted. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
-		}
-		else if (count > 1) {
-			throw new Error(`Multiple (${count}) products deleted. This should not happen because product ID is unique`)
-		}
+		handleSupabaseDeleteError(error, count, "product")
 
 		// -- Remove from store --
 		update((products) => (products.filter((e) => e.id !== product.id)))

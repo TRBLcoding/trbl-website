@@ -151,6 +151,9 @@
 		<div class="flex md:gap-20 flex-col md:flex-row w-full">
 			<div class="flex-1">
 				<!-- Invoice details -->
+				<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-3">
+					Factuurgegevens
+				</h2>
 				<InvoiceDetailsComponent
 					bind:invoiceFormElement
 					bind:selectedInvoiceDetails

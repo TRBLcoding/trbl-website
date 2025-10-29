@@ -2,6 +2,8 @@ import { browser } from '$app/environment'
 import { User } from '$lib/domain/User'
 import { supabase } from '$lib/supabase/supabaseClient'
 import { get, writable } from 'svelte/store'
+import type { Database } from '$lib/supabase/database.types'
+import { createPostgrestErrorFromObject, handleSupabaseDeleteError, handleSupabaseUpdateError } from '$lib/utils/SupabaseUtils'
 
 function createAuthStore() {
 	// Value can be: undefined (not known yet), null (not logged in) or User (logged in)
@@ -22,7 +24,7 @@ function createAuthStore() {
 								.single()
 							if (error)
 								throw error
-							const newUser = new User(session.user.id, session.user.email!, data.role, data.first_name, data.last_name)
+							const newUser = new User(data.id, session.user.id, session.user.email!, data.role, data.first_name, data.last_name)
 							update(() => newUser)
 						})()
 					}
@@ -38,7 +40,7 @@ function createAuthStore() {
 	const { subscribe, update } = innerStore
 
 	async function signUp(email: string, password: string, firstName: string, lastName: string) {
-		const { error, data } = await supabase.auth.signUp({
+		const { data, error } = await supabase.auth.signUp({
 			email: email,
 			password: password,
 			options: {
@@ -52,7 +54,9 @@ function createAuthStore() {
 	}
 
 	async function signIn(email: string, password: string) {
-		const { error, data } = await supabase.auth.signInWithPassword({
+		// -- Sign in user --
+		// Acutal user data will be set by the onAuthStateChange listener
+		const { data, error } = await supabase.auth.signInWithPassword({
 			email: email,
 			password: password,
 		})
@@ -77,53 +81,59 @@ function createAuthStore() {
 		}
 	}
 
-	async function resetPassword(password: string) {
-		const { data, error } = await supabase.auth.updateUser({ password })
-		if (error) {
-			throw error
-		}
+	async function requestEmailChange(newEmail: string) {
+		const existingUser = get(innerStore)
+		if (!existingUser) throw new Error("No user logged in")
+
+		// -- Update user --
+		const { data, error } = await supabase.auth.updateUser({
+			email: newEmail
+		})
+		handleSupabaseUpdateError(error, data, "user")
 	}
 
-	// async function updateCurrentUserEmail(email: string) {
-	// 	if (!auth.currentUser) return
+	async function updateProfile(newFirstName: string, newLastName: string) {
+		const existingUser = get(innerStore)
+		if (!existingUser) throw new Error("No user logged in")
 
-	// 	// -- Update authUser --
-	// 	const { updateEmail } = await import('firebase/auth')
+		// -- Update user --
+		const { data, error } = await supabase
+			.from('users')
+			.update({
+				first_name: newFirstName,
+				last_name: newLastName,
+			} as Database['public']['Tables']['users']['Update'])
+			.eq('id', existingUser.id)
+			.select('id')
+		handleSupabaseUpdateError(error, data, "user")
 
-	// 	await updateEmail(auth.currentUser, email)
+		// -- Update store --
+		existingUser.firstName = newFirstName
+		existingUser.lastName = newLastName
+		update(() => existingUser.clone())
+	}
 
-	// 	// -- Update dbUser --
-	// 	const { firebaseApp } = await import('$lib/firebase/Firebase')
-	// 	const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-	// 	const firestore = getFirestore(firebaseApp)
+	async function updatePassword(newPassword: string) {
+		const existingUser = get(innerStore)
+		if (!existingUser) throw new Error("No user logged in")
 
-	// 	const userRef = doc(firestore, Collections.USERS, auth.currentUser.uid)
-	// 	await updateDoc(userRef, { email: email })
-	// }
+		// -- Update user --
+		const { data, error } = await supabase.auth.updateUser({
+			password: newPassword
+		})
+		handleSupabaseUpdateError(error, data, "user")
+	}
 
-	// async function updateCurrentUserPassword(password: string) {
-	// 	if (!auth.currentUser) return
+	async function deleteProfile() {
+		const existingUser = get(innerStore)
+		if (!existingUser) throw new Error("No user logged in")
 
-	// 	// -- Update authUser --
-	// 	const { updatePassword } = await import('firebase/auth')
-	// 	await updatePassword(auth.currentUser, password)
-	// }
-
-	// async function updateCurrentUserName(displayName: string) {
-	// 	if (!auth.currentUser) return
-
-	// 	// -- Update authUser --
-	// 	const { updateProfile } = await import('firebase/auth')
-	// 	await updateProfile(auth.currentUser, { displayName: displayName })
-
-	// 	// -- Update dbUser --
-	// 	const { firebaseApp } = await import('$lib/firebase/Firebase')
-	// 	const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-	// 	const firestore = getFirestore(firebaseApp)
-
-	// 	const userRef = doc(firestore, Collections.USERS, auth.currentUser.uid)
-	// 	await updateDoc(userRef, { displayName: displayName })
-	// }
+		const { error, count } = await supabase
+			.from('users')
+			.delete({ count: 'exact' })
+			.eq('id', existingUser.id)
+		handleSupabaseDeleteError(error, count, "user")
+	}
 
 	return {
 		subscribe,
@@ -131,10 +141,10 @@ function createAuthStore() {
 		signIn,
 		signOut,
 		requestPasswordReset,
-		resetPassword,
-		// updateCurrentUserEmail,
-		// updateCurrentUserPassword,
-		// updateCurrentUserName
+		requestEmailChange,
+		updateProfile,
+		updatePassword,
+		deleteProfile
 	}
 }
 

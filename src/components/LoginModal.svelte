@@ -16,6 +16,7 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
+	import Input from "./formHelpers/Input.svelte"
 
 	export let loginModalID: string
 
@@ -47,11 +48,16 @@
 			)
 			if (securityMatch)
 				return `U kunt dit om veiligheidsredenen pas na ${securityMatch[1]} seconden opnieuw aanvragen.`
+			const passwordLengthMatch = error.message.match(
+				/Password should be at least (.*) characters./
+			)
+			if (passwordLengthMatch)
+				return `Wachtwoord moet minstens ${passwordLengthMatch[1]} tekens lang zijn`
 			if (
 				error.message ===
 				"New password should be different from the old password."
 			)
-				return "Nieuw wachtwoord moet anders zijn dan voriger wachtwoord"
+				return "Nieuw wachtwoord moet anders zijn dan vorige wachtwoord"
 		}
 		return "Unknown error occurred"
 	}
@@ -104,7 +110,7 @@
 		loading = true
 		loginError = ""
 		try {
-			await authStore.resetPassword(password)
+			await authStore.updatePassword(password)
 			email = ""
 			password = ""
 			formSubmitted = true
@@ -121,13 +127,21 @@
 		formSubmitted = false
 	}
 
+	const configmMessage =
+		"Confirmation link accepted. Please proceed to confirm link sent to the other email"
 	// -- Reset link Check --
+	const hashParams = new URLSearchParams(page.url.hash.substring(1))
 	onMount(() => {
-		const hashParams = new URLSearchParams(page.url.hash.substring(1))
 		if (hashParams.get("error") === "access_denied") {
 			window.history.replaceState({}, document.title, location.origin)
 			pushCreatedToast("Wachtwoord reset link is ongeldig of vervalen")
 			console.error("Password reset link invalid or expired")
+		} else if (hashParams.get("type") === "email_change") {
+			$loginModalStateStore = "Email2"
+			$loginModalOpenStore = true
+		} else if (hashParams.get("message") === configmMessage) {
+			$loginModalStateStore = "Email1"
+			$loginModalOpenStore = true
 		} else if (page.url.searchParams.get("action") === "reset") {
 			$loginModalStateStore = "Reset"
 			$loginModalOpenStore = true
@@ -141,11 +155,13 @@
 	async function resetModal(state: boolean) {
 		if (
 			!state &&
-			($loginModalStateStore === "Confirm" || $loginModalStateStore === "Reset")
+			($loginModalStateStore === "Confirm" ||
+				$loginModalStateStore === "Reset" ||
+				$loginModalStateStore === "Email1" ||
+				$loginModalStateStore === "Email2")
 		) {
-			console.log(state)
 			await sleep(300)
-			$loginModalStateStore = "Login"
+			if (!$loginModalOpenStore) $loginModalStateStore = "Login"
 		}
 	}
 </script>
@@ -180,31 +196,24 @@
 						on:submit|preventDefault={submitLogin}
 						class="mb-3 flex flex-col gap-3"
 					>
-						<div>
-							<label class="input w-full">
-								<Fa icon={faEnvelope} class="h-[1em] opacity-50" />
-								<input
-									type="email"
-									placeholder="Email"
-									bind:value={email}
-									class:input-error={loginError}
-									required
-									autocomplete="email"
-								/>
-							</label>
-						</div>
-						<div>
-							<label class="input w-full">
-								<Fa icon={faKey} class="h-[1em] opacity-50" />
-								<input
-									type="password"
-									placeholder="Wachtwoord"
-									bind:value={password}
-									class:input-error={loginError}
-									required
-								/>
-							</label>
-						</div>
+						<Input
+							type="email"
+							placeholder="Email"
+							bind:value={email}
+							size="full"
+							required
+							autocomplete="email"
+							iconLeft={faEnvelope}
+						/>
+						<Input
+							type="password"
+							placeholder="Wachtwoord"
+							bind:value={password}
+							size="full"
+							required
+							autocomplete="current-password"
+							iconLeft={faKey}
+						/>
 						<button
 							class="btn btn-primary mt-2"
 							type="submit"
@@ -244,65 +253,51 @@
 							on:submit|preventDefault={submitRegister}
 							class="mb-5 flex flex-col gap-3"
 						>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faUser} class="h-[1em] opacity-50" />
-									<input
-										type="text"
-										placeholder="Voornaam"
-										bind:value={firstName}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faUser} class="h-[1em] opacity-50" />
-									<input
-										type="text"
-										placeholder="Achternaam"
-										bind:value={lastName}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faEnvelope} class="h-[1em] opacity-50" />
-									<input
-										type="email"
-										placeholder="Email"
-										bind:value={email}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faKey} class="h-[1em] opacity-50" />
-									<input
-										type="password"
-										placeholder="Wachtwoord"
-										bind:value={password}
-										class:input-error={loginError}
-										required
-										minlength={minimumPasswordLength}
-									/>
-								</label>
-							</div>
-
+							<Input
+								type="text"
+								placeholder="Voornaam"
+								bind:value={firstName}
+								size="full"
+								required
+								autocomplete="given-name"
+								iconLeft={faUser}
+							/>
+							<Input
+								type="text"
+								placeholder="Achternaam"
+								bind:value={lastName}
+								size="full"
+								required
+								autocomplete="family-name"
+								iconLeft={faUser}
+							/>
+							<Input
+								type="email"
+								placeholder="Email"
+								bind:value={email}
+								size="full"
+								required
+								autocomplete="email"
+								iconLeft={faEnvelope}
+							/>
+							<Input
+								type="password"
+								placeholder="Wachtwoord"
+								bind:value={password}
+								size="full"
+								required
+								autocomplete="new-password"
+								iconLeft={faKey}
+							/>
 							<button
 								class="btn btn-primary mt-2"
 								type="submit"
 								disabled={loading}
-								>Registreren <span
-									class="loading loading-ring"
-									class:hidden={!loading}
-								></span></button
 							>
+								Registreren
+								<span class="loading loading-ring" class:hidden={!loading}>
+								</span>
+							</button>
 							{#if loginError}
 								<div class="text-center text-error">{loginError}</div>
 							{/if}
@@ -340,18 +335,15 @@
 							on:submit|preventDefault={submitRequestPasswordReset}
 							class="mb-5 flex flex-col gap-3"
 						>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faEnvelope} class="h-[1em] opacity-50" />
-									<input
-										type="email"
-										placeholder="Email"
-										bind:value={email}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
+							<Input
+								type="email"
+								placeholder="Email"
+								bind:value={email}
+								size="full"
+								required
+								autocomplete="email"
+								iconLeft={faEnvelope}
+							/>
 							<button
 								class="btn btn-primary mt-2"
 								type="submit"
@@ -404,18 +396,15 @@
 							on:submit|preventDefault={submitResetPassword}
 							class="mb-5 flex flex-col gap-3"
 						>
-							<div>
-								<label class="input w-full">
-									<Fa icon={faKey} class="h-[1em] opacity-50" />
-									<input
-										type="password"
-										placeholder="Nieuw wachtwoord"
-										bind:value={password}
-										class:input-error={loginError}
-										required
-									/>
-								</label>
-							</div>
+							<Input
+								type="password"
+								placeholder="Nieuw wachtwoord"
+								bind:value={password}
+								size="full"
+								required
+								autocomplete="new-password"
+								iconLeft={faKey}
+							/>
 							<button
 								class="btn btn-primary mt-2"
 								type="submit"
@@ -435,6 +424,50 @@
 							<span> Uw wachtwoord is succesvol veranderd </span>
 						</div>
 					{/if}
+				</div>
+			{:else if $loginModalStateStore === "Email1"}
+				<div class="w-full">
+					<div class="mb-4">
+						<h1 class="font-bold text-xl flex items-center gap-2">
+							<Fa icon={faCircleCheck} class="text-success" /> Email 1 bevestigd
+						</h1>
+						<h2 class="text-sm text-gray-400">
+							Bevestig nu ook uw andere email adres
+						</h2>
+					</div>
+					<div class="mb-5 flex flex-col gap-3">
+						<p>
+							Om veiligheidsredenen moet een verandering van email zowel op het
+							oude als het nieuwe adres bevestigd worden.
+						</p>
+						<button
+							class="btn btn-primary mt-2"
+							type="button"
+							on:click={() => ($loginModalOpenStore = false)}>Ok</button
+						>
+					</div>
+				</div>
+			{:else if $loginModalStateStore === "Email2"}
+				<div class="w-full">
+					<div class="mb-4">
+						<h1 class="font-bold text-xl flex items-center gap-2">
+							<Fa icon={faCircleCheck} class="text-success" /> Email 2 bevestigd
+						</h1>
+						<h2 class="text-sm text-gray-400">
+							Email adres succesvol veranderd
+						</h2>
+					</div>
+					<div class="mb-5 flex flex-col gap-3">
+						<p>
+							Uw email adres is succesvol veranderd, vanaf nu moet u met dit
+							nieuwe adres inloggen.
+						</p>
+						<button
+							class="btn btn-primary mt-2"
+							type="button"
+							on:click={() => ($loginModalOpenStore = false)}>Ok</button
+						>
+					</div>
 				</div>
 			{:else if $loginModalStateStore === "Confirm"}
 				<!-- Confirm -->

@@ -7,10 +7,12 @@
 		faUser,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import Input from "./formHelpers/Input.svelte"
+	import Textarea from "./formHelpers/Textarea.svelte"
 
 	export let firstName: string
 	export let lastName: string
-	export let emailAddress: string
+	export let email: string
 	export let subject: string
 	export let message: string
 	export let send: () => Promise<void>
@@ -27,7 +29,7 @@
 			await send()
 			firstName = ""
 			lastName = ""
-			emailAddress = ""
+			email = ""
 			subject = ""
 			message = ""
 			successText =
@@ -44,7 +46,7 @@
 		if (!$authStore) return
 		firstName = $authStore.firstName
 		lastName = $authStore.lastName
-		emailAddress = $authStore.email
+		email = $authStore.email
 	}
 </script>
 
@@ -65,59 +67,59 @@
 			</button>
 		{/if}
 	</div>
-	<form class="flex flex-col" on:submit|preventDefault={onSubmitWrapper}>
+	<form
+		class="flex flex-col gap-2 mt-2"
+		on:submit|preventDefault={onSubmitWrapper}
+	>
 		<div class="flex gap-6">
-			<fieldset class="fieldset text-[15px] w-full">
-				<legend class="fieldset-legend">Voornaam</legend>
-				<input
-					type="text"
-					class="input"
-					required
-					placeholder="Voornaam"
-					bind:value={firstName}
-				/>
-			</fieldset>
-			<fieldset class="fieldset text-[15px] w-full">
-				<legend class="fieldset-legend">Achternaam</legend>
-				<input
-					type="text"
-					class="input"
-					required
-					placeholder="Achternaam"
-					bind:value={lastName}
-				/>
-			</fieldset>
-		</div>
-		<fieldset class="fieldset text-[15px]">
-			<legend class="fieldset-legend">Email</legend>
-			<input
-				type="email"
-				class="input w-full"
-				required
-				placeholder="Email"
-				bind:value={emailAddress}
-			/>
-		</fieldset>
-		<fieldset class="fieldset text-[15px]">
-			<legend class="fieldset-legend">Onderwerp</legend>
-			<input
+			<Input
+				label="Voornaam"
 				type="text"
-				class="input w-full"
+				placeholder="Voornaam"
+				bind:value={firstName}
+				size="full"
 				required
-				placeholder="Onderwerp"
-				bind:value={subject}
+				autocomplete="given-name"
+				labelClass="text-base-content font-semibold mb-1"
 			/>
-		</fieldset>
-		<fieldset class="fieldset text-[15px]">
-			<legend class="fieldset-legend">Boodschap</legend>
-			<textarea
-				class="input w-full h-70"
+			<Input
+				label="Achternaam"
+				type="text"
+				placeholder="Achternaam"
+				bind:value={lastName}
+				size="full"
 				required
-				placeholder="Boodschap"
-				bind:value={message}
-			>
-			</textarea>
-		</fieldset>
+				autocomplete="family-name"
+				labelClass="text-base-content font-semibold mb-1"
+			/>
+		</div>
+		<Input
+			label="Email"
+			type="email"
+			placeholder="Email"
+			bind:value={email}
+			size="full"
+			required
+			autocomplete="email"
+			labelClass="text-base-content font-semibold mb-1"
+		/>
+		<Input
+			label="Onderwerp"
+			type="text"
+			placeholder="Onderwerp"
+			bind:value={subject}
+			size="full"
+			required
+			labelClass="text-base-content font-semibold mb-1"
+		/>
+		<Textarea
+			label="Boodschap"
+			placeholder="Boodschap"
+			bind:value={message}
+			size="full"
+			required
+			labelClass="text-base-content font-semibold mb-1"
+		/>
 		<button type="submit" class="btn btn-primary mt-3" disabled={saving}>
 			Verstuur bericht
 			<span class="loading loading-ring" class:hidden={!saving}></span>
