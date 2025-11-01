@@ -1,10 +1,8 @@
 <script lang="ts">
 	import type { Product } from "$lib/domain/Product"
 	import { cartStore } from "$lib/stores/CartStore"
-	import { pushCreatedToast } from "$lib/utils/Toast"
 	import {
 		faCreditCard,
-		faExclamation,
 		faExclamationTriangle,
 		faMinus,
 		faPlus,
@@ -82,8 +80,9 @@
 		<button
 			class="btn btn-primary mt-4 mb-2 items-center"
 			type="button"
-			on:click={addProduct}><Fa icon={faShoppingCart} /> Toevoegen </button
-		>
+			on:click={addProduct}
+			><Fa icon={faShoppingCart} /> Toevoegen
+		</button>
 		<div class="mt-3 flex flex-col gap-1">
 			<div class="flex gap-1 items-center opacity-60">
 				<Fa icon={faTruck} class="w-5" />

@@ -105,7 +105,7 @@
 				E-mailadres wijziging aanvragen
 			</h3>
 			<div
-				class="tooltip ml-auto tooltip-left sm:tooltip-bottom mt-[-6px]"
+				class="tooltip ml-auto tooltip-left sm:tooltip-bottom -mt-1.5"
 				data-tip={"Een verandering van mailadres vereist een bevestiging via zowel uw oude als nieuwe mailadres"}
 			>
 				<button class="btn btn-ghost btn-xs btn-circle">
@@ -165,7 +165,7 @@
 		<div class="flex items-start w-fit">
 			<h3 class="text-lg font-semibold mb-2">Wachtwoord wijzigen</h3>
 			<div
-				class="tooltip ml-auto tooltip-left sm:tooltip-bottom mt-[-6px]"
+				class="tooltip ml-auto tooltip-left sm:tooltip-bottom -mt-1.5"
 				data-tip={"Een verandering van wachtwoord wordt direct doorgevoerd"}
 			>
 				<button class="btn btn-ghost btn-xs btn-circle">

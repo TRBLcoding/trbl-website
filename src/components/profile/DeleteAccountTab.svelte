@@ -2,7 +2,6 @@
 	import { authStore } from "$lib/stores/AuthStore"
 	import {
 		faCheckCircle,
-		faCross,
 		faTrashCan,
 		faXmark,
 	} from "@fortawesome/free-solid-svg-icons"
@@ -54,7 +53,8 @@
 		<h2 class="text-xl font-semibold text-error">Account verwijderen</h2>
 		<p class="opacity-90">
 			Door je account te verwijderen, worden al je gegevens permanent
-			verwijderd. Deze actie wordt onmiddellijk uitgevoerd en kan niet ongedaan worden gemaakt.
+			verwijderd. Deze actie wordt onmiddellijk uitgevoerd en kan niet ongedaan
+			worden gemaakt.
 		</p>
 		<div class="flex flex-col sm:flex-row gap-2 sm:gap-4 sm:items-center">
 			<button

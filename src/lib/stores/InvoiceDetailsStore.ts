@@ -48,7 +48,7 @@ function createInvoiceDetailsStore() {
 	}
 
 	async function updateInvoiceDetails(product: InvoiceDetails, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newDescription: string, newMaxOrderAmount: null | number, progressStore: Writable<UploadProgress[]>) {
-		// // -- Update product --
+		// // -- Update product -- TODO
 		// const { data, error } = await supabase
 		// 	.from('products')
 		// 	.update({

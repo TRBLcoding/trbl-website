@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { DeliveryMethod } from "$lib/domain/InvoiceRequest"
-	import { type CartProduct } from "$lib/stores/CartStore"
+	import { ProductOrder } from "$lib/domain/ProductOrder"
 	import {
 		faExclamationTriangle,
 		faImage,
@@ -9,15 +9,9 @@
 	import Fa from "svelte-fa"
 
 	export let deliveryMethod: DeliveryMethod
-	export let cartItems: Promise<CartProduct>[]
+	export let productOrders: Promise<ProductOrder>[]
 
-	// Price calculation
-	$: combinedPrice = Promise.all(cartItems).then((cartItems) =>
-		cartItems.reduce(
-			(acc, item) => acc + (item.product?.price ?? 0) * item.amount,
-			0
-		)
-	)
+	$: combinedPrice = ProductOrder.calculatePrice(productOrders)
 </script>
 
 <!-- Your order -->
@@ -27,22 +21,22 @@
 	</h2>
 
 	<div class="flex flex-col gap-3 mt-3 bg-base-200 rounded-lg p-4">
-		{#each cartItems as productPromise, i}
+		{#each productOrders as productPromise, i}
 			{#await productPromise}
 				<div class="skeleton h-15 w-full mb-2"></div>
-			{:then cartProduct}
+			{:then productOrder}
 				<!-- promise was fulfilled -->
-				{#if cartProduct.product}
+				{#if productOrder.product}
 					<div
 						class="flex gap-3 pb-3 border-b border-base-300"
 						class:border-b-2={i === 2}
 					>
 						<div class="overflow-clip w-20 h-14 relative rounded-lg">
-							{#if cartProduct.product.getImageUrls()?.length > 0 && cartProduct.product.getImageUrls()[0] != null}
+							{#if productOrder.product.getImageUrls()?.length > 0 && productOrder.product.getImageUrls()[0] != null}
 								<img
 									alt="Productafbeelding"
 									class="rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-									src={cartProduct.product.getImageUrls()[0]}
+									src={productOrder.product.getImageUrls()[0]}
 								/>
 							{:else}
 								<div
@@ -59,21 +53,21 @@
 						</div>
 						<div class="flex-1 flex justify-between">
 							<div>
-								<h3 class="font-semibold">{cartProduct.product.name}</h3>
+								<h3 class="font-semibold">{productOrder.product.name}</h3>
 								<div class="flex gap-2 items-center mt-1">
 									<span
 										class="badge badge-soft text-xs gap-1 font-semibold opacity-80"
 									>
-										<span>{cartProduct.amount}</span>
+										<span>{productOrder.amount}</span>
 										<Fa icon={faXmark} size="xs" />
 										<span>
-											€ {cartProduct.product.price.toFixed(2)}
+											€ {productOrder.product.price.toFixed(2)}
 										</span>
 									</span>
 								</div>
 							</div>
 							<span class="font-semibold">
-								€ {(cartProduct.product.price * cartProduct.amount).toFixed(2)}
+								€ {(productOrder.getSubtotal()).toFixed(2)}
 							</span>
 						</div>
 					</div>

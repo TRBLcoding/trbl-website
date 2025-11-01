@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Product } from "$lib/domain/Product"
+	import { ProductOrder } from "$lib/domain/ProductOrder"
 	import { cartAddTrigger, cartStore } from "$lib/stores/CartStore"
 	import {
-		faBorderNone,
 		faCartShopping,
 		faExclamationTriangle,
 		faImage,
@@ -13,20 +13,13 @@
 
 	let dropdownButton: HTMLElement
 
-	function removeItem(product: Product | undefined, event: any) {
+	function removeItem(product: Product | undefined) {
 		if (!product) return
 		dropdownButton.focus()
 		cartStore.remove(product)
 	}
 
-	$: combinedPrice = $cartStore
-		? Promise.all($cartStore).then((cartItems) =>
-				cartItems.reduce(
-					(acc, item) => acc + (item.product?.price ?? 0) * item.amount,
-					0
-				)
-			)
-		: 0
+	$: combinedPrice = $cartStore ? ProductOrder.calculatePrice($cartStore) : 0
 
 	$: showCartOnAdd($cartAddTrigger)
 	function showCartOnAdd(value: number) {
@@ -59,18 +52,18 @@
 	>
 		<li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Winkelmandje</li>
 
-		{#each $cartStore as productPromise}
-			{#await productPromise then cartProduct}
+		{#each $cartStore as productOrderPromise}
+			{#await productOrderPromise then productOrder}
 				<li class="flex flex-row items-center gap-1 p-3">
-					{#if cartProduct.product}
+					{#if productOrder.product}
 						<div
 							class="cursor-default bg-transparent! text-wrap overflow-clip w-20 h-14 relative rounded-lg"
 						>
-							{#if cartProduct.product.getImageUrls()?.length > 0 && cartProduct.product.getImageUrls()[0] != null}
+							{#if productOrder.product.getImageUrls()?.length > 0 && productOrder.product.getImageUrls()[0] != null}
 								<img
 									alt="Productafbeelding"
 									class="rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-									src={cartProduct.product.getImageUrls()[0]}
+									src={productOrder.product.getImageUrls()[0]}
 								/>
 							{:else}
 								<div
@@ -90,24 +83,24 @@
 						>
 							<a
 								class="font-semibold hover:link"
-								href="/products/{cartProduct.product.id}"
+								href="/products/{productOrder.product.id}"
 							>
-								{cartProduct.product.name}
+								{productOrder.product.name}
 							</a>
 							<div
-								class="opacity-80 text-[13px] mt-[-2px] flex gap-1 items-baseline"
+								class="opacity-80 text-[13px] -mt-0.5 flex gap-1 items-baseline"
 							>
-								<span class="text-base-content">{cartProduct.amount}</span>
+								<span class="text-base-content">{productOrder.amount}</span>
 								<Fa icon={faXmark} size="xs" class="text-base-content" />
 								<span class="text-green-600 font-semibold">
-									€ {cartProduct.product?.price.toFixed(2)}
+									€ {productOrder.product?.price.toFixed(2)}
 								</span>
 							</div>
 						</div>
 						<button
 							class="btn btn-square btn-ghost hover:btn-primary"
 							aria-label="Remove item"
-							on:click={(e) => removeItem(cartProduct.product, e)}
+							on:click={() => removeItem(productOrder.product)}
 						>
 							<Fa icon={faTrashCan} size="lg" />
 						</button>

@@ -1,15 +1,14 @@
 import type { InvoiceMessage } from "$lib/domain/InvoiceRequest"
+import { ProductOrder } from "$lib/domain/ProductOrder"
 import { productStore } from "$lib/stores/ProductStore"
 import { mapCountryCodeToName } from "$lib/utils/Utils"
 
 
 export async function getAdminInvoiceRequestTemplate(invoiceMessage: InvoiceMessage) {
-	const mappedProducts = await Promise.all(invoiceMessage.selectedProducts.map(async e => {
-		return { product: await productStore.getProductById(e.id), amount: e.amount }
+	const productOrders = await Promise.all(invoiceMessage.selectedProducts.map(async e => {
+		return new ProductOrder(await productStore.getProductById(e.id), e.amount)
 	}))
-	const totalPrice = mappedProducts.reduce((acc, curr) => {
-		return acc + (curr.product.price * curr.amount)
-	}, 0)
+	const totalPrice = await ProductOrder.calculatePrice(productOrders)
 
 	return /*html*/`
 	<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; line-height: 1.6;">
@@ -123,27 +122,27 @@ export async function getAdminInvoiceRequestTemplate(invoiceMessage: InvoiceMess
 					</h3>
 					<div style="background-color: #f8f9fa; padding: 20px; border-radius: 6px;">
 						<!-- Product 1 -->
-						${mappedProducts.map((selectedProduct, i) => /*html*/`
-							<div style="display: table; width: 100%; margin-bottom: 15px; ${i < mappedProducts.length - 1 ? 'padding-bottom: 15px; border-bottom: 1px solid #e0e0e0;' : ''}">
+						${productOrders.map((productOrder, i) => /*html*/`
+							<div style="display: table; width: 100%; margin-bottom: 15px; ${i < productOrders.length - 1 ? 'padding-bottom: 15px; border-bottom: 1px solid #e0e0e0;' : ''}">
 								<div style="display: table-cell; vertical-align: middle; width: 80px; padding-right: 15px;">
-									<img src="${selectedProduct.product.getThumbnailUrls()[0]}" 
-										alt="${selectedProduct.product.name}" 
+									<img src="${productOrder.product.getThumbnailUrls()[0]}" 
+										alt="${productOrder.product.name}" 
 										style="width: 80px; height: 80px; border-radius: 4px; object-fit: cover;">
 								</div>
 								<div style="display: table-cell; vertical-align: middle;">
 									<p style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 0 5px 0;">
-										${selectedProduct.product.name}
+										${productOrder.product.name}
 									</p>
 									<p style="color: #666666; font-size: 14px; margin: 0 0 5px 0;">
-										Aantal: ${selectedProduct.amount} stuks
+										Aantal: ${productOrder.amount} stuks
 									</p>
 									<p style="color: #666666; font-size: 14px; margin: 0;">
-										Prijs per stuk: € ${selectedProduct.product.price.toFixed(2)}
+										Prijs per stuk: € ${productOrder.product.price.toFixed(2)}
 									</p>
 								</div>
 								<div style="display: table-cell; vertical-align: middle; text-align: right; width: 100px;">
 									<p style="color: #333333; font-size: 16px; font-weight: bold; margin: 0;">
-										€ ${(selectedProduct.product.price * selectedProduct.amount).toFixed(2)}
+										€ ${(productOrder.getSubtotal()).toFixed(2)}
 									</p>
 								</div>
 							</div>
@@ -229,12 +228,10 @@ export async function getAdminInvoiceRequestTemplate(invoiceMessage: InvoiceMess
 }
 
 export async function getCustomerInvoiceRequestTemplate(invoiceMessage: InvoiceMessage) {
-	const mappedProducts = await Promise.all(invoiceMessage.selectedProducts.map(async e => {
-		return { product: await productStore.getProductById(e.id), amount: e.amount }
+	const productOrders = await Promise.all(invoiceMessage.selectedProducts.map(async e => {
+		return new ProductOrder(await productStore.getProductById(e.id), e.amount)
 	}))
-	const totalPrice = mappedProducts.reduce((acc, curr) => {
-		return acc + (curr.product.price * curr.amount)
-	}, 0)
+	const totalPrice = await ProductOrder.calculatePrice(productOrders)
 
 	return /*html*/`
 	<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; line-height: 1.6;">
@@ -352,27 +349,27 @@ export async function getCustomerInvoiceRequestTemplate(invoiceMessage: InvoiceM
 					</h3>
 					<div style="background-color: #f8f9fa; padding: 20px; border-radius: 6px;">
 						<!-- Product 1 -->
-						${mappedProducts.map((selectedProduct, i) => /*html*/`
-							<div style="display: table; width: 100%; margin-bottom: 15px; ${i < mappedProducts.length - 1 ? 'padding-bottom: 15px; border-bottom: 1px solid #e0e0e0;' : ''}">
+						${productOrders.map((productOrder, i) => /*html*/`
+							<div style="display: table; width: 100%; margin-bottom: 15px; ${i < productOrders.length - 1 ? 'padding-bottom: 15px; border-bottom: 1px solid #e0e0e0;' : ''}">
 								<div style="display: table-cell; vertical-align: middle; width: 80px; padding-right: 15px;">
-									<img src="${selectedProduct.product.getThumbnailUrls()[0]}" 
-										alt="${selectedProduct.product.name}" 
+									<img src="${productOrder.product.getThumbnailUrls()[0]}" 
+										alt="${productOrder.product.name}" 
 										style="width: 80px; height: 80px; border-radius: 4px; object-fit: cover;">
 								</div>
 								<div style="display: table-cell; vertical-align: middle;">
 									<p style="color: #333333; font-size: 16px; font-weight: bold; margin: 0 0 5px 0;">
-										${selectedProduct.product.name}
+										${productOrder.product.name}
 									</p>
 									<p style="color: #666666; font-size: 14px; margin: 0 0 5px 0;">
-										Aantal: ${selectedProduct.amount} stuks
+										Aantal: ${productOrder.amount} stuks
 									</p>
 									<p style="color: #666666; font-size: 14px; margin: 0;">
-										Prijs per stuk: € ${selectedProduct.product.price.toFixed(2)}
+										Prijs per stuk: € ${productOrder.product.price.toFixed(2)}
 									</p>
 								</div>
 								<div style="display: table-cell; vertical-align: middle; text-align: right; width: 100px;">
 									<p style="color: #333333; font-size: 16px; font-weight: bold; margin: 0;">
-										€ ${(selectedProduct.product.price * selectedProduct.amount).toFixed(2)}
+										€ ${(productOrder.getSubtotal()).toFixed(2)}
 									</p>
 								</div>
 							</div>

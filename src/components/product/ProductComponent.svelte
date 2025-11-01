@@ -39,7 +39,7 @@
 
 <!-- Visibility -->
 {#if !product.visible}
-	<div class="flex items-center gap-2 underline mb-[-6px]">
+	<div class="flex items-center gap-2 underline -mb-1.5">
 		<Fa icon={faEyeSlash} /> Dit product is niet zichtbaar!
 	</div>
 {/if}
