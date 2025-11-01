@@ -4,6 +4,7 @@
 	import { page } from "$app/stores"
 	import Input from "$components/formHelpers/Input.svelte"
 	import ProductCard from "$components/product/ProductCard.svelte"
+	import ProductCardSkeleton from "$components/product/ProductCardSkeleton.svelte"
 	import type { Category, Product } from "$lib/domain/Product"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -239,8 +240,12 @@
 			{errorMessage}
 		</div>
 	{:else if loading}
-		<span>Producten laden</span>
-		<span class="loading loading-ring"></span>
+	<div class="mt-2 flex gap-2 flex-wrap justify-center">
+			{#each Array(8) as _}
+				<ProductCardSkeleton />
+			{/each}
+		</div>
+		
 	{:else}
 		<div class="mt-2 flex gap-2 flex-wrap justify-center">
 			{#each searchedProducts as product}
