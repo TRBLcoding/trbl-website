@@ -47,22 +47,40 @@
 	async function save() {
 		if (!$authStore)
 			throw new Error("User must be logged in to create Invoice Details")
-		const userId = $authStore.auth_id
-		const newInvoiceDetails = new InvoiceDetails(
-			-1, // temporary id
-			userId,
-			firstName,
-			lastName,
-			emailAddress,
-			phoneNumber,
-			companyName,
-			btwNumber,
-			streetAndNumber,
-			postalCode,
-			place,
-			country
-		)
-		await invoiceDetailsStore.createInvoiceDetails(newInvoiceDetails)
+
+		if (editing) {
+			await invoiceDetailsStore.updateInvoiceDetails(
+				selectedInvoiceDetails,
+				firstName,
+				lastName,
+				emailAddress,
+				phoneNumber,
+				companyName,
+				btwNumber,
+				streetAndNumber,
+				postalCode,
+				place,
+				country
+			)
+		} else {
+			const userId = $authStore.auth_id
+			const newInvoiceDetails = new InvoiceDetails(
+				-1, // temporary id
+				userId,
+				firstName,
+				lastName,
+				emailAddress,
+				phoneNumber,
+				companyName,
+				btwNumber,
+				streetAndNumber,
+				postalCode,
+				place,
+				country
+			)
+			await invoiceDetailsStore.createInvoiceDetails(newInvoiceDetails)
+		}
+
 		clearInputs()
 		showForm = false
 	}

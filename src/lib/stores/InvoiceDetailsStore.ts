@@ -1,9 +1,10 @@
 import { browser } from '$app/environment'
 import { InvoiceDetails } from '$lib/domain/InvoiceDetails'
 import { supabase } from "$lib/supabase/supabaseClient"
-import { createPostgrestErrorFromObject } from '$lib/utils/SupabaseUtils'
-import { writable, type Writable } from 'svelte/store'
+import { createPostgrestErrorFromObject, handleSupabaseDeleteError, handleSupabaseUpdateError } from '$lib/utils/SupabaseUtils'
+import { get, writable, type Writable } from 'svelte/store'
 import { type UploadProgress } from '../utils/UploadProgress'
+import type { Database } from '$lib/supabase/database.types'
 
 function createInvoiceDetailsStore() {
 	const store = writable<InvoiceDetails[]>(undefined)
@@ -25,13 +26,15 @@ function createInvoiceDetailsStore() {
 	const initPromise: Promise<void> = init()
 
 	async function createInvoiceDetails(newInvoideDetails: InvoiceDetails) {
-		// -- Create product --
+		// -- Create invoiceDetails --
 		const { data, error } = await supabase
 			.from('invoice_details')
 			.insert(newInvoideDetails.toJSON())
 			.select('id')
 		if (error)
 			throw createPostgrestErrorFromObject(error)
+
+		// Replace temporary ID with Databse created ID
 		newInvoideDetails.id = data[0].id
 
 		// -- Update store --
@@ -41,53 +44,45 @@ function createInvoiceDetailsStore() {
 	}
 
 	async function getInvoiceDetailsById(id: number) {
-		// // -- Get product --
-		// await initPromise
-		// const products = get(store)
-		// return products?.find((e) => e.id === id)
+		// -- Get invoiceDetails --
+		await initPromise
+		const invoiceDetails = get(store)
+		return invoiceDetails?.find((e) => e.id === id)
 	}
 
-	async function updateInvoiceDetails(product: InvoiceDetails, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newDescription: string, newMaxOrderAmount: null | number, progressStore: Writable<UploadProgress[]>) {
-		// // -- Update product -- TODO
-		// const { data, error } = await supabase
-		// 	.from('products')
-		// 	.update({
-		// 		name: newName,
-		// 		visible: newVisible,
-		// 		price: newPrice,
-		// 		imageIds: uploadedImageIds,
-		// 		categories: newCategories,
-		// 		type: newType,
-		// 		description: newDescription,
-		// 		maxOrderAmount: newMaxOrderAmount
-		// 	} as Database['public']['Tables']['products']['Update'])
-		// 	.eq('id', product.id)
-		// 	.select('id')
+	async function updateInvoiceDetails(invoiceDetails: InvoiceDetails, newFirstName: string, newLastName: string, newEmailAddress: string, newPhoneNumber: string, newCompanyName: string, newBTWNumber: string | null, newStreetAndNumber: string, newPostalCode: string, newPlace: string, newCountry: string,) {
+		// -- Update invoiceDetails -- 
+		const { data, error } = await supabase
+			.from('invoice_details')
+			.update({
+				first_name: newFirstName,
+				last_name: newLastName,
+				email_address: newEmailAddress,
+				phone_number: newPhoneNumber,
+				company_name: newCompanyName,
+				btw_number: newBTWNumber,
+				street_and_number: newStreetAndNumber,
+				postal_code: newPostalCode,
+				place: newPlace,
+				country: newCountry
+			} as Database['public']['Tables']['invoice_details']['Update'])
+			.eq('id', invoiceDetails.id)
+			.select('id')
 
-		// if (error) {
-		// 	console.error(error)
-		// 	if (error.message === "TypeError: Failed to fetch")
-		// 		throw new Error(`Network error while updating products: ${error?.message}`)
-		// 	throw new Error(`Error updating product: ${error?.message}`)
-		// }
-		// else if (!data || data.length === 0) {
-		// 	throw new Error(`No products updated. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
-		// }
-		// else if (data.length > 1) {
-		// 	throw new Error(`Multiple (${data.length}) products updated. This should not happen because product ID is unique`)
-		// }
+		handleSupabaseUpdateError(error, data, "invoice details")
 
-
-		// // -- Update store --
-		// product.name = newName
-		// product.visible = newVisible
-		// product.price = newPrice
-		// product.imageIds = uploadedImageIds
-		// product.categories = newCategories
-		// product.type = newType
-		// product.description = newDescription
-		// product.maxOrderAmount = newMaxOrderAmount
-		// update((products) => [...products])
+		// -- Update store --
+		invoiceDetails.firstName = newFirstName
+		invoiceDetails.lastName = newLastName
+		invoiceDetails.emailAddress = newEmailAddress
+		invoiceDetails.phoneNumber = newPhoneNumber
+		invoiceDetails.companyName = newCompanyName
+		invoiceDetails.BTWNumber = newBTWNumber
+		invoiceDetails.streetAndNumber = newStreetAndNumber
+		invoiceDetails.postalCode = newPostalCode
+		invoiceDetails.place = newPlace
+		invoiceDetails.country = newCountry
+		update((products) => [...products])
 	}
 
 	async function deleteInvoiceDetails(invoiceDetails: InvoiceDetails) {
@@ -96,13 +91,7 @@ function createInvoiceDetailsStore() {
 			.from('invoice_details')
 			.delete({ count: 'exact' })
 			.eq('id', invoiceDetails.id)
-		if (error) {
-			throw error
-		} else if (!count || count === 0) {
-			throw new Error(`No invoices details deleted. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
-		} else if (count > 1) {
-			throw new Error(`Multiple (${count}) invoice details deleted. This should not happen because ID is unique`)
-		}
+		handleSupabaseDeleteError(error, count, "invoice details")
 
 		// -- Remove from store --
 		update((invoiceDetailArray) => (invoiceDetailArray.filter((e) => e.id !== invoiceDetails.id)))
