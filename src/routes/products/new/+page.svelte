@@ -21,6 +21,7 @@
 	let categories: Category[] = []
 	let type: Type = ""
 	let description = ""
+	let maxOrderAmount: null | number = null
 
 	async function createProduct() {
 		const product = await createPreviewProduct()
@@ -45,7 +46,8 @@
 			visible,
 			await Promise.all(
 				uploadedImages.map((e) => PreviewableFile.getFilePreview(e))
-			)
+			),
+			maxOrderAmount
 		)
 	}
 
@@ -89,6 +91,7 @@
 			bind:categories
 			bind:type
 			bind:description
+			bind:maxOrderAmount
 			newProduct={true}
 			submitLabel="Product aanmaken"
 			onSave={createProduct}
