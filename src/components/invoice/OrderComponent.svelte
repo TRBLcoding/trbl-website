@@ -20,7 +20,7 @@
 		Jouw besteling
 	</h2>
 
-	<div class="flex flex-col gap-3 mt-3 bg-base-200 rounded-lg p-4">
+	<div class="flex flex-col gap-3 mt-3 bg-base-200 rounded-lg p-6">
 		{#each productOrders as productPromise, i}
 			{#await productPromise}
 				<div class="skeleton h-15 w-full mb-2"></div>
