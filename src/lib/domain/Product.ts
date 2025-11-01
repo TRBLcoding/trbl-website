@@ -22,24 +22,24 @@ export class Product {
 		public maxOrderAmount: number | null,
 	) {
 		this.updateSearchableString()
-	 }
+	}
 
 	updateSearchableString() {
 		this.searchableString = `${this.name} ${this.categories.join(" ")} ${this.type}`.toLowerCase()
 	}
 
 	/**
-     * Checks if product matches a search string(case insensitive)
-     * - if searchString is undefined, matches all
-     */
-    matchesSearchString(searchString: string) {
-        if (!searchString) return true
-        return !searchString
-            .toLowerCase()
-            .split(" ")
-            .map((keyword) => this.searchableString.includes(keyword))
-            .includes(false)
-    }
+	 * Checks if product matches a search string(case insensitive)
+	 * - if searchString is undefined, matches all
+	 */
+	matchesSearchString(searchString: string) {
+		if (!searchString) return true
+		return !searchString
+			.toLowerCase()
+			.split(" ")
+			.map((keyword) => this.searchableString.includes(keyword))
+			.includes(false)
+	}
 
 	toJSON() {
 		return {

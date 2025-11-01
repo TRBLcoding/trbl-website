@@ -99,7 +99,7 @@
 	<h2 class="text-xl font-semibold mb-3">Beveiliging</h2>
 
 	<!-- Change Email -->
-	<div class="">
+	<div>
 		<div class="flex items-start w-fit">
 			<h3 class="text-lg font-semibold mb-2">
 				E-mailadres wijziging aanvragen
@@ -109,7 +109,7 @@
 				data-tip={"Een verandering van mailadres vereist een bevestiging via zowel uw oude als nieuwe mailadres"}
 			>
 				<button class="btn btn-ghost btn-xs btn-circle">
-					<InfoCircle class="" />
+					<InfoCircle />
 				</button>
 			</div>
 		</div>
@@ -169,7 +169,7 @@
 				data-tip={"Een verandering van wachtwoord wordt direct doorgevoerd"}
 			>
 				<button class="btn btn-ghost btn-xs btn-circle">
-					<InfoCircle class="" />
+					<InfoCircle />
 				</button>
 			</div>
 		</div>

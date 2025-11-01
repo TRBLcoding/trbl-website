@@ -18,7 +18,7 @@
 	export let placeholder = ""
 	export let autocomplete: AutoFill = ""
 	export let labelClass = ""
-	export let inputClass =""
+	export let inputClass = ""
 	export let edited = false
 	export let validate: (value: string) => string | undefined = () => ""
 	export let onInput: () => void = () => {}
@@ -66,11 +66,6 @@
 		} else {
 			node.type = type
 		}
-	}
-
-	function onInputWrapper(event: Event) {
-		console.log("input wrapper", onInput)
-		onInput()
 	}
 
 	// -- Toggle text --
@@ -121,7 +116,7 @@
 			{disabled}
 			{autocomplete}
 			on:focusout={() => (edited = true)}
-			on:input={onInputWrapper}
+			on:input={onInput}
 			class={"input border-2 w-full flex-1 join-item " + inputClass}
 			class:bg-base-300={disabled}
 			class:text-slate-700={disabled}

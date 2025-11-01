@@ -77,7 +77,7 @@
 	<div class="modal-box">
 		<form method="dialog">
 			<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-				<Fa icon={faXmark} class="" />
+				<Fa icon={faXmark} />
 			</button>
 		</form>
 		<h3 class="text-lg font-bold text-error">Bevestig verwijderen</h3>
