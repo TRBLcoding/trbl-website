@@ -12,12 +12,13 @@
 	export let value: any
 	export let required = false
 	export let disabled = false
-	export let size: "full" | "md" | "sm" | "xs" = "sm"
+	export let size: "full" | "lg" | "md" | "sm" | "xs" = "sm"
 
 	export let type: "text" | "number" | "email" | "date" | "password"
 	export let placeholder = ""
 	export let autocomplete: AutoFill = ""
 	export let labelClass = ""
+	export let inputClass =""
 	export let edited = false
 	export let validate: (value: string) => string | undefined = () => ""
 	export let onInput: () => void = () => {}
@@ -29,7 +30,7 @@
 	export let min = ""
 
 	$: inputId = label?.replace(/[ :]/g, "").toLowerCase() || "input-field"
-	$: error =edited ? validate(value) : ""
+	$: error = edited ? validate(value) : ""
 	$: showIconLeft = $$slots.iconLeft || iconLeft
 	$: showIconRight = $$slots.iconRight || iconRight || toggleText
 	$: hasBadge = $$slots.badge
@@ -67,6 +68,11 @@
 		}
 	}
 
+	function onInputWrapper(event: Event) {
+		console.log("input wrapper", onInput)
+		onInput()
+	}
+
 	// -- Toggle text --
 	let input: HTMLInputElement
 
@@ -75,6 +81,7 @@
 
 <div
 	class="w-full"
+	class:max-w-lg={size === "lg"}
 	class:max-w-md={size === "md"}
 	class:max-w-sm={size === "sm"}
 	class:max-w-xs={size === "xs"}
@@ -114,8 +121,8 @@
 			{disabled}
 			{autocomplete}
 			on:focusout={() => (edited = true)}
-			on:input={onInput}
-			class="input border-2 w-full flex-1 join-item"
+			on:input={onInputWrapper}
+			class={"input border-2 w-full flex-1 join-item " + inputClass}
 			class:bg-base-300={disabled}
 			class:text-slate-700={disabled}
 			class:pl-9={showIconLeft}
