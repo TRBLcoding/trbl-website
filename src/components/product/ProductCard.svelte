@@ -2,6 +2,8 @@
 	import { Product } from "$lib/domain/Product"
 	import { cartStore } from "$lib/stores/CartStore"
 	import { pushCreatedToast } from "$lib/utils/Toast"
+	import { faShoppingCart } from "@fortawesome/free-solid-svg-icons"
+	import Fa from "svelte-fa"
 
 	export let product: Product
 
@@ -25,8 +27,8 @@
 			>
 		</h2>
 		<p class="text-xl font-semibold text-green-600">€ {product.price.toFixed(2)}</p>
-		<button class="btn hover:btn-primary" type="button" on:click={addProduct}>
-			Toevoegen
+		<button class="btn hover:btn-primary items-center btn-soft" type="button" on:click={addProduct}>
+			<Fa icon={faShoppingCart} class="mr-1" /> Toevoegen 
 		</button>
 	</div>
 </div>
