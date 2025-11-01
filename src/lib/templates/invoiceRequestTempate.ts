@@ -150,7 +150,7 @@ export async function getAdminInvoiceRequestTemplate(invoiceMessage: InvoiceMess
 						`).join("")}
 
 						<!-- Subtotal -->
-						<div style="">
+						<div>
 							${invoiceMessage.couponCode || invoiceMessage.deliveryMethod === "delivery" ? /*html*/`
 								<div style="display: table; width: 100%; margin-bottom: 8px; border-top: 2px solid #e0e0e0; padding-top: 15px; margin-top: 15px;">
 									<div style="display: table-cell;">
@@ -379,7 +379,7 @@ export async function getCustomerInvoiceRequestTemplate(invoiceMessage: InvoiceM
 						`).join("")}
 
 						<!-- Subtotal -->
-						<div style="">
+						<div>
 							${invoiceMessage.couponCode || invoiceMessage.deliveryMethod === "delivery" ? /*html*/`
 								<div style="display: table; width: 100%; margin-bottom: 8px; border-top: 2px solid #e0e0e0; padding-top: 15px; margin-top: 15px;">
 									<div style="display: table-cell;">

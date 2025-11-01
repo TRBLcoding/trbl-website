@@ -45,7 +45,7 @@
 		<Fa icon={faCartShopping} class="text-xl" />
 		{#if $cartStore && $cartStore.length}
 			<div
-				class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-primary border-2 border-base-100 rounded-full text-base-100"
+				class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs z-10 font-bold bg-primary border-2 border-base-100 rounded-full text-base-100"
 			>
 				{$cartStore.length}
 			</div>

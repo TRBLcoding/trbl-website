@@ -67,7 +67,9 @@
 				bind:value={name}
 				required
 			/>
-			<Checkbox label="Zichtbaar" bind:value={visible} />
+			<div class="mt-1">
+				<Checkbox label="Zichtbaar" bind:value={visible} />
+			</div>
 			<Input
 				type="number"
 				step=".01"
@@ -119,11 +121,7 @@
 		</div>
 	</div>
 	<div class="w-fit" class:hover:cursor-wait={saving}>
-		<button
-			class="btn btn-primary mt-2"
-			type="submit"
-			disabled={saving}
-		>
+		<button class="btn btn-primary mt-2" type="submit" disabled={saving}>
 			{submitLabel}
 			<span class="loading loading-ring" class:hidden={!saving}></span>
 		</button>

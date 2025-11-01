@@ -10,7 +10,6 @@
 	import { authStore } from "$lib/stores/AuthStore"
 	import { cartStore, type CartProduct } from "$lib/stores/CartStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
-	import { sleep } from "$lib/utils/Utils"
 	import {
 		faCartShopping,
 		faCheckCircle,
@@ -235,7 +234,7 @@
 							class="btn btn-ghost btn-sm mt-2 ml-auto items-center"
 							on:click={() => (showCouponInput = true)}
 						>
-							<Fa icon={faTicket} class="" /> Heb je een coupon?
+							<Fa icon={faTicket} /> Heb je een coupon?
 						</button>
 					</div>
 				{/if}
