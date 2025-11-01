@@ -6,7 +6,7 @@
 	import InvoiceDetailsComponent from "$components/invoice/InvoiceDetailsComponent.svelte"
 	import OrderComponent from "$components/invoice/OrderComponent.svelte"
 	import type { InvoiceDetails } from "$lib/domain/InvoiceDetails"
-	import type { InvoiceRequest } from "$lib/domain/InvoiceRequest"
+	import type { DeliveryMethod, InvoiceRequest, PaymentMethod } from "$lib/domain/InvoiceRequest"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { cartStore, type CartProduct } from "$lib/stores/CartStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -28,8 +28,8 @@
 
 	let eventType = ""
 	let rentPeriod = ""
-	let paymentMethod: "bank-transfer" | "cash" = "bank-transfer"
-	let deliveryMethod: "pick-up" | "delivery" = "pick-up"
+	let paymentMethod: PaymentMethod = "bank-transfer"
+	let deliveryMethod: DeliveryMethod = "pick-up"
 	let couponCode = ""
 	let appliedCouponCode: string | null = null
 	let acceptedTOS = false

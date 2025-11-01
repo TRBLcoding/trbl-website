@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { DeliveryMethod } from "$lib/domain/InvoiceRequest"
 	import { type CartProduct } from "$lib/stores/CartStore"
 	import {
 		faExclamationTriangle,
@@ -7,7 +8,7 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
-	export let deliveryMethod: "pick-up" | "delivery"
+	export let deliveryMethod: DeliveryMethod
 	export let cartItems: Promise<CartProduct>[]
 
 	// Price calculation

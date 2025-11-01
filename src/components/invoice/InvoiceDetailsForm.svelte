@@ -15,7 +15,7 @@
 	export let place: string
 	export let country: string
 
-	export let errorMessage = ""
+	export let errorMessage: string = ""
 	export let submitLabel: string | null = null
 	export let onSave: () => Promise<void>
 

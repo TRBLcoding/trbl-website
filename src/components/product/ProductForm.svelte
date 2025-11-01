@@ -19,14 +19,14 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
-	export let name = ""
-	export let visible = true
-	export let price = 0
-	export let combinedImages: (string | File)[] = []
+	export let name: string
+	export let visible: boolean
+	export let price: number
+	export let combinedImages: (string | File)[]
 	export let categories: Category[] = []
-	export let type: Type = ""
-	export let description = ""
-	export let maxOrderAmount: null | number = null
+	export let type: Type
+	export let description: string
+	export let maxOrderAmount: null | number
 
 	export let submitLabel: string
 	export let onSave: () => Promise<void>
