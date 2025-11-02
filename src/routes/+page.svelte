@@ -6,9 +6,6 @@
 	import Fa from "svelte-fa"
 	import Carousel from "../components/Carousel/Carousel.svelte"
 
-	const imageUrl =
-		"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:300/h:300/q:90/rt:fill/g:ce/f:best/https://trbl.be/files/2023/01/SpeakSet1_Blurred-BG.jpg"
-
 	const images = [
 		{
 			name: "a",
@@ -146,23 +143,43 @@
 	>
 		<div class="flex gap-16">
 			<div class="flex flex-col items-center gap-2">
-				<img src={imageUrl} alt="temp" />
-				<div class="text-xl font-semibold">Geluid</div>
+				<a class="avatar w-70 h-70" href="products?filter=Sound">
+					<img src="sound.webp" alt="temp" class="rounded-lg" />
+				</a>
+				<a
+					class="text-xl font-semibold link link-hover"
+					href="products?filter=Sound">Geluid</a
+				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<img src={imageUrl} alt="temp" />
-				<div class="text-xl font-semibold">Verlichting</div>
+				<a class="avatar w-70 h-70" href="products?filter=Light">
+					<img src="light.webp" alt="temp" class="rounded-lg" />
+				</a>
+				<a
+					class="text-xl font-semibold link link-hover"
+					href="products?filter=Light">Verlichting</a
+				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<img src={imageUrl} alt="temp" />
-				<div class="text-xl font-semibold">Truss en Statief</div>
+				<a class="avatar w-70 h-70" href="products?filter=Truss">
+					<img src="truss.webp" alt="temp" class="rounded-lg" />
+				</a>
+				<a
+					class="text-xl font-semibold link link-hover"
+					href="products?filter=Truss">Truss en Statief</a
+				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<img src={imageUrl} alt="temp" />
-				<div class="text-xl font-semibold">Media</div>
+				<a class="avatar w-70 h-70" href="products?filter=Media">
+					<img src="media.webp" alt="temp" class="rounded-lg" />
+				</a>
+				<a
+					class="text-xl font-semibold link link-hover"
+					href="products?filter=Media">Media</a
+				>
 			</div>
 		</div>
-		<a href="/todo" class="btn btn-primary w-fit">Meer producten tonen</a>
+		<a href="/products" class="btn btn-primary w-fit">Meer producten tonen</a>
 	</div>
 
 	<div class="w-full bg-gray-600 flex justify-center align-middle">

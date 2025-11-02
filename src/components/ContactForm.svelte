@@ -12,7 +12,7 @@
 
 	export let firstName: string
 	export let lastName: string
-	export let email: string
+	export let emailAddress: string
 	export let subject: string
 	export let message: string
 	export let send: () => Promise<void>
@@ -29,7 +29,7 @@
 			await send()
 			firstName = ""
 			lastName = ""
-			email = ""
+			emailAddress = ""
 			subject = ""
 			message = ""
 			successText =
@@ -46,7 +46,7 @@
 		if (!$authStore) return
 		firstName = $authStore.firstName
 		lastName = $authStore.lastName
-		email = $authStore.email
+		emailAddress = $authStore.email
 	}
 </script>
 
@@ -97,7 +97,7 @@
 			label="Email"
 			type="email"
 			placeholder="Email"
-			bind:value={email}
+			bind:value={emailAddress}
 			size="full"
 			required
 			autocomplete="email"
