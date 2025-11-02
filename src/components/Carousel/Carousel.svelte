@@ -90,7 +90,7 @@
 	{#if images.length > 1 && !hideButtons}
 		<button
 			type="button"
-			class="absolute top-0 left-0 z-20 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+			class="absolute top-0 left-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
 			on:click={previous}
 		>
 			<span
@@ -105,7 +105,7 @@
 		</button>
 		<button
 			type="button"
-			class="absolute top-0 right-0 z-20 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+			class="absolute top-0 right-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
 			on:click={next}
 		>
 			<span

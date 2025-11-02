@@ -11,7 +11,7 @@
 	}
 </script>
 
-<div class="card bg-base-100 w-96 shadow-md">
+<div class="card bg-base-200 w-96 shadow-md">
 	{#if product.imageIds?.length > 0}
 		<figure class="bg-base-200 h-72">
 			<a href="/products/{product.id}">

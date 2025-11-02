@@ -5,11 +5,21 @@ import { derived, writable } from 'svelte/store'
 import { productStore } from './ProductStore'
 import { ProductOrder, type PersistedProductOrder } from '$lib/domain/ProductOrder'
 
+// Trigger that fires when product is added to cart, used to open cart dropdown
 export const cartAddTrigger = writable<number>(0)
 
 function createCartStore() {
 	// Persists to localStorage
 	const innerStore = persisted<PersistedProductOrder[] | undefined>('cart', undefined)
+
+	// Clean up items with amount=0 on load
+	if (browser) {
+		innerStore.update((products) => {
+			if (!products) return products
+			return products.filter((p) => p.amount > 0)
+		})
+	}
+
 	const { update } = innerStore
 
 	// Derived store that transforms PersistedProductOrders to ProductOrders
@@ -24,6 +34,7 @@ function createCartStore() {
 		return productOrders
 	}).subscribe
 
+	// Add product to cart, or increase amount if already in cart
 	function add(product: Product, amount: number) {
 		update((products) => {
 			const existingProduct = products?.find((p) => p.id === product.id)
@@ -35,6 +46,17 @@ function createCartStore() {
 				(products || []).push({ id: product.id, amount: safeAmount })
 			}
 			cartAddTrigger.update(n => n + 1)
+			return products
+		})
+	}
+
+	// Update product amount in cart
+	function set(product: Product, amount: number) {
+		update((products) => {
+			const existingProduct = products?.find((p) => p.id === product.id)
+			if (!existingProduct) throw new Error(`Product with id: "${product.id}" not in cart`)
+			const safeAmount = product.maxOrderAmount ? Math.min(amount, product.maxOrderAmount) : amount
+			existingProduct.amount = safeAmount
 			return products
 		})
 	}
@@ -55,6 +77,7 @@ function createCartStore() {
 	return {
 		subscribe,
 		add,
+		set,
 		remove,
 		clear
 	}

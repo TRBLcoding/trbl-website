@@ -79,7 +79,7 @@
 			<PriceCard {product} {isPreview}></PriceCard>
 		</div>
 
-		<div class="order-2 md:order-none">
+		<div class="order-2 md:order-0">
 			<div class="rounded-lg p-6 bg-base-200">
 				<h2 class="text-xl font-semibold mb-3">Omschrijving</h2>
 				<UserContentRenderer content={product.description} showLinks />

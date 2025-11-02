@@ -61,8 +61,7 @@
 			</label>
 			<button
 				class="btn btn-lg btn-square btn-neutral join-item"
-				disabled={product.maxOrderAmount !== null &&
-					amount >= product.maxOrderAmount}
+				disabled={product.isMaxOrderAmountReached(amount)}
 				type="button"
 				on:click={increase}
 			>
