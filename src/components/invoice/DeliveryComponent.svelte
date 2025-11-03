@@ -16,7 +16,13 @@
 <div class="mt-4 p-4 bg-base-200 rounded-lg">
 	<div class="flex justify-between items-center mb-3">
 		<h3 class="font-semibold">Leveringsadres</h3>
-		<div class:tooltip={!invoiceSelected} class="tooltip-bottom" data-tip={$authStore? "Selecteer eerst een factuuradres": "Vul eerst de factuurgegevens in"}>
+		<div
+			class:tooltip={!invoiceSelected}
+			class="tooltip-bottom"
+			data-tip={$authStore
+				? "Selecteer eerst een factuuradres"
+				: "Vul eerst de factuurgegevens in"}
+		>
 			<button
 				type="button"
 				class="btn btn-sm btn-ghost"

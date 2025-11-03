@@ -6,9 +6,14 @@
 	import InvoiceDetailsComponent from "$components/invoice/InvoiceDetailsComponent.svelte"
 	import OrderComponent from "$components/invoice/OrderComponent.svelte"
 	import type { InvoiceDetails } from "$lib/domain/InvoiceDetails"
-	import type { InvoiceRequest } from "$lib/domain/InvoiceRequest"
+	import type {
+		DeliveryMethod,
+		InvoiceRequest,
+		PaymentMethod,
+	} from "$lib/domain/InvoiceRequest"
+	import type { ProductOrder } from "$lib/domain/ProductOrder"
 	import { authStore } from "$lib/stores/AuthStore"
-	import { cartStore, type CartProduct } from "$lib/stores/CartStore"
+	import { cartStore } from "$lib/stores/CartStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import {
 		faCartShopping,
@@ -28,8 +33,8 @@
 
 	let eventType = ""
 	let rentPeriod = ""
-	let paymentMethod: "bank-transfer" | "cash" = "bank-transfer"
-	let deliveryMethod: "pick-up" | "delivery" = "pick-up"
+	let paymentMethod: PaymentMethod = "bank-transfer"
+	let deliveryMethod: DeliveryMethod = "pick-up"
 	let couponCode = ""
 	let appliedCouponCode: string | null = null
 	let acceptedTOS = false
@@ -60,7 +65,7 @@
 		return true
 	}
 
-	let cartSnapshot: Promise<CartProduct>[] = []
+	let cartSnapshot: Promise<ProductOrder>[] = []
 	let succesFullySubmitted = false
 	async function onSubmitWrapper() {
 		// -- Validate forms(reverse order) --
@@ -222,7 +227,7 @@
 			<div class="flex-1 max-w-lg">
 				<!-- Order details -->
 				<OrderComponent
-					cartItems={succesFullySubmitted ? cartSnapshot : $cartStore}
+					productOrders={succesFullySubmitted ? cartSnapshot : $cartStore}
 					{deliveryMethod}
 				></OrderComponent>
 

@@ -41,6 +41,10 @@ export class Product {
 			.includes(false)
 	}
 
+	isMaxOrderAmountReached(amount: number) {
+		return this.maxOrderAmount !== null && amount >= this.maxOrderAmount
+	}
+
 	toJSON() {
 		return {
 			name: this.name,
@@ -53,7 +57,6 @@ export class Product {
 			maxOrderAmount: this.maxOrderAmount,
 		} as Database['public']['Tables']['products']['Insert']
 	}
-
 	static fromJSON(json: any): Product {
 		return new Product(
 			json.id,
@@ -78,7 +81,6 @@ export class Product {
 	getImageUrls() {
 		return this.imageIds.map(Product.imageToUrl)
 	}
-
 	getThumbnailUrls() {
 		return this.imageIds.map(Product.imageToThumbnailUrl)
 	}

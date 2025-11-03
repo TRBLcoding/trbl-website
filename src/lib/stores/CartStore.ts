@@ -3,29 +3,38 @@ import type { Product } from '$lib/domain/Product'
 import { persisted, type Persisted } from 'svelte-persisted-store'
 import { derived, writable } from 'svelte/store'
 import { productStore } from './ProductStore'
+import { ProductOrder, type PersistedProductOrder } from '$lib/domain/ProductOrder'
 
-export type CartItem = { id: number; amount: number }
-export type CartProduct = { product: Product; amount: number }
-
+// Trigger that fires when product is added to cart, used to open cart dropdown
 export const cartAddTrigger = writable<number>(0)
 
 function createCartStore() {
 	// Persists to localStorage
-	const innerStore = persisted<CartItem[] | undefined>('cart', undefined)
+	const innerStore = persisted<PersistedProductOrder[] | undefined>('cart', undefined)
+
+	// Clean up items with amount=0 on load
+	if (browser) {
+		innerStore.update((products) => {
+			if (!products) return products
+			return products.filter((p) => p.amount > 0)
+		})
+	}
+
 	const { update } = innerStore
 
-	// Derived store that transforms CartItems to CartProducts
-	const subscribe = derived<Persisted<CartItem[] | undefined>, Promise<CartProduct>[] | undefined>(innerStore, (cartItems) => {
+	// Derived store that transforms PersistedProductOrders to ProductOrders
+	const subscribe = derived<Persisted<PersistedProductOrder[] | undefined>, Promise<ProductOrder>[] | undefined>(innerStore, (persistedProductOrders) => {
 		if (!browser) return undefined
-		const cartProducts = cartItems?.map(async e => {
+		const productOrders = persistedProductOrders?.map(async e => {
 			const product = await productStore.getProductById(e.id)
 			if (!product)
 				console.warn("Product not found for id", e.id)
-			return { product: product, amount: e.amount }
+			return new ProductOrder(product, e.amount)
 		})
-		return cartProducts
+		return productOrders
 	}).subscribe
 
+	// Add product to cart, or increase amount if already in cart
 	function add(product: Product, amount: number) {
 		update((products) => {
 			const existingProduct = products?.find((p) => p.id === product.id)
@@ -37,6 +46,17 @@ function createCartStore() {
 				(products || []).push({ id: product.id, amount: safeAmount })
 			}
 			cartAddTrigger.update(n => n + 1)
+			return products
+		})
+	}
+
+	// Update product amount in cart
+	function set(product: Product, amount: number) {
+		update((products) => {
+			const existingProduct = products?.find((p) => p.id === product.id)
+			if (!existingProduct) throw new Error(`Product with id: "${product.id}" not in cart`)
+			const safeAmount = product.maxOrderAmount ? Math.min(amount, product.maxOrderAmount) : amount
+			existingProduct.amount = safeAmount
 			return products
 		})
 	}
@@ -57,6 +77,7 @@ function createCartStore() {
 	return {
 		subscribe,
 		add,
+		set,
 		remove,
 		clear
 	}

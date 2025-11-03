@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
-	import Carousel from "$components/Carousel/Carousel.svelte"
+	import Carousel from "$components/carousel/Carousel.svelte"
 	import EditDropdown from "$components/EditDropdown.svelte"
 	import UserContentRenderer from "$components/UserContentRenderer.svelte"
 	import type { Product } from "$lib/domain/Product"
@@ -39,7 +39,7 @@
 
 <!-- Visibility -->
 {#if !product.visible}
-	<div class="flex items-center gap-2 underline mb-[-6px]">
+	<div class="flex items-center gap-2 underline -mb-1.5">
 		<Fa icon={faEyeSlash} /> Dit product is niet zichtbaar!
 	</div>
 {/if}
@@ -79,7 +79,7 @@
 			<PriceCard {product} {isPreview}></PriceCard>
 		</div>
 
-		<div class="order-2 md:order-none">
+		<div class="order-2 md:order-0">
 			<div class="rounded-lg p-6 bg-base-200">
 				<h2 class="text-xl font-semibold mb-3">Omschrijving</h2>
 				<UserContentRenderer content={product.description} showLinks />

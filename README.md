@@ -29,6 +29,7 @@ Setup environement variables
 - [Supabase setup](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit)
 - [Google app password](https://support.google.com/accounts/answer/185833)
 ```env
+# ./.env
 PUBLIC_SUPABASE_URL="..."
 PUBLIC_SUPABASE_ANON_KEY="..."
 

@@ -3,6 +3,9 @@ import { getAdminInvoiceRequestTemplate, getCustomerInvoiceRequestTemplate } fro
 import { BadRequestError } from "$lib/utils/Errors"
 import type { Options } from "nodemailer/lib/mailer"
 
+export type DeliveryMethod = "pick-up" | "delivery"
+export type PaymentMethod = "bank-transfer" | "cash"
+
 const INVOICE_REQUEST_REQUIRED_FIELDS: readonly (keyof InvoiceRequest)[] = []
 export type InvoiceRequest = {
 	firstName: string
@@ -20,9 +23,9 @@ export type InvoiceRequest = {
 	eventType: string
 	rentPeriod: string
 	couponCode: string | null
-	paymentMethod: "bank-transfer" | "cash"
+	paymentMethod: PaymentMethod
 
-	deliveryMethod: "pick-up" | "delivery"
+	deliveryMethod: DeliveryMethod
 	deliveryDetails?: {
 		deliveryFirstName: string
 		deliveryLastName: string
@@ -49,8 +52,8 @@ export class InvoiceMessage {
 		public eventType: string,
 		public rentPeriod: string,
 		public couponCode: string | null,
-		public paymentMethod: "bank-transfer" | "cash",
-		public deliveryMethod: "pick-up" | "delivery",
+		public paymentMethod: PaymentMethod,
+		public deliveryMethod: DeliveryMethod,
 		public deliveryDetails?: {
 			deliveryFirstName: string
 			deliveryLastName: string

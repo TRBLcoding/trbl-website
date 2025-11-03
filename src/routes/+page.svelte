@@ -1,51 +1,29 @@
 <script lang="ts">
+	import { browser } from "$app/environment"
 	import ContactForm from "$components/ContactForm.svelte"
 	import type { ContactRequest } from "$lib/domain/ContactMessage"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-	import Carousel from "../components/Carousel/Carousel.svelte"
+	import Carousel from "../components/carousel/Carousel.svelte"
 
-	const imageUrl =
-		"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:300/h:300/q:90/rt:fill/g:ce/f:best/https://trbl.be/files/2023/01/SpeakSet1_Blurred-BG.jpg"
-
-	const images = [
-		{
-			name: "a",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1620/h:1080/q:90/f:best/https://trbl.be/files/2023/01/NVDJB_Klaar.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1619/h:1080/q:90/f:best/https://trbl.be/files/2023/10/20231020_203312496_iOS-scaled.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:756/h:504/q:90/f:best/https://trbl.be/files/2023/01/NVDJBG_Mensen.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1620/h:1080/q:90/f:best/https://trbl.be/files/2023/01/OogappelReunie_Klaar.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:746/h:504/q:90/f:best/https://trbl.be/files/2023/08/Soundgarden23.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:756/h:504/q:90/f:best/https://trbl.be/files/2023/08/Lodejardin23.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1620/h:1080/q:90/f:best/https://trbl.be/files/2023/01/Gentbrugge-feest.jpg",
-		},
-	]
+	const images = !browser
+		? []
+		: [
+				{ name: "", imageUrl: `${location.href}carousel/NVDJBG_Klaar.webp` },
+				{ name: "", imageUrl: `${location.href}carousel/NVDJBG_2.webp` },
+				{ name: "", imageUrl: `${location.href}carousel/NVDJBG_Mensen.webp` },
+				{
+					name: "",
+					imageUrl: `${location.href}carousel/OogappelReunie_Klaar.webp`,
+				},
+				{ name: "", imageUrl: `${location.href}carousel/Soundgarden23.webp` },
+				{ name: "", imageUrl: `${location.href}carousel/Lodejardin23.webp` },
+				{
+					name: "",
+					imageUrl: `${location.href}carousel/Gentbrugge-feest.webp`,
+				},
+			]
 
 	// -- Contact --
 	let firstName: string = ""
@@ -91,7 +69,7 @@
 
 <!-- Static image -->
 <div class="md:fixed inset-0 z-0">
-	<img src="Camonigrava.jpg" alt="Foto Camonigrava" class="w-full" />
+	<img src="camonigrava.jpg" alt="Foto Camonigrava" class="w-full" />
 </div>
 
 <!-- Scrollable content -->
@@ -146,23 +124,43 @@
 	>
 		<div class="flex gap-16">
 			<div class="flex flex-col items-center gap-2">
-				<img src={imageUrl} alt="temp" />
-				<div class="text-xl font-semibold">Geluid</div>
+				<a class="avatar w-70 h-70" href="products?filter=Sound">
+					<img src="sound.webp" alt="temp" class="rounded-lg" />
+				</a>
+				<a
+					class="text-xl font-semibold link link-hover"
+					href="products?filter=Sound">Geluid</a
+				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<img src={imageUrl} alt="temp" />
-				<div class="text-xl font-semibold">Verlichting</div>
+				<a class="avatar w-70 h-70" href="products?filter=Light">
+					<img src="light.webp" alt="temp" class="rounded-lg" />
+				</a>
+				<a
+					class="text-xl font-semibold link link-hover"
+					href="products?filter=Light">Verlichting</a
+				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<img src={imageUrl} alt="temp" />
-				<div class="text-xl font-semibold">Truss en Statief</div>
+				<a class="avatar w-70 h-70" href="products?filter=Truss">
+					<img src="truss.webp" alt="temp" class="rounded-lg" />
+				</a>
+				<a
+					class="text-xl font-semibold link link-hover"
+					href="products?filter=Truss">Truss en Statief</a
+				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<img src={imageUrl} alt="temp" />
-				<div class="text-xl font-semibold">Media</div>
+				<a class="avatar w-70 h-70" href="products?filter=Media">
+					<img src="media.webp" alt="temp" class="rounded-lg" />
+				</a>
+				<a
+					class="text-xl font-semibold link link-hover"
+					href="products?filter=Media">Media</a
+				>
 			</div>
 		</div>
-		<a href="/todo" class="btn btn-primary w-fit">Meer producten tonen</a>
+		<a href="/products" class="btn btn-primary w-fit">Meer producten tonen</a>
 	</div>
 
 	<div class="w-full bg-gray-600 flex justify-center align-middle">
@@ -172,12 +170,12 @@
 	</div>
 	<div class="h-[500px] overflow-hidden flex relative">
 		<img
-			src="Scheveneken.jpg"
-			alt="Foto Camonigrava"
+			src="scheveneken.jpg"
+			alt="Foto Scheveneken"
 			class="w-full h-full object-cover"
 		/>
 		<div class="absolute inset-0 flex items-center justify-center">
-			<Carousel {images} />
+			<Carousel {images} loop />
 		</div>
 	</div>
 

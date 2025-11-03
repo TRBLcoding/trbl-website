@@ -1,20 +1,19 @@
 <script lang="ts">
 	import EditDropdown from "$components/EditDropdown.svelte"
+	import LoginPrompt from "$components/LoginPrompt.svelte"
 	import { InvoiceDetails } from "$lib/domain/InvoiceDetails"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { invoiceDetailsStore } from "$lib/stores/InvoiceDetailsStore"
+	import { mapCountryCodeToName } from "$lib/utils/Utils"
 	import {
 		faBorderNone,
 		faExclamationTriangle,
 		faPlus,
-		faUser,
 		faXmark,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import { slide } from "svelte/transition"
 	import InvoiceDetailsForm from "./InvoiceDetailsForm.svelte"
-	import LoginPrompt from "$components/LoginPrompt.svelte"
-	import { mapCountryCodeToName } from "$lib/utils/Utils"
 
 	export let invoiceFormElement: HTMLFormElement
 	export let selectedInvoiceDetails: InvoiceDetails
@@ -48,22 +47,40 @@
 	async function save() {
 		if (!$authStore)
 			throw new Error("User must be logged in to create Invoice Details")
-		const userId = $authStore.auth_id
-		const newInvoiceDetails = new InvoiceDetails(
-			-1, // temporary id
-			userId,
-			firstName,
-			lastName,
-			emailAddress,
-			phoneNumber,
-			companyName,
-			btwNumber,
-			streetAndNumber,
-			postalCode,
-			place,
-			country
-		)
-		await invoiceDetailsStore.createInvoiceDetails(newInvoiceDetails)
+
+		if (editing) {
+			await invoiceDetailsStore.updateInvoiceDetails(
+				selectedInvoiceDetails,
+				firstName,
+				lastName,
+				emailAddress,
+				phoneNumber,
+				companyName,
+				btwNumber,
+				streetAndNumber,
+				postalCode,
+				place,
+				country
+			)
+		} else {
+			const userId = $authStore.auth_id
+			const newInvoiceDetails = new InvoiceDetails(
+				-1, // temporary id
+				userId,
+				firstName,
+				lastName,
+				emailAddress,
+				phoneNumber,
+				companyName,
+				btwNumber,
+				streetAndNumber,
+				postalCode,
+				place,
+				country
+			)
+			await invoiceDetailsStore.createInvoiceDetails(newInvoiceDetails)
+		}
+
 		clearInputs()
 		showForm = false
 	}

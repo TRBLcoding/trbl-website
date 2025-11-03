@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { version } from "$app/environment"
-	
+
 	let year = new Date().getFullYear()
 </script>
 
