@@ -1,48 +1,29 @@
 <script lang="ts">
+	import { browser } from "$app/environment"
 	import ContactForm from "$components/ContactForm.svelte"
 	import type { ContactRequest } from "$lib/domain/ContactMessage"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-	import Carousel from "../components/Carousel/Carousel.svelte"
+	import Carousel from "../components/carousel/Carousel.svelte"
 
-	const images = [
-		{
-			name: "a",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1620/h:1080/q:90/f:best/https://trbl.be/files/2023/01/NVDJB_Klaar.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1619/h:1080/q:90/f:best/https://trbl.be/files/2023/10/20231020_203312496_iOS-scaled.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:756/h:504/q:90/f:best/https://trbl.be/files/2023/01/NVDJBG_Mensen.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1620/h:1080/q:90/f:best/https://trbl.be/files/2023/01/OogappelReunie_Klaar.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:746/h:504/q:90/f:best/https://trbl.be/files/2023/08/Soundgarden23.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:756/h:504/q:90/f:best/https://trbl.be/files/2023/08/Lodejardin23.jpg",
-		},
-		{
-			name: "b",
-			imageUrl:
-				"https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:1620/h:1080/q:90/f:best/https://trbl.be/files/2023/01/Gentbrugge-feest.jpg",
-		},
-	]
+	const images = !browser
+		? []
+		: [
+				{ name: "", imageUrl: `${location.href}carousel/NVDJBG_Klaar.webp` },
+				{ name: "", imageUrl: `${location.href}carousel/NVDJBG_2.webp` },
+				{ name: "", imageUrl: `${location.href}carousel/NVDJBG_Mensen.webp` },
+				{
+					name: "",
+					imageUrl: `${location.href}carousel/OogappelReunie_Klaar.webp`,
+				},
+				{ name: "", imageUrl: `${location.href}carousel/Soundgarden23.webp` },
+				{ name: "", imageUrl: `${location.href}carousel/Lodejardin23.webp` },
+				{
+					name: "",
+					imageUrl: `${location.href}carousel/Gentbrugge-feest.webp`,
+				},
+			]
 
 	// -- Contact --
 	let firstName: string = ""
@@ -88,7 +69,7 @@
 
 <!-- Static image -->
 <div class="md:fixed inset-0 z-0">
-	<img src="Camonigrava.jpg" alt="Foto Camonigrava" class="w-full" />
+	<img src="camonigrava.jpg" alt="Foto Camonigrava" class="w-full" />
 </div>
 
 <!-- Scrollable content -->
@@ -189,12 +170,12 @@
 	</div>
 	<div class="h-[500px] overflow-hidden flex relative">
 		<img
-			src="Scheveneken.jpg"
-			alt="Foto Camonigrava"
+			src="scheveneken.jpg"
+			alt="Foto Scheveneken"
 			class="w-full h-full object-cover"
 		/>
 		<div class="absolute inset-0 flex items-center justify-center">
-			<Carousel {images} />
+			<Carousel {images} loop />
 		</div>
 	</div>
 

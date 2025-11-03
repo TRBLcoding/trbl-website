@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
-	import Carousel from "$components/Carousel/Carousel.svelte"
+	import Carousel from "$components/carousel/Carousel.svelte"
 	import EditDropdown from "$components/EditDropdown.svelte"
 	import UserContentRenderer from "$components/UserContentRenderer.svelte"
 	import type { Product } from "$lib/domain/Product"

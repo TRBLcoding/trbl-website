@@ -1,5 +1,4 @@
 <script lang="ts">
-	//   import { preferencesStore } from "$lib/stores/LocalStorageStores"
 	import { clamp } from "$lib/utils/Utils"
 	import {
 		faChevronLeft,
@@ -15,7 +14,7 @@
 	export let hideButtons = false
 	export let hideIndicators = false
 	export let fillWidth = false
-	export let duration = 10000
+	export let duration = 4000
 	export let loop = false
 	export let background = false
 	export let thumbnails = false
@@ -24,9 +23,11 @@
 	export let counter = 0
 	$: counter = clamp(counter, 0, images.length - 1)
 	function next() {
+		clearTimeout(loopTimeout)
 		counter = (counter + 1) % images.length
 	}
 	function previous() {
+		clearTimeout(loopTimeout)
 		counter = (counter - 1 + images.length) % images.length
 	}
 
