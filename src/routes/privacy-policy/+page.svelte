@@ -28,62 +28,8 @@
 			leggen wij aan u uit op welke wijze wij uw gegevens opslaan en hoe wij uw
 			gegevens tegen misbruik beschermen en welke rechten u heeft met betrekking
 			tot de door u aan ons verstrekte persoonsgegevens. Als u vragen heeft over
-			ons privacybeleid kunt u contact opnemen via privacy@trbl.be, of de
+			ons privacybeleid kunt u contact opnemen via <a class="link" href="mailto:privacy@trbl.be">privacy@trbl.be</a>, of de
 			contactgegevens aan het einde van ons privacybeleid.
-		</div>
-	</div>
-
-	<h2 class="text-xl font-bold mb-2">Over de gegevensverwerking</h2>
-	<div class="mb-8 flex flex-col gap-4">
-		<div>
-			Hieronder kan u lezen op welke wijze wij uw gegevens verwerken, waar wij
-			deze (laten) opslaan, welke beveiligingstechnieken wij gebruiken en voor
-			wie de gegevens inzichtelijk zijn.
-		</div>
-		<div>
-			<h3 class="text-lg font-semibold mb-1">Webshop: WooCommerce</h3>
-			<div>
-				Onze webwinkel is ontwikkeld met software van WooCommerce.
-				Persoonsgegevens die u ten behoeve van onze dienstverlening aan ons
-				beschikbaar stelt, worden met deze partij gedeeld. WooCommerce heeft
-				toegang tot uw gegevens om ons (technische) ondersteuning te bieden, zij
-				zullen uw gegevens nooit gebruiken voor een ander doel. WooCommerce is
-				op basis van de overeenkomst die wij met hen hebben gesloten verplicht
-				om passende beveiligingsmaatregelen te nemen. Deze
-				beveiligingsmaatregelen bestaan uit de toepassing van SSL-encryptie en
-				een sterk wachtwoordbeleid. WooCommerce maakt gebruik van cookies om
-				technische informatie te verzamelen met betrekking tot uw gebruik van de
-				software, er worden geen persoonsgegevens verzameld en/of opgeslagen.
-				WooCommerce behoudt zich het recht voor om verzamelde gegevens binnen
-				het eigen concern te delen om de dienstverlening verder te verbeteren.
-				De hosting gebeurt via Hostinger. Zij behandelen de data, maar halen
-				hier geen inzichten uit. De exacte voorwaarden kunnen gelezen worden op
-				https://www.hostinger.com/privacy-policy.
-			</div>
-		</div>
-
-		<div>
-			<h3 class="text-lg font-semibold mb-1">
-				E-mail en mailinglijsten: WP Mail SMTP
-			</h3>
-			<div>
-				Onze website maakt gebruik van WP Mail SMTP, een derde partij die het
-				e-mailverkeer afkomstig van onze website en het verzenden van eventuele
-				nieuwsbrieven afhandelt. Alle bevestigingsmails die u ontvangt van onze
-				website en webformulieren worden verzonden door WP Mail SMTP via de
-				servers van Google (Gmail). WP Mail SMTP zal uw naam en e-mailadres
-				nooit voor eigen doeleinden gebruiken. Onderaan elke e-mail die
-				geautomatiseerd via onze website is verzonden ziet u de 'unsubscribe'
-				link. Als u hierop klikt zal u geen e-mail meer van onze website
-				ontvangen. Dit kan de functionaliteit van onze website ernstig
-				verminderen! Uw persoonsgegevens worden door WP Mail SMTP beveiligd
-				opgeslagen en kunnen enkel intern raad gepleegd worden. WP Mail SMTP
-				maakt gebruik van cookies en andere internettechnologieën die
-				inzichtelijk maken of e-mails worden geopend en gelezen. WP Mail SMTP
-				behoudt zich het recht voor om uw gegevens te gebruiken voor het verder
-				verbeteren van de dienstverlening, maar zullen deze nooit verkopen aan
-				derden.
-			</div>
 		</div>
 	</div>
 
@@ -133,6 +79,7 @@
 		<div>
 			<h3 class="text-lg font-semibold mb-1">Bewaartermijnen</h3>
 			<div>
+				<!-- TODO -->
 				Wij bewaren uw gegevens zolang u cliënt van ons bent. Dit betekent dat
 				wij uw klantprofiel bewaren totdat u aangeeft dat u niet langer van onze
 				diensten gebruik wenst te maken. Op grond van toepasselijke
