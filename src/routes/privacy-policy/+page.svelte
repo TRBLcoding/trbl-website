@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
 	// -- Page title --
@@ -6,7 +7,12 @@
 </script>
 
 <div class="max-w-6xl mx-auto p-6">
-	<h1 class="text-3xl font-bold mb-3">TRBL Privacybeleid</h1>
+	<div class="flex gap-3 mb-3">
+		<h1 class="text-4xl font-semibold">TRBL Privacybeleid</h1>
+		{#if $authStore && $authStore.isAdmin()}
+			<a href="/privacy-policy/send-update" class="btn btn-primary"> Update verzenden </a>
+		{/if}
+	</div>
 
 	<h2 class="text-xl font-bold mb-2">Over ons privacybeleid</h2>
 	<div class="mb-8 flex flex-col gap-4">
@@ -189,26 +195,9 @@
 	<h2 class="text-xl font-bold mb-2">Cookies</h2>
 	<div class="mb-8 flex flex-col gap-4">
 		<div>
-			<h3 class="text-lg font-semibold mb-1">Google Analytics</h3>
 			<div>
-				Via onze website worden cookies geplaatst van het Amerikaanse bedrijf
-				Google, als deel van de "Analytics"-dienst. Wij gebruiken deze dienst om
-				bij te houden en rapportages te krijgen over hoe bezoekers de website
-				gebruiken. Deze verwerker is mogelijk verplicht op grond van geldende
-				wet- en regelgeving inzage te geven in deze gegevens. Wij verzamelen
-				informatie over uw surfgedrag en delen deze gegevens met Google. Google
-				kan deze informatie in samenhang met andere datasets interpreteren en op
-				die manier uw bewegingen op het internet volgen. Google gebruikt deze
-				informatie voor het aanbieden van onder andere gerichte advertenties
-				(Adwords) en overige Google-diensten en producten.
-			</div>
-		</div>
-
-		<div>
-			<h3 class="text-lg font-semibold mb-1">Cookies van derde partijen</h3>
-			<div>
-				In het geval dat softwareoplossingen van derde partijen gebruik maken
-				van cookies is dit vermeld in deze privacyverklaring.
+				Deze website maakt geen gebruik van cookies of vergelijkbare technieken die
+				gegevens over uw gebruik van onze website verzamelen.
 			</div>
 		</div>
 	</div>

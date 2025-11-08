@@ -3,6 +3,7 @@
 	import {
 		faCheckCircle,
 		faTrashCan,
+		faXmark,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import type { TabType } from "./TabType"

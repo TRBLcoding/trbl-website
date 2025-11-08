@@ -16,7 +16,7 @@
 </script>
 
 <div
-	class={"w-full flex flex-row items-center gap-3 text-sm" + classList}
+	class={"w-full flex flex-row items-center gap-3 text-sm " + classList}
 	class:max-w-md={size === "md"}
 	class:max-w-sm={size === "sm"}
 	class:max-w-xs={size === "xs"}
