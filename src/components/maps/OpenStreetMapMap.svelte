@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { faCompass, faMap, faRoute } from "@fortawesome/free-solid-svg-icons"
 	import { onMount } from "svelte"
+	import Fa from "svelte-fa"
 
 	let MapComponent: undefined | typeof import("sveaflet")
 
@@ -62,18 +64,36 @@
 			<MapComponent.ControlZoom options={{ position: "topright" }} />
 		</MapComponent.Map>
 		<div
-			class="absolute top-3 left-3 bg-white p-3 rounded-lg shadow-lg z-999 max-w-xs"
+			class="absolute top-3 left-3 bg-base-100 p-3 rounded-lg shadow-lg z-999 max-w-xs flex gap-4"
 		>
-			<h3 class="text-lg font-semibold text-gray-800">{locationText}</h3>
-			<p class="text-sm text-gray-600">Nederpolder 4, 9000 Gent, Belgium</p>
-			<div class="text-sm mt-1 text-yellow-500">★★★★★ 4.9 (11 reviews)</div>
-			<a
-				href="https://www.google.com/maps/dir//TRBL+Sound+and+Light+Nederpolder+4+9000+Gent+Belgium/@51.0539884,3.7271249,16z/data=!4m5!4m4!1m0!1m2!1m1!1s0x47c3711e66de30cf:0xfd4288790b25d4d3"
-				target="_blank"
-				class="inline-block mt-1 text-sm text-blue-600 no-underline hover:underline"
-			>
-				Get Directions →
-			</a>
+			<div>
+				<h3 class="text-lg font-semibold">{locationText}</h3>
+				<p class="text-sm opacity-50">Nederpolder 4, 9000 Gent, Belgium</p>
+				<div class="text-sm mt-1">
+					4.9 <span class="text-yellow-500">★★★★★</span>
+					<a
+						class="link link-hover text-info"
+						href="https://search.google.com/local/reviews?placeid=ChIJzzDeZh5xw0cR09QlC3mIQv0&q=TRBL+Sound+and+Light&hl=en&gl=BE"
+						target="_blank">(11 reviews)</a
+					>
+				</div>
+				<div class="flex gap-4 mt-2">
+					<a
+						href="https://maps.google.com/maps?ll=51.053988,3.727125&z=16&t=m&hl=en-GB&gl=US&mapclient=embed&cid=18249298693518120147"
+						target="_blank"
+						class="text-sm link link-hover text-info flex gap-1 items-center"
+					>
+						<Fa icon={faMap} /> Grotere kaart
+					</a>
+					<a
+						href="https://www.google.com/maps/dir//TRBL+Sound+and+Light+Nederpolder+4+9000+Gent+Belgium/@51.0539884,3.7271249,16z/data=!4m5!4m4!1m0!1m2!1m1!1s0x47c3711e66de30cf:0xfd4288790b25d4d3"
+						target="_blank"
+						class="text-sm link link-hover text-info flex gap-1 items-center"
+					>
+						<Fa icon={faRoute} /> Routebeschrijving
+					</a>
+				</div>
+			</div>
 		</div>
 	</div>
 {/if}
