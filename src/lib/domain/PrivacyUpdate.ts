@@ -1,5 +1,4 @@
 import { GOOGLE_ADMIN_EMAIL, GOOGLE_INTERMEDIARY_EMAIL } from "$env/static/private"
-import { getAdminContactFormTemplate, getCustomerContactFormTemplate } from "$lib/templates/contactFormTemplate"
 import { getPrivacyPolicyUpdateTemplace } from "$lib/templates/privacyPolicyUpdateTemplate"
 import { BadRequestError } from "$lib/utils/Errors"
 import type { Options } from "nodemailer/lib/mailer"
@@ -27,10 +26,9 @@ export class PrivacyUpdate {
 	toEmail(emailAddress: string, firstName: string, lastName: string) {
 		const email: Options = {
 			from: GOOGLE_INTERMEDIARY_EMAIL,
-			to: GOOGLE_ADMIN_EMAIL,
+			to: emailAddress,
 			subject: `TRBL Privacy Update`,
 			replyTo: "NOREPLY",
-			text: emailAddress,
 			html: getPrivacyPolicyUpdateTemplace(this, firstName, lastName),
 		}
 		return email
