@@ -34,13 +34,14 @@
 	function handleAuthError(error: unknown) {
 		console.error(error)
 		if (error instanceof Error) {
-			console.error(error.message)
 			if (error.message === "Invalid login credentials")
 				return "Ongeldige login gegevens"
 			if (error.message === "Email not confirmed")
 				return "Account nog niet geverifierd, check email om uw account te activeren"
 			if (error.message === "Failed to fetch")
 				return "Netwerkprobleem, bent u verbonden met het internet?"
+			if (error.message === "Database error granting user")
+				return "Server error, probeer het later opnieuw"
 			const emailMatch = error.message.match(/Email address "(.*)" is invalid/)
 			if (emailMatch) return `Email adres "${emailMatch}" is ongeldig`
 			const securityMatch = error.message.match(
