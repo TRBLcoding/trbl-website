@@ -50,7 +50,7 @@ export const POST: RequestHandler = async ({ request }) => {
 				return json({ success: false, error: { message: "Failed to send email" } }, { status: 500 })
 			}
 		})
-		return json({ success: true, message: 'Emails succesfully sent' })
+		return json({ success: true, message: 'Emails successfully sent' })
 
 	} catch (error) {
 		console.error('Authentication error:', error)
