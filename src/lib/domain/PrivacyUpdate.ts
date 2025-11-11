@@ -28,7 +28,7 @@ export class PrivacyUpdate {
 			from: GOOGLE_INTERMEDIARY_EMAIL,
 			to: emailAddress,
 			subject: `TRBL Privacy Update`,
-			replyTo: "NOREPLY",
+			replyTo: "noreply@trbl.be",
 			html: getPrivacyPolicyUpdateTemplace(this, firstName, lastName),
 		}
 		return email
