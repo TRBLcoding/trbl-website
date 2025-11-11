@@ -6,7 +6,7 @@
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "md" | "sm" | "xs" = "full"
-// TODO
+
 	/**
 	 * Toolbar actions
 	 * - Empty array is all actions
@@ -33,10 +33,10 @@
 		"right",
 		"center",
 		"justify",
-		"a",
+		//"a",
 		//"image",
-		"forecolor",
-		"backcolor",
+		//"forecolor",
+		//"backcolor",
 		"removeFormat",
 	]
 </script>
