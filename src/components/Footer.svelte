@@ -20,7 +20,7 @@
 			>
 			|
 			<span class="whitespace-nowrap"
-				><a href="/todo" class="link-hover">Privacyverklaring</a></span
+				><a href="/privacy-policy" class="link-hover">Privacyverklaring</a></span
 			>
 			|
 			<a

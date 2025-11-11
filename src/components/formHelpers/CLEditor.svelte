@@ -33,10 +33,10 @@
 		"right",
 		"center",
 		"justify",
-		"a",
+		//"a",
 		//"image",
-		"forecolor",
-		"backcolor",
+		//"forecolor",
+		//"backcolor",
 		"removeFormat",
 	]
 </script>

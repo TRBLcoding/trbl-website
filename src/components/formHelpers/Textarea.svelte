@@ -7,12 +7,14 @@
 
 	export let placeholder = ""
 	export let labelClass = ""
+	let classList = ""
+	export { classList as class }
 
 	$: inputId = label?.replace(/[ :]/g, "").toLowerCase() || "input-area"
 </script>
 
 <div
-	class="w-full"
+	class={"w-full " + classList}
 	class:max-w-md={size === "md"}
 	class:max-w-sm={size === "sm"}
 	class:max-w-xs={size === "xs"}
