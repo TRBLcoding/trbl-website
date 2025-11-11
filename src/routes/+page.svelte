@@ -196,7 +196,7 @@
 					<Fa icon={faLocationDot} />
 					Locatie
 				</div>
-				<OpenStreetMapMap />
+				<OpenStreetMapMap height={618} />
 			</div>
 			<div class="flex-1">
 				<ContactForm
