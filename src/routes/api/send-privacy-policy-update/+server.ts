@@ -35,9 +35,10 @@ export const POST: RequestHandler = async ({ request }) => {
 			.select()
 		if (usersError)
 			return json({ error: 'Failed to fetch users' }, { status: 500 })
+		const jsonBody = await request.json();
 		usersData.forEach(async (user, i) => {
 			try {
-				const notableChanges = PrivacyUpdate.fromJSON(await request.json())
+				const notableChanges = PrivacyUpdate.fromJSON(jsonBody)
 				const response1 = await transporter.sendMail(notableChanges.toEmail(user.email, user.first_name, user.last_name))
 				console.log(`Email sent to user ${i}:`, response1)
 			} catch (error) {
