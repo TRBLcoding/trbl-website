@@ -85,7 +85,6 @@
 		<div>
 			<h3 class="text-lg font-semibold mb-1">Bewaartermijnen</h3>
 			<div>
-				<!-- TODO -->
 				Wij bewaren uw gegevens zolang u cliënt van ons bent. Dit betekent dat
 				wij uw klantprofiel bewaren totdat u aangeeft dat u niet langer van onze
 				diensten gebruik wenst te maken. Op grond van toepasselijke

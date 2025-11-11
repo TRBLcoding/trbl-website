@@ -35,23 +35,46 @@ export const POST: RequestHandler = async ({ request }) => {
 			.select()
 		if (usersError)
 			return json({ error: 'Failed to fetch users' }, { status: 500 })
-		const jsonBody = await request.json();
-		usersData.forEach(async (user, i) => {
-			try {
-				const notableChanges = PrivacyUpdate.fromJSON(jsonBody)
-				const response1 = await transporter.sendMail(notableChanges.toEmail(user.email, user.first_name, user.last_name))
-				console.log(`Email sent to user ${i}:`, response1)
-			} catch (error) {
-				console.error("Failed to send email:", error)
+		const jsonBody = await request.json()
 
-				if (error instanceof BadRequestError)
-					return json({ success: false, detailedError: error.message }, { status: 400 })
-				if (error instanceof Error)
-					return json({ success: false, detailedError: error.message }, { status: 500 })
-				return json({ success: false, error: { message: "Failed to send email" } }, { status: 500 })
+		const notableChanges = PrivacyUpdate.fromJSON(jsonBody)
+		const errors = Array<{ user: string; error: string }>()
+		const successes = Array<number>()
+
+		for (let i = 0; i < usersData.length; i++) {
+			const user = usersData[i]
+			try {
+				const response = await transporter.sendMail(
+					notableChanges.toEmail(user.email, user.first_name, user.last_name)
+				)
+				console.log(`Email sent to user ${i}:`, response)
+				successes.push(i)
+			} catch (error) {
+				console.error(`Failed to send email to user ${i}:`, error)
+
+				const errorMessage = error instanceof Error ? error.message : "Unknown error"
+				errors.push({
+					user: `${user.first_name} ${user.last_name} (${user.email})`,
+					error: errorMessage
+				})
 			}
-		})
-		return json({ success: true, message: 'Emails successfully sent' })
+		}
+
+		if (errors.length > 0) {
+			return json({
+				success: false,
+				message: `Failed to send ${errors.length} out of ${usersData.length} emails`,
+				errors,
+				successCount: successes.length
+			}, { status: 207 }) // Multi-Status
+		}
+
+		return json({
+			success: true,
+			message: `Successfully sent ${successes.length} emails`,
+			successCount: successes.length
+		}, { status: 200 })
+		// ...existing code...
 
 	} catch (error) {
 		console.error('Authentication error:', error)
