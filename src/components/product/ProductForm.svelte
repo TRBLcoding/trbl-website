@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Checkbox from "$components/formHelpers/Checkbox.svelte"
-	import CLEditor from "$components/formHelpers/CLEditor.svelte"
 	import Dropzone from "$components/formHelpers/Dropzone.svelte"
 	import Input from "$components/formHelpers/Input.svelte"
 	import MultiSelect from "$components/formHelpers/MultiSelect.svelte"
@@ -14,10 +13,12 @@
 	} from "$lib/domain/Product"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 	import {
-		faInfinity,
 		faExclamationTriangle,
+		faInfinity,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+
+	import Quill from "$components/formHelpers/Quill.svelte"
 
 	export let name: string
 	export let visible: boolean
@@ -117,7 +118,12 @@
 			</Select>
 		</div>
 		<div class="flex-col w-full">
-			<CLEditor label="Beschrijving van product:" bind:value={description} />
+			<!-- <CLEditor label="Beschrijving van product:" bind:value={description} /> -->
+			<Quill
+				label="Beschrijving van product:"
+				bind:value={description}
+				required
+			/>
 		</div>
 	</div>
 	<div class="w-fit" class:hover:cursor-wait={saving}>
