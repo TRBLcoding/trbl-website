@@ -1,4 +1,5 @@
 <script lang="ts">
+	import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
 	import type Quill from "quill"
 	import "quill/dist/quill.snow.css"
 	import { onMount } from "svelte"
@@ -36,14 +37,24 @@
 	class:max-w-sm={size === "sm"}
 	class:max-w-xs={size === "xs"}
 >
-	<label class="label" for="editor">
-		<span class="label-text">
-			{label}
-			{#if required}
-				<span class="text-red-500 font-bold">*</span>
-			{/if}
-		</span>
-	</label>
+	<div class="flex justify-between gap-2">
+		<label class="label" for="editor">
+			<span class="label-text">
+				{label}
+				{#if required}
+					<span class="text-red-500 font-bold">*</span>
+				{/if}
+			</span>
+		</label>
+		<div
+			class="tooltip tooltip-left z-20"
+			data-tip={"Quill.js WYSIWYG editor"}
+		>
+			<button type="button" class="btn btn-ghost btn-xs btn-circle">
+				<InfoCircle />
+			</button>
+		</div>
+	</div>
 
 	<div class:-z-10={disabled} class="flex-1 flex flex-col">
 		<!-- Toolbar -->
@@ -147,11 +158,12 @@
 			<span class="ql-formats">
 				<button title="Make link" type="button" class="ql-link btn btn-ghost"
 				></button>
-				<button
+				<!-- Formula module requires KaTeX -->
+				<!-- <button
 					title="Enter formula"
 					type="button"
 					class="ql-formula btn btn-ghost"
-				></button>
+				></button> -->
 			</span>
 			<span class="ql-formats">
 				<button title="Unformat" type="button" class="ql-clean btn btn-ghost"
