@@ -19,6 +19,32 @@
 </div>
 
 <style lang="postcss">
-	@import "../css/usercontent.postcss";
 	@reference "../app.css";
+	@reference "tailwindcss";
+
+	:global(.ql-code-block-container) {
+		@apply dark:bg-gray-800 bg-gray-300 rounded-lg p-3;
+	}
+
+	:global(.cl),
+	:global(.usercontent) {
+		:global(h1) {
+			@apply text-2xl! font-semibold!;
+		}
+		:global(h2) {
+			@apply text-xl! font-semibold!;
+		}
+		:global(blockquote) {
+			@apply p-4! my-4! border-l-4! border-gray-500! bg-gray-300! dark:bg-gray-800!;
+		}
+		:global(ul) {
+			@apply list-disc! list-inside!;
+		}
+		:global(ol) {
+			@apply list-decimal! list-inside!;
+		}
+		:global(a) {
+			@apply text-blue-600! visited:text-purple-600! underline!;
+		}
+	}
 </style>
