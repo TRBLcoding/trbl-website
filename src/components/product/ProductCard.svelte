@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import { Product } from "$lib/domain/Product"
 	import { cartStore } from "$lib/stores/CartStore"
 	import { faShoppingCart } from "@fortawesome/free-solid-svg-icons"
@@ -14,7 +15,7 @@
 <div class="card bg-base-200 w-96 shadow-md">
 	{#if product.imageIds?.length > 0}
 		<figure class="bg-base-200 h-72">
-			<a href="/products/{product.id}">
+			<a href={resolve("/products/[slug]", { slug: product.id.toString() })}>
 				<img src={product.getThumbnailUrls()[0]} alt="Productafbeelding" />
 			</a>
 		</figure>
@@ -22,7 +23,10 @@
 	<div class="card-body pt-3">
 		<span class="italic opacity-50 -mb-2.5">{product.categories}</span>
 		<h2 class="card-title">
-			<a class="link link-hover" href="/products/{product.id}">{product.name}</a
+			<a
+				class="link link-hover"
+				href={resolve("/products/[slug]", { slug: product.id.toString() })}
+				>{product.name}</a
 			>
 		</h2>
 		<p class="text-xl font-semibold text-green-600">

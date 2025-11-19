@@ -4,6 +4,7 @@
 	import { ProductOrder } from "$lib/domain/ProductOrder"
 	import { cartStore } from "$lib/stores/CartStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import { resolve } from '$app/paths';
 
 	$: subtotal = ProductOrder.calculatePrice($cartStore || [])
 
@@ -19,7 +20,7 @@
 			<div class="card-body text-center">
 				<p class="text-xl">Je winkelmandje is leeg</p>
 				<div class="card-actions justify-center mt-4">
-					<a href="/products" class="btn btn-primary">Ga verder met winkelen</a>
+					<a href={resolve("/products")} class="btn btn-primary">Ga verder met winkelen</a>
 				</div>
 			</div>
 		</div>
@@ -27,7 +28,7 @@
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 			<!-- Cart Items -->
 			<div class="lg:col-span-2 space-y-4">
-				{#each $cartStore as productOrderPromise}
+				{#each $cartStore as productOrderPromise (productOrderPromise)}
 					{#await productOrderPromise}
 						<CartItemFullSkeleton />
 					{:then productOrder}
@@ -59,7 +60,7 @@
 								<span>Verzendkosten:</span>
 								{#await subtotal}
 									<div class="skeleton h-5 w-16"></div>
-								{:then _}
+								{:then}
 									<span>t.b.d.</span>
 								{/await}
 							</div>
@@ -67,7 +68,7 @@
 								<span>Betaling:</span>
 								{#await subtotal}
 									<div class="skeleton h-5 w-16"></div>
-								{:then _}
+								{:then}
 									<span>Factuur of bij ontvangst</span>
 								{/await}
 							</div>
@@ -85,10 +86,10 @@
 						</div>
 
 						<div class="card-actions flex-col mt-4">
-							<a class="btn btn-primary btn-block" href="/checkout">
+							<a class="btn btn-primary btn-block" href={resolve("/checkout")}>
 								Afrekenen
 							</a>
-							<a href="/products" class="btn btn-ghost btn-block btn-soft">
+							<a href={resolve("/products")} class="btn btn-ghost btn-block btn-soft">
 								Verder winkelen
 							</a>
 						</div>

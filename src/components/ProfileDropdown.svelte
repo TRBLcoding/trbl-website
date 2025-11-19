@@ -6,6 +6,7 @@
 		faUser,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import { resolve } from '$app/paths';
 </script>
 
 {#if $authStore}
@@ -21,9 +22,9 @@
 			<li class="menu-title">
 				<span>{$authStore.firstName || "User"}</span>
 			</li>
-			<li><a href="/profile">Profiel</a></li>
+			<li><a href={resolve("/profile")}>Profiel</a></li>
 			{#if $authStore.isAdmin()}
-				<li><a href="/dashboard">Dashboard</a></li>
+				<li><a href={resolve("/dashboard")}>Dashboard</a></li>
 			{/if}
 			<li class="flex flex-row gap-1">
 				<button on:click={authStore.signOut} class="w-full">

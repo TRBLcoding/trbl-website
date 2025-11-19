@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import { resolve } from "$app/paths"
 
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Privacybeleid")
@@ -10,7 +11,9 @@
 	<div class="flex gap-3 mb-3">
 		<h1 class="text-4xl font-semibold">TRBL Privacybeleid</h1>
 		{#if $authStore && $authStore.isAdmin()}
-			<a href="/privacy-policy/send-update" class="btn btn-primary"> Update verzenden </a>
+			<a href={resolve("/privacy-policy/send-update")} class="btn btn-primary">
+				Update verzenden
+			</a>
 		{/if}
 	</div>
 
@@ -34,15 +37,19 @@
 			leggen wij aan u uit op welke wijze wij uw gegevens opslaan en hoe wij uw
 			gegevens tegen misbruik beschermen en welke rechten u heeft met betrekking
 			tot de door u aan ons verstrekte persoonsgegevens. Als u vragen heeft over
-			ons privacybeleid kunt u contact opnemen via <a class="link" href="mailto:privacy@trbl.be">privacy@trbl.be</a>, of de
-			contactgegevens aan het einde van ons privacybeleid.
+			ons privacybeleid kunt u contact opnemen via <a
+				class="link"
+				href="mailto:privacy@trbl.be">privacy@trbl.be</a
+			>, of de contactgegevens aan het einde van ons privacybeleid.
 		</div>
 	</div>
 
 	<h2 class="text-xl font-bold mb-2">Doel van de gegevensverwerking</h2>
 	<div class="mb-8 flex flex-col gap-4">
 		<div>
-			<h3 class="text-lg font-semibold mb-1">Algemeen doel van de verwerking</h3>
+			<h3 class="text-lg font-semibold mb-1">
+				Algemeen doel van de verwerking
+			</h3>
 			<div>
 				Wij gebruiken uw gegevens uitsluitend ten behoeve van onze
 				dienstverlening. Dat wil zeggen dat het doel van de verwerking altijd
@@ -59,7 +66,9 @@
 		</div>
 
 		<div>
-			<h3 class="text-lg font-semibold mb-1">Automatisch verzamelde gegevens</h3>
+			<h3 class="text-lg font-semibold mb-1">
+				Automatisch verzamelde gegevens
+			</h3>
 			<div>
 				Gegevens die automatisch worden verzameld door onze website worden
 				verwerkt met het doel onze dienstverlening verder te verbeteren. Deze
@@ -195,8 +204,8 @@
 	<div class="mb-8 flex flex-col gap-4">
 		<div>
 			<div>
-				Deze website maakt geen gebruik van cookies of vergelijkbare technieken die
-				gegevens over uw gebruik van onze website verzamelen.
+				Deze website maakt geen gebruik van cookies of vergelijkbare technieken
+				die gegevens over uw gebruik van onze website verzamelen.
 			</div>
 		</div>
 	</div>

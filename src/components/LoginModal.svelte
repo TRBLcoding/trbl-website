@@ -20,8 +20,6 @@
 
 	export let loginModalID: string
 
-	const minimumPasswordLength = 6
-
 	let firstName: string
 	let lastName: string
 	let email: string

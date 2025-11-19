@@ -1,7 +1,6 @@
 import { PrivacyUpdate } from '$lib/domain/PrivacyUpdate'
 import transporter from '$lib/emailSetup.server'
 import { getSupabaseClientFromToken } from '$lib/supabase/supabaseClient'
-import { BadRequestError } from '$lib/utils/Errors'
 import { json } from '@sveltejs/kit'
 import type { RequestHandler } from '../$types'
 

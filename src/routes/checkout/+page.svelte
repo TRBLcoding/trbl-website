@@ -22,6 +22,7 @@
 		faTicket,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import { resolve } from '$app/paths';
 
 	// Shipping address fields
 	let deliveryFirstName = ""
@@ -304,11 +305,11 @@
 						<span class="text-sm">
 							Uw data wordt enkel gebruikt voor het verbeteren van de site en
 							voor administratieve doeleinden. Lees meer in ons
-							<a class="link" href="/tos">privacybeleid</a>.
+							<a class="link" href={resolve("/privacy-policy")}>privacybeleid</a>.
 						</span>
 						<Checkbox bind:value={acceptedTOS} size="full" required>
 							<span slot="label" class="whitespace-normal">
-								Ik heb de <a class="link" href="/tos">algemene voorwaarden</a> van
+								Ik heb de <a class="link" href={resolve("/tos")}>algemene voorwaarden</a> van
 								de website gelezen en ga hiermee akkoord
 							</span>
 						</Checkbox>
@@ -349,7 +350,7 @@
 					Voeg eerst producten toe aan uw winkelmandje om een offerte aan te
 					vragen.
 				</p>
-				<a href="/products" class="btn btn-primary btn-lg gap-2">
+				<a href={resolve("/products")} class="btn btn-primary btn-lg gap-2">
 					Bekijk ons aanbod
 				</a>
 			</div>

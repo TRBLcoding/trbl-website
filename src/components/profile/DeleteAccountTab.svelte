@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import { authStore } from "$lib/stores/AuthStore"
 	import {
 		faCheckCircle,
@@ -112,7 +113,7 @@
 		</p>
 
 		<div class="modal-action">
-			<a href="/" class="btn btn-primary">Terug naar homepagina</a>
+			<a href={resolve("/")} class="btn btn-primary">Terug naar homepagina</a>
 		</div>
 	</div>
 </dialog>

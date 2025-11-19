@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import Carousel from "$components/carousel/Carousel.svelte"
 	import EditDropdown from "$components/EditDropdown.svelte"
 	import UserContentRenderer from "$components/UserContentRenderer.svelte"
@@ -23,7 +24,7 @@
 		try {
 			await productStore.deleteProduct(product)
 			pushCreatedToast("Product verwijderd")
-			goto("/products")
+			goto(resolve("/products"))
 		} catch (error) {
 			console.error(error)
 			if (error instanceof Error) {
@@ -46,8 +47,14 @@
 
 <div class="breadcrumbs text-sm">
 	<ul>
-		<li><a href="/products">Producten</a></li>
-		<li><a href="/products?{product.categories.map(e=>`filter=${e}`).join("&")}">{product.categories.join("+")}</a></li>
+		<li><a href={resolve("/products")}>Producten</a></li>
+		<li>
+			<a
+				href="/products?{product.categories
+					.map((e) => `filter=${e}`)
+					.join('&')}">{product.categories.join("+")}</a
+			>
+		</li>
 	</ul>
 </div>
 
@@ -57,7 +64,7 @@
 	{#if !isPreview && $authStore?.isAdmin()}
 		<div class="ml-auto">
 			<EditDropdown
-				editUrl={"/products/edit/" + product.id}
+				editUrl={`/products/edit/${product.id}`}
 				deleteHandler={removeProduct}
 			/>
 		</div>

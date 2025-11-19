@@ -182,7 +182,8 @@
 			{#await invoiceDetailsStore.initPromise}
 				Loading
 			{:then}
-				{#each $invoiceDetailsStore as invoiceDetails, i}
+				{#each $invoiceDetailsStore as invoiceDetails (invoiceDetails.id)}
+					{#if invoiceDetails}
 					<div class="relative">
 						<button
 							class="w-full flex flex-col items-start bg-base-100 p-2 rounded-lg border-2 border-[#d1d1d1] dark:border-[#474e56] cursor-pointer hover:bg-base-300"

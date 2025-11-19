@@ -62,7 +62,7 @@
 	class:bg-base-200={background}
 >
 	<!-- Carousel images -->
-	{#each images as item, i}
+	{#each images as item, i (item)}
 		<img
 			src={item.imageUrl}
 			class:opacity-0={counter !== i}
@@ -75,7 +75,7 @@
 	<!-- Slide indicators -->
 	{#if images.length > 1 && !hideIndicators}
 		<div class="absolute flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-			{#each images as _, i}
+			{#each images, i}
 				<!-- svelte-ignore a11y_consider_explicit_label -->
 				<button
 					type="button"

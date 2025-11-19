@@ -25,7 +25,7 @@
 	$: if (!initialized && $authStore) initPage($authStore)
 
 	let loading = false
-	let error = ""
+	let errorMessage = ""
 	let succes = false
 	async function updateProfile() {
 		loading = true
@@ -36,10 +36,10 @@
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error("Error updating profile:", error)
-				error = error.message
+				errorMessage = error.message
 			} else {
 				console.error("Unknown error updating profile")
-				error = "Unknown error updating profile"
+				errorMessage = "Unknown error updating profile"
 			}
 		}
 		loading = false
@@ -106,17 +106,17 @@
 				Gegevens wijzigen
 				<span class="loading loading-ring" class:hidden={!loading}></span>
 			</button>
-			{#if succes && !error}
+			{#if succes && !errorMessage}
 				<div class="text-success flex gap-2 items-center mt-2">
 					<Fa icon={faCheckCircle} />
 					<span>Gegevens succesvol bijgewerkt</span>
 				</div>
 			{/if}
 		</div>
-		{#if error}
+		{#if errorMessage}
 			<div class="text-error flex gap-2 items-center mt-2">
 				<Fa icon={faExclamationTriangle} />
-				{error}
+				{errorMessage}
 			</div>
 		{/if}
 	</form>

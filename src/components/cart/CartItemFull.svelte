@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import type { ProductOrder } from "$lib/domain/ProductOrder"
 	import { cartStore } from "$lib/stores/CartStore"
 	import {
@@ -6,8 +7,8 @@
 		faPlus,
 		faTrashCan,
 	} from "@fortawesome/free-solid-svg-icons"
-	import Fa from "svelte-fa"
 	import { onDestroy } from "svelte"
+	import Fa from "svelte-fa"
 
 	export let productOrder: ProductOrder
 
@@ -48,7 +49,9 @@
 			<!-- Product Image -->
 			<a
 				class="avatar w-24 h-24 rounded"
-				href={"/products/" + productOrder.product.id}
+				href={resolve("/products/[slug]", {
+					slug:productOrder.product.id.toString(),
+				})}
 			>
 				<img
 					src={productOrder.product.getThumbnailUrls()[0]}
@@ -61,7 +64,9 @@
 			<div class="flex-1">
 				<a
 					class="card-title text-lg link link-hover"
-					href={"/products/" + productOrder.product.id}
+					href={resolve("/products/[slug]", {
+						slug: productOrder.product.id.toString(),
+					})}
 				>
 					{productOrder.product.name}
 				</a>

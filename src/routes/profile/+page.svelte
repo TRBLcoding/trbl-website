@@ -8,6 +8,7 @@
 	import type { TabType } from "$components/profile/TabType"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import { resolve } from "$app/paths"
 
 	let deletedProfile = false
 	$: currentTab = ($page.url.searchParams.get("tab") || "personal") as TabType
@@ -18,7 +19,7 @@
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Profiel")
 	// -- Authguard --
-	$: if ($authStore === null && !deletedProfile) goto("/")
+	$: if ($authStore === null && !deletedProfile) goto(resolve("/"))
 </script>
 
 <div class="max-w-4xl mx-auto p-6">
@@ -27,6 +28,10 @@
 		<PersonalDetailsTab checked={currentTab == "personal"} {setTab} />
 		<SecurityTab checked={currentTab == "security"} {setTab} />
 		<InvoiceDetailsTab checked={currentTab == "invoice"} {setTab} />
-		<DeleteAccountTab checked={currentTab == "delete"} {setTab} bind:deletedProfile />
+		<DeleteAccountTab
+			checked={currentTab == "delete"}
+			{setTab}
+			bind:deletedProfile
+		/>
 	</div>
 </div>

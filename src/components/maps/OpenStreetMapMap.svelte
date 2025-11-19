@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { faCompass, faMap, faRoute } from "@fortawesome/free-solid-svg-icons"
+	import { faMap, faRoute } from "@fortawesome/free-solid-svg-icons"
 	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
 

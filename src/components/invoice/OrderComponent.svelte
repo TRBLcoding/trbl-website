@@ -21,7 +21,7 @@
 	</h2>
 
 	<div class="flex flex-col gap-3 mt-3 bg-base-200 rounded-lg p-6">
-		{#each productOrders as productPromise, i}
+		{#each productOrders as productPromise, i (productPromise)}
 			{#await productPromise}
 				<div class="skeleton h-15 w-full mb-2"></div>
 			{:then productOrder}
@@ -102,7 +102,7 @@
 				<span>Levering</span>
 				{#await combinedPrice}
 					<div class="skeleton h-6 w-20"></div>
-				{:then _}
+				{:then}
 					<!-- promise was fulfilled -->
 					<span>{deliveryMethod === "pick-up" ? "n.v.t." : "t.b.d."}</span>
 				{/await}

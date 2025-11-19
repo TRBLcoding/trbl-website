@@ -41,7 +41,7 @@
 </script>
 
 <div class="flex gap-2 mt-2">
-	{#each visibleThumbnails as image, i}
+	{#each visibleThumbnails as image, i (image)}
 		<button
 			class="flex-1 max-w-30 sm:max-w-40 rounded-sm h-20 sm:h-25 md:h-30 overflow-hidden cursor-pointer shadow-lg relative transition-all hover:ring-3 hover:ring-gray-400"
 			on:click={() => selectImage(i)}

@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { GOOGLE_INTERMEDIARY_EMAIL, GOOGLE_APP_PASSWORD } from "$env/static/private";
 
-let transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   secure: false,

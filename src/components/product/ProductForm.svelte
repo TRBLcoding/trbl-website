@@ -112,7 +112,7 @@
 				required
 			/>
 			<Select label="Type:" bind:value={type} required>
-				{#each TypeValues as type}
+				{#each TypeValues as type (type)}
 					<option>{type}</option>
 				{/each}
 			</Select>

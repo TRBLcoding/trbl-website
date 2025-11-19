@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import ProductForm from "$components/product/ProductForm.svelte"
 	import { Product, type Category, type Type } from "$lib/domain/Product"
@@ -54,7 +55,8 @@
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Nieuw product")
 	// -- Authguard --
-	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin())) goto("/")
+	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin()))
+		goto(resolve("/"))
 </script>
 
 <div class="mx-2 lg:mx-6 mt-3 mb-8">

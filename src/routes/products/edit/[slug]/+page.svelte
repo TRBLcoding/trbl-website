@@ -1,7 +1,11 @@
 <script lang="ts">
+	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import ProductForm from "$components/product/ProductForm.svelte"
 	import { Product } from "$lib/domain/Product"
+	import type { User } from "$lib/domain/User"
+	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { productStore } from "$lib/stores/ProductStore"
 	import { PreviewableFile } from "$lib/utils/PreviewableFile"
@@ -11,9 +15,6 @@
 	import Fa from "svelte-fa"
 	import { writable } from "svelte/store"
 	import type { PageData } from "./$types"
-	import { authStore } from "$lib/stores/AuthStore"
-	import { goto } from "$app/navigation"
-	import type { User } from "$lib/domain/User"
 
 	export let data: PageData
 
@@ -122,7 +123,8 @@
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Product wijzigen")
 	// -- Authguard --
-	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin())) goto("/")
+	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin()))
+		goto(resolve("/"))
 </script>
 
 <div class="mx-6 mt-3 mb-8">

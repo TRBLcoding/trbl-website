@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { version } from "$app/environment"
+	  import { resolve } from '$app/paths';
 
 	let year = new Date().getFullYear()
 </script>
@@ -16,11 +17,11 @@
 		</div>
 		<div class="text-white text-xs">
 			<span class="whitespace-nowrap">
-				<a href="/tos" class="link-hover">Algemene Voorwaarden</a></span
+				<a href={resolve("/tos")} class="link-hover">Algemene Voorwaarden</a></span
 			>
 			|
 			<span class="whitespace-nowrap"
-				><a href="/privacy-policy" class="link-hover">Privacyverklaring</a></span
+				><a href={resolve("/privacy-policy")} class="link-hover">Privacyverklaring</a></span
 			>
 			|
 			<a
