@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import Footer from "$components/Footer.svelte"
 	import LoginModal from "$components/LoginModal.svelte"
 	import ProfileDropdown from "$components/ProfileDropdown.svelte"
@@ -21,7 +22,6 @@
 	import Fa from "svelte-fa"
 	import "../app.css"
 	import Cart from "../components/cart/Cart.svelte"
-	import { resolve } from "$app/paths"
 
 	let showMenu = true
 	const loginModalID = "login-modal"

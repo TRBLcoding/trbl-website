@@ -121,11 +121,11 @@
 		@apply dark:border-gray-500! bg-(--color-base-100)! text-(--text-base-100)!;
 	}
 
-	    :global(.leaflet-tile-pane) {
-        @apply dark:invert dark:hue-rotate-180 dark:brightness-95 dark:contrast-90;
-    }
+	:global(.leaflet-tile-pane) {
+		@apply dark:invert dark:hue-rotate-180 dark:brightness-95 dark:contrast-90;
+	}
 
-	    :global(.leaflet-container) {
-        @apply dark:bg-neutral-800!;
-    }
+	:global(.leaflet-container) {
+		@apply dark:bg-neutral-800!;
+	}
 </style>

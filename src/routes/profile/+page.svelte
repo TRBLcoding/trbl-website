@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import { page } from "$app/stores"
 	import DeleteAccountTab from "$components/profile/DeleteAccountTab.svelte"
 	import InvoiceDetailsTab from "$components/profile/InvoiceDetailsTab.svelte"
@@ -8,7 +9,6 @@
 	import type { TabType } from "$components/profile/TabType"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
-	import { resolve } from "$app/paths"
 
 	let deletedProfile = false
 	$: currentTab = ($page.url.searchParams.get("tab") || "personal") as TabType

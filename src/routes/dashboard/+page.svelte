@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import type { User } from "$lib/domain/User"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faUserPen } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-	import { resolve } from '$app/paths';
 
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Dashboard")
@@ -26,7 +26,10 @@
 		<a href={resolve("/products/new")} class="btn btn-primary normal-case">
 			Nieuw product
 		</a>
-		<a href={resolve("/privacy-policy/send-update")} class="btn btn-primary normal-case">
+		<a
+			href={resolve("/privacy-policy/send-update")}
+			class="btn btn-primary normal-case"
+		>
 			Update privacybeleid
 		</a>
 	</div>

@@ -48,15 +48,15 @@
 		}
 		:global(.selected .remove:is(:hover, :focus) path) {
 			/* @apply fill-primary; */
-			@apply fill-[var(--color-primary)];
+			@apply fill-(--color-primary);
 		}
 		:global(.remove-all:is(:hover, :focus) path) {
 			/* @apply fill-primary; */
-			@apply fill-[var(--color-primary)];
+			@apply fill-(--color-primary);
 		}
 		:global(.options) {
 			/* @apply bg-base-100!; */
-			@apply p-2! bg-[var(--color-base-100)]!;
+			@apply p-2! bg-(--color-base-100)!;
 
 			:global(li) {
 				@apply px-4! py-2! rounded-lg!;

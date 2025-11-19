@@ -50,7 +50,7 @@
 			<a
 				class="avatar w-24 h-24 rounded"
 				href={resolve("/products/[slug]", {
-					slug:productOrder.product.id.toString(),
+					slug: productOrder.product.id.toString(),
 				})}
 			>
 				<img

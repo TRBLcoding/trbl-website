@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { page } from "$app/stores"
 	import { resolve } from "$app/paths"
+	import { page } from "$app/stores"
 </script>
 
 <div id="error" class="h-full flex items-center mt-8 md:mt-20">

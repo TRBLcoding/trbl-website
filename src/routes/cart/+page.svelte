@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import CartItemFull from "$components/cart/CartItemFull.svelte"
 	import CartItemFullSkeleton from "$components/cart/CartItemFullSkeleton.svelte"
 	import { ProductOrder } from "$lib/domain/ProductOrder"
 	import { cartStore } from "$lib/stores/CartStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
-	import { resolve } from '$app/paths';
 
 	$: subtotal = ProductOrder.calculatePrice($cartStore || [])
 
@@ -20,7 +20,9 @@
 			<div class="card-body text-center">
 				<p class="text-xl">Je winkelmandje is leeg</p>
 				<div class="card-actions justify-center mt-4">
-					<a href={resolve("/products")} class="btn btn-primary">Ga verder met winkelen</a>
+					<a href={resolve("/products")} class="btn btn-primary"
+						>Ga verder met winkelen</a
+					>
 				</div>
 			</div>
 		</div>
@@ -89,7 +91,10 @@
 							<a class="btn btn-primary btn-block" href={resolve("/checkout")}>
 								Afrekenen
 							</a>
-							<a href={resolve("/products")} class="btn btn-ghost btn-block btn-soft">
+							<a
+								href={resolve("/products")}
+								class="btn btn-ghost btn-block btn-soft"
+							>
 								Verder winkelen
 							</a>
 						</div>

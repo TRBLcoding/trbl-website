@@ -61,7 +61,6 @@
 				html={value}
 				on:change={(e: any) => (value = e.detail)}
 				{actions}
-				
 			/>
 		</div>
 	</div>
@@ -74,6 +73,6 @@
 		@apply hidden! p-10;
 	}
 	:global(.cl, .cl-content) {
-        @apply h-full! min-h-72;
-    }
+		@apply h-full! min-h-72;
+	}
 </style>

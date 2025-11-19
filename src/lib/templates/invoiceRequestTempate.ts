@@ -3,7 +3,6 @@ import { ProductOrder } from "$lib/domain/ProductOrder"
 import { productStore } from "$lib/stores/ProductStore"
 import { mapCountryCodeToName } from "$lib/utils/Utils"
 
-
 export async function getAdminInvoiceRequestTemplate(invoiceMessage: InvoiceMessage) {
 	const productOrders = await Promise.all(invoiceMessage.selectedProducts.map(async e => {
 		return new ProductOrder(await productStore.getProductById(e.id), e.amount)

@@ -58,7 +58,11 @@
 		</div>
 	{:else if typeof image === "string"}
 		<div class="w-10 rounded-sm h-6 overflow-hidden">
-			<img class="w-full h-full object-cover object-center" alt="Upload" src={image} />
+			<img
+				class="w-full h-full object-cover object-center"
+				alt="Upload"
+				src={image}
+			/>
 		</div>
 	{:else}
 		<Fa icon={image} />

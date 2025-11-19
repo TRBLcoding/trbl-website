@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import { authStore } from "$lib/stores/AuthStore"
 	import {
 		faChevronDown,
@@ -6,7 +7,6 @@
 		faUser,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-	import { resolve } from '$app/paths';
 </script>
 
 {#if $authStore}

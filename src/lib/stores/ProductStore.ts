@@ -52,7 +52,7 @@ function createProductStore() {
 		const products = get(store)
 		const foundProduct = products?.find((e) => e.id === id)
 		if (foundProduct) return foundProduct
-		
+
 		// -- Get product from database --
 		const { data, error } = await supabase
 			.from('products')
@@ -65,7 +65,7 @@ function createProductStore() {
 		}
 		if (!data) throw new Error(`No product found`)
 		const product = Product.fromJSON(data)
-		
+
 		// -- Update store --
 		update((products) => {
 			return [...(products || []), product].sort((a, b) => a.name.localeCompare(b.name))

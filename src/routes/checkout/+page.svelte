@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import Checkbox from "$components/formHelpers/Checkbox.svelte"
 	import Input from "$components/formHelpers/Input.svelte"
 	import RadioGroup from "$components/formHelpers/RadioGroup.svelte"
@@ -22,7 +23,6 @@
 		faTicket,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-	import { resolve } from '$app/paths';
 
 	// Shipping address fields
 	let deliveryFirstName = ""
@@ -305,12 +305,14 @@
 						<span class="text-sm">
 							Uw data wordt enkel gebruikt voor het verbeteren van de site en
 							voor administratieve doeleinden. Lees meer in ons
-							<a class="link" href={resolve("/privacy-policy")}>privacybeleid</a>.
+							<a class="link" href={resolve("/privacy-policy")}>privacybeleid</a
+							>.
 						</span>
 						<Checkbox bind:value={acceptedTOS} size="full" required>
 							<span slot="label" class="whitespace-normal">
-								Ik heb de <a class="link" href={resolve("/tos")}>algemene voorwaarden</a> van
-								de website gelezen en ga hiermee akkoord
+								Ik heb de <a class="link" href={resolve("/tos")}
+									>algemene voorwaarden</a
+								> van de website gelezen en ga hiermee akkoord
 							</span>
 						</Checkbox>
 

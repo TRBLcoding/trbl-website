@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
-	import { resolve } from "$app/paths"
 
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Privacybeleid")

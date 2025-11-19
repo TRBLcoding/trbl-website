@@ -67,7 +67,7 @@
 								</div>
 							</div>
 							<span class="font-semibold">
-								€ {(productOrder.getSubtotal()).toFixed(2)}
+								€ {productOrder.getSubtotal().toFixed(2)}
 							</span>
 						</div>
 					</div>

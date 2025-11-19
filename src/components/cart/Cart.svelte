@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import type { Product } from "$lib/domain/Product"
 	import { ProductOrder } from "$lib/domain/ProductOrder"
 	import { cartAddTrigger, cartStore } from "$lib/stores/CartStore"
@@ -10,7 +11,6 @@
 		faXmark,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-	import { resolve } from "$app/paths"
 
 	let dropdownButton: HTMLElement
 
@@ -84,7 +84,9 @@
 						>
 							<a
 								class="font-semibold hover:link"
-								href={resolve("/products/[slug]", { slug: productOrder.product.id.toString() })}
+								href={resolve("/products/[slug]", {
+									slug: productOrder.product.id.toString(),
+								})}
 							>
 								{productOrder.product.name}
 							</a>

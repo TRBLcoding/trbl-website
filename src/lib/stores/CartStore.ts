@@ -1,9 +1,9 @@
 import { browser } from '$app/environment'
 import type { Product } from '$lib/domain/Product'
+import { ProductOrder, type PersistedProductOrder } from '$lib/domain/ProductOrder'
 import { persisted, type Persisted } from 'svelte-persisted-store'
 import { derived, writable } from 'svelte/store'
 import { productStore } from './ProductStore'
-import { ProductOrder, type PersistedProductOrder } from '$lib/domain/ProductOrder'
 
 // Trigger that fires when product is added to cart, used to open cart dropdown
 export const cartAddTrigger = writable<number>(0)
