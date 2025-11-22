@@ -22,6 +22,10 @@
 	let errorMessage = ""
 
 	let selectedProducts: Array<{ productId: number; amount: number }> = []
+
+	function clearMaxAmount() {
+		maxOrderAmount = null
+	}
 </script>
 
 <form class="flex flex-col">
@@ -59,6 +63,7 @@
 							title="Clear"
 							class="btn btn-square join-item border-2 border-l-0 border-[#d1d1d1] dark:border-[#474e56]"
 							type="button"
+							on:click={clearMaxAmount}
 						>
 							<Fa icon={faInfinity} />
 						</button>

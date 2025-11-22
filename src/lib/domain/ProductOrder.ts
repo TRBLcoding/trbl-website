@@ -8,7 +8,7 @@ export class ProductOrder {
 		public amount: number
 	) { }
 
-	getSubtotal(): number {
+	getSubtotal() {
 		return this.product.price * this.amount
 	}
 

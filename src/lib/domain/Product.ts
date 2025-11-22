@@ -7,6 +7,18 @@ export type Category = typeof CategoryValues[number]
 export const TypeValues = ["Mixer", "Microphone", "Speaker", "SoundSet", "LightEffect", "LightSet", "Truss", "Network", "UPS", "Scherm", "Controls"]
 export type Type = typeof TypeValues[number]
 
+export type ProductJSON = {
+	id: number;
+	name: string;
+	price: number;
+	description: string;
+	categories: Category[];
+	type: Type;
+	visible: boolean;
+	imageIds: string[];
+	maxOrderAmount: number | null;
+}
+
 export class Product {
 	public searchableString = ""
 
@@ -57,7 +69,7 @@ export class Product {
 			maxOrderAmount: this.maxOrderAmount,
 		} as Database['public']['Tables']['products']['Insert']
 	}
-	static fromJSON(json: any): Product {
+	static fromJSON(json: any) {
 		return new Product(
 			json.id,
 			json.name,
