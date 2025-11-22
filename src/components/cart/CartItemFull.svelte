@@ -1,31 +1,21 @@
 <script lang="ts">
 	import { resolve } from "$app/paths"
+	import AmountInput from "$components/formHelpers/AmountInput.svelte"
 	import type { ProductOrder } from "$lib/domain/ProductOrder"
 	import { cartStore } from "$lib/stores/CartStore"
-	import {
-		faMinus,
-		faPlus,
-		faTrashCan,
-	} from "@fortawesome/free-solid-svg-icons"
-	import { onDestroy } from "svelte"
+	import { faTrashCan } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
 	export let productOrder: ProductOrder
 
-	let amount: number = productOrder.amount
+	let amount = productOrder.amount
 
-	function decreaseAmount() {
-		if (amount <= 0) removeItem(productOrder)
-		else updateAmount(productOrder, amount - 1)
-	}
-	function increaseAmount() {
-		updateAmount(productOrder, amount + 1)
-	}
 	function updateAmount(productOrder: ProductOrder, newAmount: number) {
-		cartStore.set(productOrder.product, newAmount)
+		if (amount <= -1) removeItem(productOrder)
+		else cartStore.set(productOrder.product, newAmount)
 	}
-
 	function removeItem(productOrder: ProductOrder) {
+		console.log("removed")
 		cartStore.remove(productOrder.product)
 	}
 
@@ -35,12 +25,6 @@
 		if (productOrder.product.isMaxOrderAmountReached(newAmount))
 			amount = productOrder.product.maxOrderAmount!
 	}
-
-	onDestroy(() => {
-		if (amount === 0) {
-			removeItem(productOrder)
-		}
-	})
 </script>
 
 <div class="card bg-base-200 shadow-lg">
@@ -79,43 +63,15 @@
 				<!-- Quantity Controls -->
 				<div class="flex items-center gap-2 mt-4">
 					<span class="text-sm font-bold">Aantal:</span>
-					<div class="join flex">
-						<button
-							class="btn btn-sm btn-square join-item"
-							class:btn-primary={amount === 0}
-							class:btn-neutral={amount !== 0}
-							type="button"
-							disabled={amount < 0}
-							on:click={decreaseAmount}
-							title={amount === 0 ? "Product verwijderen" : "Aantal verlagen"}
-						>
-							<Fa icon={amount == 0 ? faTrashCan : faMinus} size="lg" />
-						</button>
-						<input
-							class="input input-sm join-item w-15 bg-base-300! border-base-300! text-center font-bold"
-							bind:value={amount}
-							type="number"
-							min="0"
-							step="1"
-							required
-							max={2}
-							on:blur={() => updateAmount(productOrder, amount)}
-						/>
-						<span
-							title={productOrder.product.isMaxOrderAmountReached(amount)
-								? "Maximum aantal bereikt"
-								: "Aantal verhogen"}
-						>
-							<button
-								class="btn btn-sm btn-square btn-neutral join-item"
-								type="button"
-								on:click={increaseAmount}
-								disabled={productOrder.product.isMaxOrderAmountReached(amount)}
-							>
-								<Fa icon={faPlus} size="lg" />
-							</button>
-						</span>
-					</div>
+					<AmountInput
+						bind:amount
+						isLessDisabled={() => amount < 0}
+						isMoreDisabled={() =>
+							productOrder.product.isMaxOrderAmountReached(amount)}
+						deleteOnZero
+						onChange={() => updateAmount(productOrder, amount)}
+						class="w-30"
+					></AmountInput>
 				</div>
 			</div>
 
@@ -138,17 +94,3 @@
 		</div>
 	</div>
 </div>
-
-<style lang="postcss">
-	/* Chrome, Safari, Edge, Opera */
-	input::-webkit-outer-spin-button,
-	input::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-
-	/* Firefox */
-	input[type="number"] {
-		-moz-appearance: textfield;
-	}
-</style>

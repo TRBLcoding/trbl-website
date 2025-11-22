@@ -1,11 +1,10 @@
 <script lang="ts">
+	import AmountInput from "$components/formHelpers/AmountInput.svelte"
 	import type { Product } from "$lib/domain/Product"
 	import { cartStore } from "$lib/stores/CartStore"
 	import {
 		faCreditCard,
 		faExclamationTriangle,
-		faMinus,
-		faPlus,
 		faShoppingCart,
 		faTruck,
 	} from "@fortawesome/free-solid-svg-icons"
@@ -14,14 +13,7 @@
 	export let product: Product
 	export let isPreview: boolean = false
 
-	let amount: number = 1
-
-	function decrease() {
-		amount = amount - 1
-	}
-	function increase() {
-		amount = amount + 1
-	}
+	let amount = 1
 
 	function addProduct() {
 		if (!isPreview) {
@@ -36,41 +28,18 @@
 		<span class="text-3xl mx-auto mt-4 mb-6 font-semibold text-green-600">
 			€ {product.price.toFixed(2)}
 		</span>
+		
+		<AmountInput
+			bind:amount
+			disabled={product.maxOrderAmount === 1}
+			isLessDisabled={() => amount <= 1}
+			isMoreDisabled={() => product.isMaxOrderAmountReached(amount)}
+			size="lg"
+		></AmountInput>
 
-		<div class="join flex flex-1 w-full mb-2">
-			<button
-				class="btn btn-lg btn-square btn-neutral join-item"
-				disabled={amount <= 1}
-				type="button"
-				on:click={decrease}
-			>
-				<Fa icon={faMinus} size="lg" />
-			</button>
-			<label
-				class="input input-lg join-item flex-1 bg-base-300! border-base-300!"
-			>
-				<input
-					class="text-center font-bold"
-					type="number"
-					bind:value={amount}
-					min="1"
-					step="1"
-					required
-					disabled={product.maxOrderAmount === 1}
-				/>
-			</label>
-			<button
-				class="btn btn-lg btn-square btn-neutral join-item"
-				disabled={product.isMaxOrderAmountReached(amount)}
-				type="button"
-				on:click={increase}
-			>
-				<Fa icon={faPlus} size="lg" />
-			</button>
-		</div>
 		{#if product.maxOrderAmount === amount}
 			<div class="flex w-full items-center justify-center">
-				<div class="flex gap-1 items-center opacity-60">
+				<div class="flex gap-1 items-center opacity-60 mt-2">
 					<Fa icon={faExclamationTriangle} class="w-5" />
 					<span class="text-sm">Maximum aantal producten bereikt</span>
 				</div>
@@ -94,17 +63,3 @@
 		</div>
 	</div>
 </div>
-
-<style lang="postcss">
-	/* Chrome, Safari, Edge, Opera */
-	input::-webkit-outer-spin-button,
-	input::-webkit-inner-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-
-	/* Firefox */
-	input[type="number"] {
-		-moz-appearance: textfield;
-	}
-</style>

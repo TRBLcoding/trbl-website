@@ -5,8 +5,18 @@
 	import { ProductOrder } from "$lib/domain/ProductOrder"
 	import { cartStore } from "$lib/stores/CartStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import { onDestroy } from "svelte"
 
 	$: subtotal = ProductOrder.calculatePrice($cartStore || [])
+
+	onDestroy(() => {
+		if (!$cartStore) return
+		$cartStore.forEach(async (productOrderPromise) => {
+			const productOrder = await productOrderPromise
+			if (productOrder && productOrder.amount <= 0)
+				cartStore.remove(productOrder.product)
+		})
+	})
 
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Winkelmandje")
