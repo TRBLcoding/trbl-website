@@ -26,6 +26,9 @@
 		<a href={resolve("/products/new")} class="btn btn-primary normal-case">
 			Nieuw product
 		</a>
+		<a href={resolve("/product-groups/new")} class="btn btn-primary normal-case">
+			Nieuwe product groep
+		</a>
 		<a
 			href={resolve("/privacy-policy/send-update")}
 			class="btn btn-primary normal-case"
