@@ -6,6 +6,24 @@
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { productGroupStore } from "$lib/stores/ProductGroupStore"
+	import { pushCreatedToast } from "$lib/utils/Toast"
+	import type { UploadProgress } from "$lib/utils/UploadProgress"
+	import { writable } from "svelte/store"
+
+	const progressStore = writable([] as UploadProgress[])
+
+	let name = ""
+	let visible: boolean = true
+	let price = 0
+	let uploadedImages: File[] = []
+	let description = ""
+	let maxOrderAmount: null | number = null
+
+	async function createProductGroup() {
+		// const product = await createPreviewProduct()
+		// await productStore.createProduct(product, uploadedImages, progressStore)
+		pushCreatedToast("Productgroep aangemaakt", { gotoUrl: "/products" })
+	}
 
 	// -- Preview --
 	let showPreview = false
@@ -14,10 +32,8 @@
 		showPreview = !showPreview
 	}
 	async function createPreviewProductGroup() {
-		return 
+		return
 	}
-
-	console.log($productGroupStore?.map(e=>e))
 
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Productgroep aanmaken")
@@ -52,8 +68,17 @@
 			</button>
 		</div>
 
-		store: {$productGroupStore}
-
-		<ProductGroupForm></ProductGroupForm>
+		<ProductGroupForm
+			bind:name
+			bind:price
+			bind:visible
+			bind:combinedImages={uploadedImages}
+			bind:description
+			bind:maxOrderAmount
+			newProductGroup={true}
+			submitLabel="Productgroep aanmaken"
+			onSave={createProductGroup}
+			progress={$progressStore}
+		/>
 	{/if}
 </div>

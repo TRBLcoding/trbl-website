@@ -1,34 +1,59 @@
 <script lang="ts">
 	import Checkbox from "$components/formHelpers/Checkbox.svelte"
+	import Dropzone from "$components/formHelpers/Dropzone.svelte"
 	import Input from "$components/formHelpers/Input.svelte"
 	import Quill from "$components/formHelpers/Quill.svelte"
 	import Speaker from "$components/icons/Flowbite/Speaker.svelte"
+	import { Product } from "$lib/domain/Product"
+	import type { UploadProgress } from "$lib/utils/UploadProgress"
 	import {
 		faExclamationTriangle,
 		faFileLines,
 		faInfinity,
 	} from "@fortawesome/free-solid-svg-icons"
-
 	import Fa from "svelte-fa"
 	import ProductGroupProductSelector from "./ProductGroupProductSelector.svelte"
 
-	let name = ""
-	let visible: boolean = true
-	let price = 0
-	let maxOrderAmount: null | number = null
-	let saving = false
-	let description = ""
-	let activeTab: "products" | "description" = "products"
-	let errorMessage = ""
+	export let name: string
+	export let visible: boolean
+	export let price: number
+	export let combinedImages: (string | File)[]
+	export let description: string
+	export let maxOrderAmount: null | number
+
+	export let submitLabel: string
+	export let onSave: () => Promise<void>
+	export let progress: UploadProgress[]
+	export let newProductGroup: boolean
 
 	let selectedProducts: Array<{ productId: number; amount: number }> = []
+	let activeTab: "products" | "description" = "products"
+	
+	let saving = false
+	let errorMessage = ""
+
+	async function onSubmitWrapper() {
+		saving = true
+		errorMessage = ""
+		try {
+			await onSave()
+		} catch (error) {
+			console.error(error)
+			if (error instanceof Error) {
+				errorMessage = error.toString()
+			} else {
+				errorMessage = "An unknown error occurred"
+			}
+		}
+		saving = false
+	}
 
 	function clearMaxAmount() {
 		maxOrderAmount = null
 	}
 </script>
 
-<form class="flex flex-col">
+<form class="flex flex-col" on:submit|preventDefault={onSubmitWrapper}>
 	<div class="flex flex-col lg:flex-row lg:gap-8 xl:gap-14">
 		<div class="flex-col flex-auto min-w-sm">
 			<div class="flex-col flex-auto min-w-sm">
@@ -69,6 +94,13 @@
 						</button>
 					</div>
 				</Input>
+				<Dropzone
+					label="Afbeeldingen:"
+					bind:combinedImages
+					showDiskSize={newProductGroup}
+					{progress}
+					previewConverter={Product.imageToThumbnailUrl}
+				/>
 				<div class="hidden md:block">
 					<div class="w-fit" class:hover:cursor-wait={saving}>
 						<button
@@ -129,7 +161,7 @@
 	<div class="md:hidden">
 		<div class="w-fit" class:hover:cursor-wait={saving}>
 			<button class="btn btn-primary mt-2" type="submit" disabled={saving}>
-				Productgroep aanmaken
+				{submitLabel}
 				<span class="loading loading-ring" class:hidden={!saving}></span>
 			</button>
 		</div>
