@@ -22,7 +22,7 @@
 	$: clampAmount(amount)
 	function clampAmount(newAmount: number) {
 		if (newAmount < 0) amount = 0
-		if (productOrder.product.isMaxOrderAmountReached(newAmount))
+		if (productOrder.product.getMaxOrderAmount()>= newAmount)
 			amount = productOrder.product.maxOrderAmount!
 	}
 </script>
@@ -65,9 +65,7 @@
 					<span class="text-sm font-bold">Aantal:</span>
 					<AmountInput
 						bind:amount
-						isLessDisabled={() => amount < 0}
-						isMoreDisabled={() =>
-							productOrder.product.isMaxOrderAmountReached(amount)}
+						max={productOrder.product.getMaxOrderAmount()}
 						deleteOnZero
 						onChange={() => updateAmount(productOrder, amount)}
 						class="w-30"

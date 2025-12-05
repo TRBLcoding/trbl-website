@@ -8,22 +8,24 @@
 
 	export let amount: number
 	export let disabled: boolean = false
-	export let isLessDisabled: (amount: number) => boolean = () => false
-	export let isMoreDisabled: (amount: number) => boolean = () => false
 	export let size: "sm" | "md" | "lg" = "sm"
 	export let min: number = 0
+	export let max: number = Infinity
 	export let step: number = 1
 	export let required: boolean = false
-	export let deleteOnZero: boolean = false
+	export let deleteOnZero: boolean = false // Overrides min amount when true
 	export let onChange: () => void = () => {} // Called when increased, decreased or on blur
 	let classList = ""
 	export { classList as class }
 
 	function decrease() {
+		console.log(amount, min)
+		if (deleteOnZero ? amount <= -1 : amount <= min) return
 		amount = amount - 1
 		onChange()
 	}
 	function increase() {
+		if (amount >= max) return
 		amount = amount + 1
 		onChange()
 	}
@@ -32,12 +34,12 @@
 <div class={`join flex ${classList}`}>
 	<button
 		class={`btn btn-square join-item btn-${size} btn-${deleteOnZero && amount == 0 ? "primary" : "neutral"}`}
-		disabled={isLessDisabled(amount)}
+		disabled={deleteOnZero ? amount === -1 : amount <= min}
 		type="button"
 		on:click={decrease}
-		title={deleteOnZero && amount == 0 ? "Verwijderen" : "Verlagen"}
+		title={deleteOnZero && amount === 0 ? "Verwijderen" : "Verlagen"}
 	>
-		<Fa icon={deleteOnZero && amount == 0 ? faTrashCan : faMinus} size="lg" />
+		<Fa icon={deleteOnZero && amount === 0 ? faTrashCan : faMinus} size="lg" />
 	</button>
 	<label
 		class={`input join-item flex-1 bg-base-300! border-base-300! input-${size}`}
@@ -55,7 +57,7 @@
 	</label>
 	<button
 		class={`btn btn-square btn-neutral join-item btn-${size}`}
-		disabled={isMoreDisabled(amount)}
+		disabled={amount >= max}
 		type="button"
 		on:click={increase}
 		title="Verhogen"

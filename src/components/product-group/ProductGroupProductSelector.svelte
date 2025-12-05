@@ -8,7 +8,7 @@
 
 	import Fa from "svelte-fa"
 
-	let selectedProducts: Array<{ product: Product; amount: number }> = []
+	let selectedProducts: { product: Product; amount: number }[] = []
 	let searchQuery = ""
 
 	$: filteredProducts = $productStore?.filter(
@@ -25,6 +25,12 @@
 		selectedProducts = selectedProducts.filter(
 			(e) => e.product.id !== product.id
 		)
+	}
+
+	function onChangeAmount(product: Product, newAmount: number) {
+		if (newAmount <= -1) {
+			removeProduct(product)
+		}
 	}
 </script>
 
@@ -58,13 +64,14 @@
 			</div>
 			<div class="flex items-center gap-2 mr-1">
 				<span class="text-sm font-semibold">Aantal:</span>
+
 				<AmountInput
 					bind:amount={product.amount}
-					isLessDisabled={() => product.amount < 0}
-					isMoreDisabled={() =>
-						product.product.isMaxOrderAmountReached(product.amount)}
+					size="sm"
+					max={2}
 					deleteOnZero
 					class="w-30"
+					onChange={() => onChangeAmount(product.product, product.amount)}
 				></AmountInput>
 			</div>
 			<button

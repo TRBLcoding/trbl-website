@@ -32,8 +32,8 @@
 		<AmountInput
 			bind:amount
 			disabled={product.maxOrderAmount === 1}
-			isLessDisabled={() => amount <= 1}
-			isMoreDisabled={() => product.isMaxOrderAmountReached(amount)}
+			min={1}
+			max={product.getMaxOrderAmount()}
 			size="lg"
 		></AmountInput>
 

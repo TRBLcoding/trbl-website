@@ -8,15 +8,15 @@ export const TypeValues = ["Mixer", "Microphone", "Speaker", "SoundSet", "LightE
 export type Type = typeof TypeValues[number]
 
 export type ProductJSON = {
-	id: number;
-	name: string;
-	price: number;
-	description: string;
-	categories: Category[];
-	type: Type;
-	visible: boolean;
-	imageIds: string[];
-	maxOrderAmount: number | null;
+	id: number
+	name: string
+	price: number
+	description: string
+	categories: Category[]
+	type: Type
+	visible: boolean
+	imageIds: string[]
+	maxOrderAmount: number | null
 }
 
 export class Product {
@@ -53,8 +53,10 @@ export class Product {
 			.includes(false)
 	}
 
-	isMaxOrderAmountReached(amount: number) {
-		return this.maxOrderAmount !== null && amount >= this.maxOrderAmount
+	/** Returns max amount or Infinity when maxOrderAmount is null  */
+	getMaxOrderAmount() {
+		if (this.maxOrderAmount === null) return Infinity
+		return this.maxOrderAmount
 	}
 
 	toJSON() {
