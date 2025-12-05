@@ -71,7 +71,7 @@ export class Product {
 			maxOrderAmount: this.maxOrderAmount,
 		} as Database['public']['Tables']['products']['Insert']
 	}
-	static fromJSON(json: any) {
+	static async fromJSON(json: any) {
 		return new Product(
 			json.id,
 			json.name,

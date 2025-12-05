@@ -13,6 +13,7 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import ProductGroupProductSelector from "./ProductGroupProductSelector.svelte"
+	import type { ProductAmount } from "$lib/domain/ProductAmount"
 
 	export let name: string
 	export let visible: boolean
@@ -20,13 +21,13 @@
 	export let combinedImages: (string | File)[]
 	export let description: string
 	export let maxOrderAmount: null | number
+	export let selectedProducts: ProductAmount[]
 
 	export let submitLabel: string
 	export let onSave: () => Promise<void>
 	export let progress: UploadProgress[]
 	export let newProductGroup: boolean
 
-	let selectedProducts: Array<{ productId: number; amount: number }> = []
 	let activeTab: "products" | "description" = "products"
 	
 	let saving = false
@@ -147,7 +148,7 @@
 			<!-- Tab content -->
 			<div class="h-[524px] flex flex-col">
 				{#if activeTab === "products"}
-					<ProductGroupProductSelector></ProductGroupProductSelector>
+					<ProductGroupProductSelector bind:selectedProducts></ProductGroupProductSelector>
 				{:else if activeTab === "description"}
 					<Quill
 						label="Beschrijving van product:"

@@ -12,6 +12,7 @@
 	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import PriceCard from "./PriceCard.svelte"
+	import { ProductGroup } from "$lib/domain/ProductGroup"
 
 	export let product: Product
 	export let isPreview = false
@@ -91,6 +92,21 @@
 				<h2 class="text-xl font-semibold mb-3">Omschrijving</h2>
 				<UserContentRenderer content={product.description} showLinks />
 			</div>
+			{#if product instanceof ProductGroup}
+			Bestaat uit producten: 
+			{#each product.productAmounts as productAmount}
+				<div class="rounded-lg p-4 bg-base-200 mt-2">
+					<a
+						class="font-medium link link-hover"
+						target="_blank"
+						href={resolve("/products/[slug]", {
+							slug: productAmount.product.id.toString(),
+						})}>{productAmount.product.name}</a
+					>
+					<span> - Aantal: {productAmount.amount}</span>
+				</div>
+			{/each}
+			{/if}
 		</div>
 	</div>
 

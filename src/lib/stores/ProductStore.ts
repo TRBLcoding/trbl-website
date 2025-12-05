@@ -20,7 +20,7 @@ function createProductStore() {
 				throw createPostgrestErrorFromObject(error)
 			throw error
 		} else {
-			let products = (data || []).map(Product.fromJSON)
+			let products = await Promise.all((data || []).map(Product.fromJSON))
 			update(() => products)
 		}
 	}

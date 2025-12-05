@@ -3,12 +3,13 @@
 	import AmountInput from "$components/formHelpers/AmountInput.svelte"
 	import Input from "$components/formHelpers/Input.svelte"
 	import type { Product } from "$lib/domain/Product"
+	import { ProductAmount } from "$lib/domain/ProductAmount"
 	import { productStore } from "$lib/stores/ProductStore"
 	import { faPlus, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons"
 
 	import Fa from "svelte-fa"
 
-	let selectedProducts: { product: Product; amount: number }[] = []
+	export let selectedProducts: ProductAmount[]
 	let searchQuery = ""
 
 	$: filteredProducts = $productStore?.filter(
@@ -18,7 +19,7 @@
 	)
 
 	function addProduct(product: Product) {
-		selectedProducts = [...selectedProducts, { product, amount: 1 }]
+		selectedProducts = [...selectedProducts, new ProductAmount(product, 1)]
 	}
 
 	function removeProduct(product: Product) {
