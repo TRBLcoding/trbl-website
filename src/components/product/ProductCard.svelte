@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from "$app/paths"
 	import { Product } from "$lib/domain/Product"
+	import { ProductGroup } from "$lib/domain/ProductGroup"
 	import { cartStore } from "$lib/stores/CartStore"
 	import { faShoppingCart } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
@@ -14,11 +15,18 @@
 
 <div class="card bg-base-200 w-96 shadow-md">
 	{#if product.imageIds?.length > 0}
-		<figure class="bg-base-200 h-72">
-			<a href={resolve("/products/[slug]", { slug: product.id.toString() })}>
-				<img src={product.getThumbnailUrls()[0]} alt="Productafbeelding" />
-			</a>
-		</figure>
+		<div class="relative">
+			<figure class="bg-base-200 h-72 rounded-t-md">
+				<a href={resolve("/products/[slug]", { slug: product.id.toString() })}>
+					<img src={product.getThumbnailUrls()[0]} alt="Productafbeelding" />
+				</a>
+			</figure>
+			{#if product instanceof ProductGroup}
+				<div class="absolute top-1.5 right-2 pointer-events-none">
+					<span class="badge  badge-soft badge-sm">Bundel</span>
+				</div>
+			{/if}
+		</div>
 	{/if}
 	<div class="card-body pt-3">
 		<span class="italic opacity-50 -mb-2.5">{product.categories}</span>
