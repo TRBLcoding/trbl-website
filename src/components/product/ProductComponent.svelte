@@ -65,20 +65,26 @@
 		{errorMessage}
 	</div>
 {:else if loading}
-<!-- TODO move loading to edit dropdown -->
+	<!-- TODO move loading to edit dropdown -->
 	<span class="loading loading-ring"></span>
 {/if}
-
 
 <!-- Name -->
 <div class="flex flex-row items-center">
 	<h1 class="text-4xl font-semibold">{product.name || "Geen naam"}</h1>
 	{#if !isPreview && $authStore?.isAdmin()}
 		<div class="ml-auto">
-			<EditDropdown
-				editUrl={`/products/edit/${product.id}`}
-				deleteHandler={removeProduct}
-			/>
+			{#if product instanceof ProductGroup}
+				<EditDropdown
+					editUrl={`/product-groups/edit/${product.id}`}
+					deleteHandler={removeProduct}
+				/>
+			{:else}
+				<EditDropdown
+					editUrl={`/products/edit/${product.id}`}
+					deleteHandler={removeProduct}
+				/>
+			{/if}
 		</div>
 	{/if}
 </div>

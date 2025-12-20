@@ -117,7 +117,7 @@
 							type="submit"
 							disabled={saving}
 						>
-							Productgroep aanmaken
+							{submitLabel}
 							<span class="loading loading-ring" class:hidden={!saving}></span>
 						</button>
 					</div>

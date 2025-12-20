@@ -8,6 +8,7 @@ import { arrayDifference, arraysContainSameElements } from '../utils/Array'
 import { convertAndUploadImages, deleteImages, type UploadProgress } from '../utils/UploadProgress'
 import { ProductFactory } from '$lib/domain/ProductFactory'
 import { ProductGroup } from '$lib/domain/ProductGroup'
+import type { ProductAmount } from '$lib/domain/ProductAmount'
 
 function createProductStore() {
 	const store = writable<Product[]>(undefined)
@@ -148,6 +149,27 @@ function createProductStore() {
 		update((products) => [...products])
 	}
 
+	async function updateProductGroup(productGroup: ProductGroup, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, newMaxOrderAmount: null | number, newProductAmounts: ProductAmount[], progressStore: Writable<UploadProgress[]>) {
+		if (!arraysContainSameElements(productGroup.productAmounts || [], newProductAmounts)) {
+			// It's easier to just delete all and re-insert
+			const { error: error1, count: count1 } = await supabase.from('product_group_product_amounts')
+				.delete({ count: 'exact' })
+				.eq('product_group_id', productGroup.id)
+			handleSupabaseDeleteError(error1, count1, "product group amounts", false)
+			const { data: data2, error: error2 } = await supabase
+				.from('product_group_product_amounts')
+				.insert(newProductAmounts.map(e => e.toJSON(productGroup.id)))
+				.select('id')
+			if (error2)
+				throw createPostgrestErrorFromObject(error2)
+		}
+		
+		updateProduct(productGroup, newName, newVisible, newPrice, newCombinedImages, newCategories, newType, newDescription, newMaxOrderAmount, progressStore)
+		
+		productGroup.productAmounts = newProductAmounts
+		update((products) => [...products])
+	}
+
 	async function deleteProduct(product: Product) {
 		// -- Remove images --
 		await deleteImages("PublicImages", "product-images/", product.imageIds)
@@ -178,6 +200,7 @@ function createProductStore() {
 		createProductGroup,
 		getProductById,
 		updateProduct,
+		updateProductGroup,
 		deleteProduct,
 		initPromise
 	}

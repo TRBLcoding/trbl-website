@@ -131,11 +131,17 @@
 </script>
 
 <div class="mx-4 lg:mx-12 my-5">
-	<div class="flex gap-3 mb-2">
+	<div class="flex gap-3 mb-2 items-center">
 		<h1 class="text-4xl font-semibold">Producten</h1>
 		{#if $authStore && $authStore.isAdmin()}
-			<a href={resolve("/products/new")} class="btn btn-primary">
+			<a href={resolve("/products/new")} class="btn btn-primary btn-sm">
 				Nieuw product
+			</a>
+			<a
+				href={resolve("/product-groups/new")}
+				class="btn btn-primary btn-sm"
+			>
+				Nieuwe product groep
 			</a>
 		{/if}
 	</div>

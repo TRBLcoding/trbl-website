@@ -27,7 +27,7 @@
 	let selectedProducts: ProductAmount[] = []
 
 	async function createProductGroup() {
-		const productGroup = await createPreviewProductGroup()
+		const productGroup = await createPreview()
 		await productStore.createProductGroup(productGroup, uploadedImages, progressStore)
 		pushCreatedToast("Productgroep aangemaakt", { gotoUrl: "/products" })
 	}
@@ -38,7 +38,7 @@
 	function togglePreview() {
 		showPreview = !showPreview
 	}
-	async function createPreviewProductGroup() {
+	async function createPreview() {
 		const type: Type = "LightSet"
 		const imageIDs = await Promise.all(
 			uploadedImages.map((e) => PreviewableFile.getFilePreview(e))
@@ -67,7 +67,7 @@
 <div class="mx-6 mt-3 mb-8">
 	{#if showPreview}
 		<!-- Article preview -->
-		{#await createPreviewProductGroup()}
+		{#await createPreview()}
 			<div>Loading</div>
 		{:then previewProductGroup}
 			<button

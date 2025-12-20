@@ -15,6 +15,9 @@
 	import Fa from "svelte-fa"
 	import { writable } from "svelte/store"
 	import type { PageData } from "./$types"
+	import ProductGroupForm from "$components/product-group/ProductGroupForm.svelte"
+	import { ProductGroup } from "$lib/domain/ProductGroup"
+	import type { ProductAmount } from "$lib/domain/ProductAmount"
 
 	export let data: PageData
 
@@ -31,8 +34,9 @@
 	let type: string = ""
 	let description: string = ""
 	let maxOrderAmount: null | number = null
+	let selectedProducts: ProductAmount[] = []
 
-	let product: Product | undefined | null
+	let product: ProductGroup | undefined | null
 
 	async function initStore() {
 		loading = true
@@ -51,8 +55,8 @@
 	}
 	initStore()
 
-	async function updateProduct() {
-		await productStore.updateProduct(
+	async function updateProductGroup() {
+		await productStore.updateProductGroup(
 			product!,
 			name,
 			visible,
@@ -62,10 +66,11 @@
 			type,
 			description,
 			maxOrderAmount,
+			selectedProducts,
 			progressStore
 		)
 		haveValuesBeenSet = false
-		pushCreatedToast("Product gewijzigd", {
+		pushCreatedToast("Productgroep gewijzigd", {
 			gotoUrl: "/products/" + product!.id,
 		})
 	}
@@ -79,7 +84,7 @@
 		const images = await Promise.all(
 			combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e))
 		)
-		return new Product(
+		return new ProductGroup(
 			-1, // temporary id
 			name,
 			price,
@@ -88,7 +93,8 @@
 			type,
 			visible,
 			images,
-			maxOrderAmount
+			maxOrderAmount,
+			selectedProducts
 		)
 	}
 
@@ -99,7 +105,12 @@
 
 	async function loadProduct(data: PageData) {
 		try {
-			product = await productStore.getProductById(Number(data.id))
+			const foundProduct =  await productStore.getProductById(Number(data.id))
+			if(foundProduct instanceof ProductGroup) {
+				product = foundProduct
+			} else {
+				errorMessage = "Product is geen productgroep"
+			}
 		} catch (error) {
 			console.error(error)
 			if (error instanceof Error) {
@@ -109,7 +120,7 @@
 			}
 		}
 	}
-	function setValues(product: Product) {
+	function setValues(product: ProductGroup) {
 		name = product.name
 		visible = product.visible
 		price = product.price
@@ -118,11 +129,12 @@
 		type = product.type
 		description = product.description
 		maxOrderAmount = product.maxOrderAmount
+		selectedProducts = product.productAmounts
 		haveValuesBeenSet = true
 	}
 
 	// -- Page title --
-	pageHeadStore.updatePageTitle("Product wijzigen")
+	pageHeadStore.updatePageTitle("Productgroep wijzigen")
 	// -- Authguard --
 	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin()))
 		goto(resolve("/"))
@@ -130,10 +142,10 @@
 
 <div class="mx-6 mt-3 mb-8">
 	{#if showPreview}
-		<!-- Product preview -->
+		<!-- Article preview -->
 		{#await createPreview()}
 			<div>Loading</div>
-		{:then previewProduct}
+		{:then previewProductGroup}
 			<button
 				class="btn btn-primary btn-xs normal-case"
 				on:click={togglePreview}
@@ -141,50 +153,34 @@
 				Sluit preview
 			</button>
 			<div class="md:mx-2 mb-4 sm:mb-10">
-				<ProductComponent product={previewProduct} isPreview={true} />
+				<ProductComponent product={previewProductGroup} isPreview={true} />
 			</div>
 		{/await}
 	{:else}
 		<!-- Product editor -->
 		<div class="flex flex-row gap-3 items-center mb-1">
-			<h1 class="text-2xl font-bold">Product wijzigen</h1>
-			{#if !errorMessage && product !== undefined}
-				<button
-					class="btn btn-primary btn-xs normal-case"
-					on:click={togglePreview}
-				>
-					Toon preview
-				</button>
-			{/if}
+			<h1 class="text-2xl font-bold">Productgroep wijzigen</h1>
+			<button
+				class="btn btn-primary btn-sm normal-case"
+				on:click={togglePreview}
+			>
+				Toon preview
+			</button>
 		</div>
-		{#if errorMessage}
-			<div class="text-error flex gap-2 items-center">
-				<Fa icon={faExclamationTriangle} />
-				{errorMessage}
-			</div>
-		{:else if loading}
-			<span>Loading product</span>
-			<span class="loading loading-ring"></span>
-		{:else if product}
-			<ProductForm
-				bind:name
-				bind:price
-				bind:visible
-				bind:combinedImages
-				bind:categories
-				bind:type
-				bind:description
-				bind:maxOrderAmount
-				newProduct={false}
-				submitLabel="Wijzig product"
-				onSave={updateProduct}
-				progress={$progressStore}
-			/>
-		{:else}
-			<div class="text-error flex gap-2 items-center text-lg">
-				<Fa icon={faExclamationTriangle} />
-				Error: product met ID <span class="font-bold">"{data.id}"</span> niet gevonden
-			</div>
-		{/if}
+
+		<ProductGroupForm
+			bind:name
+			bind:price
+			bind:visible
+			bind:combinedImages
+			bind:categories
+			bind:description
+			bind:maxOrderAmount
+			bind:selectedProducts
+			newProductGroup={false}
+			submitLabel="Productgroep wijzigen"
+			onSave={updateProductGroup}
+			progress={$progressStore}
+		/>
 	{/if}
 </div>
