@@ -24,7 +24,7 @@ export function handleSupabaseUpdateError(error: any, data: any, type: string) {
 	}
 }
 
-export function handleSupabaseDeleteError(error: any, count: number | null, type: string) {
+export function handleSupabaseDeleteError(error: any, count: number | null, type: string, singleDelete: boolean = true) {
 	if (error) {
 		console.error(error)
 		if (error instanceof Error)
@@ -34,7 +34,7 @@ export function handleSupabaseDeleteError(error: any, count: number | null, type
 	else if (!count || count === 0) {
 		throw new Error(`No ${type} items deleted. Possible causes: unverrified account, insufficient permissions, incorrect RLS policies, ...`)
 	}
-	else if (count > 1) {
+	else if (singleDelete && count > 1) {
 		throw new Error(`Multiple (${count}) ${type} items deleted. This should not happen because ID is unique`)
 	}
 }

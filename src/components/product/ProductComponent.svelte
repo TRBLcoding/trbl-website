@@ -59,6 +59,17 @@
 	</ul>
 </div>
 
+{#if errorMessage}
+	<div class="text-error flex gap-2 items-center mb-4">
+		<Fa icon={faExclamationTriangle} />
+		{errorMessage}
+	</div>
+{:else if loading}
+<!-- TODO move loading to edit dropdown -->
+	<span class="loading loading-ring"></span>
+{/if}
+
+
 <!-- Name -->
 <div class="flex flex-row items-center">
 	<h1 class="text-4xl font-semibold">{product.name || "Geen naam"}</h1>
@@ -72,7 +83,7 @@
 	{/if}
 </div>
 
-<div class="flex flex-col md:flex-row gap-6 mt-6 mb-10">
+<div class="flex flex-col md:flex-row gap-6 mt-6 mb-8">
 	<div class="w-full md:w-2/3 flex flex-col gap-6">
 		<!-- Gallery -->
 		<div class="mb-2">
@@ -93,19 +104,21 @@
 				<UserContentRenderer content={product.description} showLinks />
 			</div>
 			{#if product instanceof ProductGroup}
-			Bestaat uit producten: 
-			{#each product.productAmounts as productAmount}
-				<div class="rounded-lg p-4 bg-base-200 mt-2">
-					<a
-						class="font-medium link link-hover"
-						target="_blank"
-						href={resolve("/products/[slug]", {
-							slug: productAmount.product.id.toString(),
-						})}>{productAmount.product.name}</a
-					>
-					<span> - Aantal: {productAmount.amount}</span>
-				</div>
-			{/each}
+				Bestaat uit producten:
+				{#each product.productAmounts as productAmount}
+					{#await productAmount.getProduct() then productGroupItem}
+						<div class="rounded-lg p-4 bg-base-200 mt-2">
+							<a
+								class="font-medium link link-hover"
+								target="_blank"
+								href={resolve("/products/[slug]", {
+									slug: productGroupItem.id.toString(),
+								})}>{productGroupItem.name}</a
+							>
+							<span> - Aantal: {productAmount.amount}</span>
+						</div>
+					{/await}
+				{/each}
 			{/if}
 		</div>
 	</div>
@@ -114,12 +127,3 @@
 		<PriceCard {product} {isPreview}></PriceCard>
 	</div>
 </div>
-
-{#if errorMessage}
-	<div class="text-error flex gap-2 items-center">
-		<Fa icon={faExclamationTriangle} />
-		{errorMessage}
-	</div>
-{:else if loading}
-	<span class="loading loading-ring"></span>
-{/if}

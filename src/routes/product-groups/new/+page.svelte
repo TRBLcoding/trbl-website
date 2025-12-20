@@ -3,13 +3,13 @@
 	import { resolve } from "$app/paths"
 	import ProductGroupForm from "$components/product-group/ProductGroupForm.svelte"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
-	import type { Product } from "$lib/domain/Product"
+	import type { Category, Product, Type } from "$lib/domain/Product"
 	import type { ProductAmount } from "$lib/domain/ProductAmount"
 	import { ProductGroup } from "$lib/domain/ProductGroup"
 	import type { User } from "$lib/domain/User"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
-	import { productGroupStore } from "$lib/stores/ProductGroupStore"
+	import { productStore } from "$lib/stores/ProductStore"
 	import { PreviewableFile } from "$lib/utils/PreviewableFile"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
@@ -20,14 +20,15 @@
 	let name = ""
 	let visible: boolean = true
 	let price = 0
+	let categories: Category[] = []
 	let uploadedImages: File[] = []
 	let description = ""
 	let maxOrderAmount: null | number = null
 	let selectedProducts: ProductAmount[] = []
 
 	async function createProductGroup() {
-		// const product = await createPreviewProduct()
-		// await productStore.createProduct(product, uploadedImages, progressStore)
+		const productGroup = await createPreviewProductGroup()
+		await productStore.createProductGroup(productGroup, uploadedImages, progressStore)
 		pushCreatedToast("Productgroep aangemaakt", { gotoUrl: "/products" })
 	}
 
@@ -38,16 +39,21 @@
 		showPreview = !showPreview
 	}
 	async function createPreviewProductGroup() {
+		const type: Type = "LightSet"
+		const imageIDs = await Promise.all(
+			uploadedImages.map((e) => PreviewableFile.getFilePreview(e))
+		)
 		return new ProductGroup(
 			-1, // temporary id
 			name,
 			price,
 			description,
-			[],
-			"product_group",
+			categories,
+			type,
 			visible,
-			selectedProducts,
-			maxOrderAmount
+			imageIDs,
+			maxOrderAmount,
+			selectedProducts
 		)
 	}
 
@@ -91,6 +97,7 @@
 			bind:price
 			bind:visible
 			bind:combinedImages={uploadedImages}
+			bind:categories
 			bind:description
 			bind:maxOrderAmount
 			bind:selectedProducts

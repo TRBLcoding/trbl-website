@@ -6,13 +6,13 @@
 	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import type { PageData } from "./$types"
+	import { onDestroy } from "svelte"
 
 	export let data: PageData
 
 	let loading = true
 	let errorMessage = ""
 	let product: Product | undefined | null
-	$: $productStore && loadProduct(data)
 
 	async function initStore() {
 		loading = true
@@ -31,6 +31,10 @@
 	}
 	initStore()
 
+
+	let isMounted = true
+	$: $productStore && isMounted && loadProduct(data) 
+	
 	async function loadProduct(data: PageData) {
 		errorMessage = ""
 		try {
@@ -40,6 +44,9 @@
 			errorMessage = "error occurred"
 		}
 	}
+	onDestroy(() => {
+        isMounted = false
+    })
 
 	// -- Page title --
 	$: product && pageHeadStore.updatePageTitle(product.name)

@@ -88,47 +88,20 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "product_group_items_product_group_id_fkey"
-            columns: ["product_group_id"]
-            isOneToOne: false
-            referencedRelation: "product_groups"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "product_group_items_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "product_group_product_amounts_product_group_id_fkey"
+            columns: ["product_group_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
         ]
-      }
-      product_groups: {
-        Row: {
-          description: string
-          id: number
-          max_order_amount: number | null
-          name: string
-          price: number
-          visible: boolean
-        }
-        Insert: {
-          description: string
-          id?: number
-          max_order_amount?: number | null
-          name: string
-          price: number
-          visible: boolean
-        }
-        Update: {
-          description?: string
-          id?: number
-          max_order_amount?: number | null
-          name?: string
-          price?: number
-          visible?: boolean
-        }
-        Relationships: []
       }
       products: {
         Row: {

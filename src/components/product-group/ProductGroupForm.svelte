@@ -4,7 +4,7 @@
 	import Input from "$components/formHelpers/Input.svelte"
 	import Quill from "$components/formHelpers/Quill.svelte"
 	import Speaker from "$components/icons/Flowbite/Speaker.svelte"
-	import { Product } from "$lib/domain/Product"
+	import { 		CategoryValues,Product, type Category } from "$lib/domain/Product"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 	import {
 		faExclamationTriangle,
@@ -14,11 +14,13 @@
 	import Fa from "svelte-fa"
 	import ProductGroupProductSelector from "./ProductGroupProductSelector.svelte"
 	import type { ProductAmount } from "$lib/domain/ProductAmount"
+	import MultiSelect from "$components/formHelpers/MultiSelect.svelte"
 
 	export let name: string
 	export let visible: boolean
 	export let price: number
 	export let combinedImages: (string | File)[]
+	export let categories: Category[] = []
 	export let description: string
 	export let maxOrderAmount: null | number
 	export let selectedProducts: ProductAmount[]
@@ -102,6 +104,12 @@
 					{progress}
 					previewConverter={Product.imageToThumbnailUrl}
 				/>
+				<MultiSelect
+				label="Categorieën:"
+				bind:values={categories}
+				options={CategoryValues}
+				required
+				/>
 				<div class="hidden md:block">
 					<div class="w-fit" class:hover:cursor-wait={saving}>
 						<button
@@ -148,7 +156,7 @@
 			<!-- Tab content -->
 			<div class="h-[524px] flex flex-col">
 				{#if activeTab === "products"}
-					<ProductGroupProductSelector bind:selectedProducts></ProductGroupProductSelector>
+					<ProductGroupProductSelector bind:selectedProductAmounts={selectedProducts}></ProductGroupProductSelector>
 				{:else if activeTab === "description"}
 					<Quill
 						label="Beschrijving van product:"
