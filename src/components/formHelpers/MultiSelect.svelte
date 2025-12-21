@@ -44,7 +44,7 @@
 		@apply border-2! h-fit! min-h-12! dark:border-[#464e57]!;
 
 		:global(input.form-control) {
-			@apply hidden!;
+			@apply w-0.5 h-0.5;
 		}
 		:global(.selected .remove:is(:hover, :focus) path) {
 			/* @apply fill-primary; */

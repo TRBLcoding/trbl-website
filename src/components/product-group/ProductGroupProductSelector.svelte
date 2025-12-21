@@ -8,7 +8,7 @@
 	import {
 		faPlus,
 		faSearch,
-		faTrashCan
+		faTrashCan,
 	} from "@fortawesome/free-solid-svg-icons"
 
 	import Fa from "svelte-fa"
