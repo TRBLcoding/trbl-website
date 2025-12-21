@@ -100,10 +100,10 @@ export class Product {
 	}
 
 	getImageUrls() {
-		return this.imageIds.map(Product.imageToUrl)
+		return this.imageIds.map(e => e.startsWith("data:") ? e : Product.imageToUrl(e))
 	}
 	getThumbnailUrls() {
-		return this.imageIds.map(Product.imageToThumbnailUrl)
+		return this.imageIds.map(e => e.startsWith("data:") ? e : Product.imageToThumbnailUrl(e))
 	}
 
 	createCarouselImages() {
@@ -111,8 +111,8 @@ export class Product {
 		return this.imageIds.map(async (e) => {
 			return {
 				name: "name",
-				imageUrl: Product.imageToUrl(e),
-				thumbnailUrl: Product.imageToThumbnailUrl(e)
+				imageUrl: e.startsWith("data:") ? e : Product.imageToUrl(e),
+				thumbnailUrl: e.startsWith("data:") ? e : Product.imageToThumbnailUrl(e)
 			}
 		})
 	}

@@ -84,8 +84,9 @@
 	}
 	async function createPreview() {
 		const images = await Promise.all(
-			combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e))
+			combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e, false))
 		)
+		console.log(images)
 		return new ProductGroup(
 			-1, // temporary id
 			name,

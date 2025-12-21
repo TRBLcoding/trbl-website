@@ -15,6 +15,7 @@
 	import Fa from "svelte-fa"
 	import { writable } from "svelte/store"
 	import type { PageData } from "./$types"
+	import type { ProductAmount } from "$lib/domain/ProductAmount"
 
 	export let data: PageData
 
@@ -76,8 +77,9 @@
 		showPreview = !showPreview
 	}
 	async function createPreview() {
+		const memberOf = Array<ProductAmount>(0)
 		const images = await Promise.all(
-			combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e))
+			combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e, false))
 		)
 		return new Product(
 			-1, // temporary id
@@ -88,7 +90,8 @@
 			type,
 			visible,
 			images,
-			maxOrderAmount
+			maxOrderAmount,
+			memberOf
 		)
 	}
 

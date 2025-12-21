@@ -42,8 +42,8 @@
 	}
 	async function createPreview() {
 		const type: Type = "LightSet"
-		const imageIDs = await Promise.all(
-			uploadedImages.map((e) => PreviewableFile.getFilePreview(e))
+		const images = await Promise.all(
+			uploadedImages.map((e) => PreviewableFile.getFilePreview(e, false))
 		)
 		return new ProductGroup(
 			-1, // temporary id
@@ -53,7 +53,7 @@
 			categories,
 			type,
 			visible,
-			imageIDs,
+			images,
 			maxOrderAmount,
 			memberOf,
 			selectedProducts

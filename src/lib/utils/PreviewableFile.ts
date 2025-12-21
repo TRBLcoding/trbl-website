@@ -5,6 +5,7 @@ const limit = pLimit(10)
 
 export class PreviewableFile extends File {
 	public preview: Promise<string>
+	public compressed: boolean = true
 
 	constructor(
 		file: File
@@ -15,7 +16,9 @@ export class PreviewableFile extends File {
 
 	static async getFilePreview(file: File, compressed: boolean = true) {
 		if (file instanceof PreviewableFile) {
-			return file.preview
+			if (file.compressed === compressed)
+				return file.preview
+			file.compressed = compressed
 		}
 		return await limit(async () => await (compressed ? readFileAsPreviewDataURL(file) : readFileAsDataURL(file)))
 	}

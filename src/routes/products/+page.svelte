@@ -250,13 +250,13 @@
 		</div>
 	{:else if loading}
 		<div class="mt-2 flex gap-2 flex-wrap justify-center">
-			{#each Array(8), i (i)}
+			{#each Array(8) as _}
 				<ProductCardSkeleton />
 			{/each}
 		</div>
 	{:else}
 		<div class="mt-2 flex gap-2 flex-wrap justify-center">
-			{#each searchedProducts as product (product.id)}
+			{#each searchedProducts as product}
 				<ProductCard {product} />
 			{:else}
 				<div class="flex flex-col gap-2 mt-4">
