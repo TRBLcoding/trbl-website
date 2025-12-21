@@ -11,7 +11,8 @@ export type ProductGroupJSON = {
 	visible: boolean
 	imageIds: string[]
 	maxOrderAmount: number | null
-	product_group_product_amounts: ProductAmountJSON[]
+	member_of: ProductAmountJSON[]
+	contained_products: ProductAmountJSON[]
 }
 
 export class ProductGroup extends Product {
@@ -25,9 +26,10 @@ export class ProductGroup extends Product {
 		public visible: boolean,
 		public imageIds: string[],
 		public maxOrderAmount: number | null,
-		public productAmounts: ProductAmount[],
+		public memberOf: ProductAmount[],
+		public containedProducts: ProductAmount[],
 	) {
-		super(id, name, price, description, categories, type, visible, imageIds, maxOrderAmount)
+		super(id, name, price, description, categories, type, visible, imageIds, maxOrderAmount, memberOf)
 	}
 
 	static async fromJSON(json: ProductGroupJSON) {
@@ -41,7 +43,8 @@ export class ProductGroup extends Product {
 			json.visible,
 			json.imageIds,
 			json.maxOrderAmount,
-			await Promise.all(json.product_group_product_amounts.map(ProductAmount.fromJSON)),
+			json.member_of.map(ProductAmount.fromJSON),
+			await Promise.all(json.contained_products.map(ProductAmount.fromJSON)),
 		)
 	}
 }

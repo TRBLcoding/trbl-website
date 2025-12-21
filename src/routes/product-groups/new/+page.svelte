@@ -26,6 +26,8 @@
 	let maxOrderAmount: null | number = null
 	let selectedProducts: ProductAmount[] = []
 
+	let memberOf: ProductAmount[] = []
+
 	async function createProductGroup() {
 		const productGroup = await createPreview()
 		await productStore.createProductGroup(productGroup, uploadedImages, progressStore)
@@ -53,6 +55,7 @@
 			visible,
 			imageIDs,
 			maxOrderAmount,
+			memberOf,
 			selectedProducts
 		)
 	}

@@ -36,6 +36,8 @@
 	let maxOrderAmount: null | number = null
 	let selectedProducts: ProductAmount[] = []
 
+	let memberOf: ProductAmount[] = []
+
 	let product: ProductGroup | undefined | null
 
 	async function initStore() {
@@ -94,6 +96,7 @@
 			visible,
 			images,
 			maxOrderAmount,
+			memberOf,
 			selectedProducts
 		)
 	}
@@ -129,7 +132,8 @@
 		type = product.type
 		description = product.description
 		maxOrderAmount = product.maxOrderAmount
-		selectedProducts = product.productAmounts
+		memberOf = product.memberOf
+		selectedProducts = product.containedProducts
 		haveValuesBeenSet = true
 	}
 

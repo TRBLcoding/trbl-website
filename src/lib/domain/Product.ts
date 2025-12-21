@@ -1,5 +1,6 @@
 import type { Database } from "$lib/supabase/database.types"
 import { createSupabaseStorageUrl } from "$lib/supabase/supabaseClient"
+import { ProductAmount, type ProductAmountJSON } from "./ProductAmount"
 
 export const CategoryValues = ["Sound", "Light", "Truss", "Media"]
 export type Category = typeof CategoryValues[number]
@@ -17,6 +18,7 @@ export type ProductJSON = {
 	visible: boolean
 	imageIds: string[]
 	maxOrderAmount: number | null
+	member_of: ProductAmountJSON[]
 }
 
 export class Product {
@@ -32,6 +34,7 @@ export class Product {
 		public visible: boolean,
 		public imageIds: string[],
 		public maxOrderAmount: number | null,
+		public memberOf: ProductAmount[]
 	) {
 		this.updateSearchableString()
 	}
@@ -85,6 +88,7 @@ export class Product {
 			json.visible,
 			json.imageIds || [],
 			json.maxOrderAmount || null,
+			json.member_of.map(ProductAmount.fromJSON)
 		)
 	}
 

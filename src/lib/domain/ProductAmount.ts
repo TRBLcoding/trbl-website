@@ -22,7 +22,7 @@ export class ProductAmount {
 			amount: this.amount,
 		} as Database['public']['Tables']['product_group_product_amounts']['Insert']
 	}
-	static async fromJSON(json: ProductAmountJSON) {
+	static fromJSON(json: ProductAmountJSON) {
 		return new ProductAmount(
 			json.product_id,
 			json.amount

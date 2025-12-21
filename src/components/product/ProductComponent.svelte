@@ -13,6 +13,7 @@
 	import Fa from "svelte-fa"
 	import PriceCard from "./PriceCard.svelte"
 	import { ProductGroup } from "$lib/domain/ProductGroup"
+	import SmallProductCard from "./SmallProductCard.svelte"
 
 	export let product: Product
 	export let isPreview = false
@@ -109,39 +110,20 @@
 				<h2 class="text-xl font-semibold mb-3">Omschrijving</h2>
 				<UserContentRenderer content={product.description} showLinks />
 			</div>
-			{#if product instanceof ProductGroup}
+			{#if product instanceof ProductGroup && product.containedProducts.length > 0}
 				<div class="mt-4 font-semibold text-lg">Bestaat uit producten:</div>
 				<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-					{#each product.productAmounts as productAmount}
-						{#await productAmount.getProduct() then productGroupItem}
-							<a
-								class="card bg-base-200 hover:bg-base-300 transition-colors overflow-hidden"
-								
-								href={resolve("/products/[slug]", {
-									slug: productGroupItem.id.toString(),
-								})}
-							>
-								{#if product.imageIds?.length > 0}
-									<figure class="bg-base-200 h-42">
-										<img
-											src={productGroupItem.getThumbnailUrls()[0]}
-											alt="Productafbeelding"
-										/>
-									</figure>
-								{/if}
-								<div class="card-body p-4">
-									<h3 class="card-title text-sm link-hover">{productGroupItem.name}</h3>
-									<p class="text-xs opacity-70">
-										Aantal: {productAmount.amount}
-									</p>
-								</div>
-							</a>
-						{/await}
+					{#each product.containedProducts as productAmount}
+						<SmallProductCard {productAmount} />
 					{/each}
-					
 				</div>
-			{:else}
-				 <div class="mt-4 font-semibold text-lg">Komt voor in:</div>
+			{:else if product.memberOf.length > 0}
+				<div class="mt-4 font-semibold text-lg">Komt voor in:</div>
+				<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+					{#each product.memberOf as productAmount}
+						<SmallProductCard {productAmount} />
+					{/each}
+				</div>
 			{/if}
 		</div>
 	</div>

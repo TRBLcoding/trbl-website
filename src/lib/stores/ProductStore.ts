@@ -18,15 +18,17 @@ function createProductStore() {
 		if (!browser) return
 
 		const { error, data } = await supabase.from("products")
-			.select("*, product_group_product_amounts!product_group_product_amounts_product_group_id_fkey(product_id, amount)")
+			.select(`*,
+        		contained_products:product_group_product_amounts!product_group_product_amounts_product_group_id_fkey(product_id, amount),
+        		member_of:product_group_product_amounts!product_group_items_product_id_fkey(product_id:product_group_id, amount)
+    		`)
 		if (error) {
 			if (error?.message === "TypeError: Failed to fetch")
 				throw createPostgrestErrorFromObject(error)
 			throw error
 		} else {
-			console.log("here")
-			let products = await Promise.all((data || []).map(ProductFactory.fromJSON))
-			console.log("here")
+			console.log(data)
+			const products = await Promise.all((data || []).map(ProductFactory.fromJSON))
 			update(() => products)
 		}
 	}
@@ -69,7 +71,7 @@ function createProductStore() {
 		// -- Create product group product amounts --
 		const { data: data2, error: error2 } = await supabase
 			.from('product_group_product_amounts')
-			.insert(newProductGroup.productAmounts.map(e => e.toJSON(newProductGroup.id)))
+			.insert(newProductGroup.containedProducts.map(e => e.toJSON(newProductGroup.id)))
 			.select('id')
 		if (error2)
 			throw createPostgrestErrorFromObject(error2)
@@ -88,9 +90,11 @@ function createProductStore() {
 		if (foundProduct) return foundProduct
 
 		// -- Get product from database --
-		const { data, error } = await supabase
-			.from('products')
-			.select()
+		const { data, error } = await supabase.from('products')
+			.select(`*,
+        		contained_products:product_group_product_amounts!product_group_product_amounts_product_group_id_fkey(product_id, amount),
+        		member_of:product_group_product_amounts!product_group_items_product_id_fkey(product_id, amount)
+    		`)
 			.eq('id', id)
 			.single()
 		if (error) {
@@ -150,12 +154,14 @@ function createProductStore() {
 	}
 
 	async function updateProductGroup(productGroup: ProductGroup, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, newMaxOrderAmount: null | number, newProductAmounts: ProductAmount[], progressStore: Writable<UploadProgress[]>) {
-		if (!arraysContainSameElements(productGroup.productAmounts || [], newProductAmounts)) {
+		if (!arraysContainSameElements(productGroup.containedProducts || [], newProductAmounts)) {
 			// It's easier to just delete all and re-insert
-			const { error: error1, count: count1 } = await supabase.from('product_group_product_amounts')
-				.delete({ count: 'exact' })
-				.eq('product_group_id', productGroup.id)
-			handleSupabaseDeleteError(error1, count1, "product group amounts", false)
+			if (productGroup.containedProducts.length > 0) {
+				const { error: error1, count: count1 } = await supabase.from('product_group_product_amounts')
+					.delete({ count: 'exact' })
+					.eq('product_group_id', productGroup.id)
+				handleSupabaseDeleteError(error1, count1, "product group amounts", false)
+			}
 			const { data: data2, error: error2 } = await supabase
 				.from('product_group_product_amounts')
 				.insert(newProductAmounts.map(e => e.toJSON(productGroup.id)))
@@ -163,10 +169,10 @@ function createProductStore() {
 			if (error2)
 				throw createPostgrestErrorFromObject(error2)
 		}
-		
+
 		updateProduct(productGroup, newName, newVisible, newPrice, newCombinedImages, newCategories, newType, newDescription, newMaxOrderAmount, progressStore)
-		
-		productGroup.productAmounts = newProductAmounts
+
+		productGroup.containedProducts = newProductAmounts
 		update((products) => [...products])
 	}
 
@@ -175,7 +181,7 @@ function createProductStore() {
 		await deleteImages("PublicImages", "product-images/", product.imageIds)
 		await deleteImages("PublicImages", "product-images/thumbnails/", product.imageIds)
 
-		if(product instanceof ProductGroup) {
+		if (product instanceof ProductGroup) {
 			// -- Remove product amounts --
 			const { error: error1, count: count1 } = await supabase.from('product_group_product_amounts')
 				.delete({ count: 'exact' })
