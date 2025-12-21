@@ -74,7 +74,7 @@
 	$: dragableImages = combinedImages.map((e) => {
 		if (e instanceof File) return { id: e, data: e }
 		if (e.includes("http")) return { id: e, data: e }
-		return { id: e, data: previewConverter ? previewConverter(e) : e }
+		return { id: e, data: previewConverter ? previewConverter(e) : e, originalData: e }
 	})
 
 	function handleConsider(event: CustomEvent<DndEvent<any>>) {
@@ -84,7 +84,7 @@
 	async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
 		dragableImages = event.detail.items
 		dragDisabled = true
-		combinedImages = dragableImages.map((e) => e.data)
+		combinedImages = dragableImages.map((e) => e.originalData || e.data)
 	}
 	$: fileSize = combinedImages
 		?.map((e) => {

@@ -23,7 +23,7 @@
 
 	let loading = true
 	let errorMessage = ""
-
+	
 	let name: string = ""
 	let visible: boolean = true
 	let price: number = 0
