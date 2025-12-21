@@ -33,13 +33,13 @@
 
 <div class={`join flex ${classList}`}>
 	<button
-		class={`btn btn-square join-item btn-${size} btn-${deleteOnZero && amount == 0 ? "primary" : "neutral"}`}
+		class={`btn btn-square join-item btn-${size} btn-${deleteOnZero && amount == 0 ? "error" : "neutral"}`}
 		disabled={deleteOnZero ? amount === -1 : amount <= min}
 		type="button"
 		on:click={decrease}
 		title={deleteOnZero && amount === 0 ? "Verwijderen" : "Verlagen"}
 	>
-		<Fa icon={deleteOnZero && amount === 0 ? faTrashCan : faMinus} size="lg" />
+		<Fa icon={deleteOnZero && amount === 0 ? faTrashCan : faMinus} />
 	</button>
 	<label
 		class={`input join-item flex-1 bg-base-300! border-base-300! input-${size}`}

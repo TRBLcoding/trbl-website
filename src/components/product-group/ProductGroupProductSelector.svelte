@@ -5,7 +5,11 @@
 	import type { Product } from "$lib/domain/Product"
 	import { ProductAmount } from "$lib/domain/ProductAmount"
 	import { productStore } from "$lib/stores/ProductStore"
-	import { faPlus, faSearch, faTrash } from "@fortawesome/free-solid-svg-icons"
+	import {
+		faPlus,
+		faSearch,
+		faTrashCan
+	} from "@fortawesome/free-solid-svg-icons"
 
 	import Fa from "svelte-fa"
 
@@ -85,13 +89,21 @@
 					on:click={() => removeProduct(product)}
 					title="Verwijderen"
 				>
-					<Fa icon={faTrash} />
+					<Fa icon={faTrashCan} />
 				</button>
 			</div>
 		{/await}
 	{:else}
 		<div class="flex gap-2 items-center p-2 py-3 bg-base-200 rounded-lg">
 			Geen producten toegevoegd
+			<select
+				required
+				class="w-1 h-1 opacity-0"
+				tabindex="-1"
+				aria-hidden="true"
+			>
+				<option value="">Selecteer producten</option>
+			</select>
 		</div>
 	{/each}
 </div>
