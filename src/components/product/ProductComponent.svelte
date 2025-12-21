@@ -107,7 +107,13 @@
 
 		<div class="order-2 md:order-0">
 			<div class="rounded-lg p-6 bg-base-200">
-				<h2 class="text-xl font-semibold mb-3">Omschrijving</h2>
+				<div class="flex gap-2 mb-3 items-center">
+					<h2 class="text-xl font-semibold ">Omschrijving</h2>
+					{#if product instanceof ProductGroup}
+							<div class="badge badge-soft badge-sm">Bundel</div>
+					{/if}
+				</div>
+
 				<UserContentRenderer content={product.description} showLinks />
 			</div>
 			{#if product instanceof ProductGroup && product.containedProducts.length > 0}
