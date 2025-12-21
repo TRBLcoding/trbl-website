@@ -19,7 +19,6 @@
 	export { classList as class }
 
 	function decrease() {
-		console.log(amount, min)
 		if (deleteOnZero ? amount <= -1 : amount <= min) return
 		amount = amount - 1
 		onChange()

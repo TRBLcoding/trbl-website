@@ -15,7 +15,6 @@
 		else cartStore.set(productOrder.product, newAmount)
 	}
 	function removeItem(productOrder: ProductOrder) {
-		console.log("removed")
 		cartStore.remove(productOrder.product)
 	}
 

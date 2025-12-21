@@ -27,7 +27,6 @@ function createProductStore() {
 				throw createPostgrestErrorFromObject(error)
 			throw error
 		} else {
-			console.log(data)
 			const products = await Promise.all((data || []).map(ProductFactory.fromJSON))
 			update(() => products)
 		}
@@ -99,7 +98,7 @@ function createProductStore() {
 			.single()
 		if (error) {
 			console.error(error)
-			throw new Error(`Error fetching product by ID: ${error?.message}`)
+			throw new Error(`Error fetching product by ID with ID ${id}: ${error?.message}`)
 		}
 		if (!data) throw new Error(`No product found`)
 		const product = await Product.fromJSON(data)

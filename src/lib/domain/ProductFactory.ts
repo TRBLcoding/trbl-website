@@ -9,7 +9,6 @@ import { ProductGroup, type ProductGroupJSON } from './ProductGroup'
 export class ProductFactory {
     static async fromJSON(json: ProductGroupJSON) {
         if (json.contained_products && json.contained_products.length > 0) {
-            console.log("a")
             return await ProductGroup.fromJSON(json)
         }
         return await Product.fromJSON(json)
