@@ -13,6 +13,7 @@
 	let loading = true
 	let errorMessage = ""
 	let product: Product | undefined | null
+	let deletingProduct = false
 
 	async function initStore() {
 		loading = true
@@ -31,10 +32,8 @@
 	}
 	initStore()
 
+	$: $productStore && !deletingProduct && loadProduct(data)
 
-	let isMounted = true
-	$: $productStore && isMounted && loadProduct(data) 
-	
 	async function loadProduct(data: PageData) {
 		errorMessage = ""
 		try {
@@ -44,9 +43,6 @@
 			errorMessage = "error occurred"
 		}
 	}
-	onDestroy(() => {
-        isMounted = false
-    })
 
 	// -- Page title --
 	$: product && pageHeadStore.updatePageTitle(product.name)
@@ -62,7 +58,7 @@
 		<span>Product laden</span>
 		<span class="loading loading-ring"></span>
 	{:else if product}
-		<ProductComponent {product} />
+		<ProductComponent {product} bind:deletingProduct />
 	{:else}
 		<div class="text-error flex gap-2 items-center text-lg">
 			<Fa icon={faExclamationTriangle} />

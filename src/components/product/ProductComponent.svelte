@@ -17,6 +17,7 @@
 
 	export let product: Product
 	export let isPreview = false
+	export let deletingProduct = false
 
 	let loading = false
 	let errorMessage = ""
@@ -24,10 +25,12 @@
 	async function removeProduct() {
 		loading = true
 		try {
+			deletingProduct = true
 			await productStore.deleteProduct(product)
 			pushCreatedToast("Product verwijderd")
 			goto(resolve("/products"))
 		} catch (error) {
+			deletingProduct = false
 			console.error(error)
 			if (error instanceof Error) {
 				errorMessage = error.toString()
