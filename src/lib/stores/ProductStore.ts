@@ -8,7 +8,7 @@ import { arrayDifference, arraysContainSameElements } from '../utils/Array'
 import { convertAndUploadImages, deleteImages, type UploadProgress } from '../utils/UploadProgress'
 import { ProductFactory } from '$lib/domain/ProductFactory'
 import { ProductGroup } from '$lib/domain/ProductGroup'
-import type { ProductAmount } from '$lib/domain/ProductAmount'
+import { ProductAmount } from '$lib/domain/ProductAmount'
 
 function createProductStore() {
 	const store = writable<Product[]>(undefined)
@@ -75,9 +75,15 @@ function createProductStore() {
 		if (error2)
 			throw createPostgrestErrorFromObject(error2)
 
-		// -- Update store --
+		// -- Update store(updated memberOf fields, and add new productGroup) --
 		update((products) => {
-			return [...(products || []), newProductGroup].sort((a, b) => a.name.localeCompare(b.name))
+			const productsWithNewMemberOf = products.map((e) => {
+				const foundProductGroup = newProductGroup.containedProducts.find(productAmount => productAmount.productId === e.id)
+				if (foundProductGroup)
+					e.memberOf = [...e.memberOf || [], new ProductAmount(newProductGroup.id, foundProductGroup.amount)]
+				return e
+			})
+			return [...(productsWithNewMemberOf || []), newProductGroup].sort((a, b) => a.name.localeCompare(b.name))
 		})
 	}
 
