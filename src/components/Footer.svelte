@@ -5,7 +5,7 @@
 	let year = new Date().getFullYear()
 </script>
 
-<footer class="footer relative z-20 bg-black flex py-4">
+<footer class="footer relative z-1 bg-black flex py-4">
 	<div class="w-full flex justify-around">
 		<div class="text-white text-xs">
 			<span class="whitespace-nowrap">Copyright © {year} TRBL</span> |

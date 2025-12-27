@@ -130,7 +130,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="flex-col w-full -mt-11">
+		<div class="flex-col w-full mt-2 lg:-mt-11">
 			<!-- Tabs -->
 			<div role="tablist" class="tabs tabs-border">
 				<button
