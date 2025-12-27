@@ -21,7 +21,7 @@
 	$: clampAmount(amount)
 	function clampAmount(newAmount: number) {
 		if (newAmount < 0) amount = 0
-		if (productOrder.product.getMaxOrderAmount()>= newAmount)
+		if (productOrder.product.getMaxOrderAmount() < newAmount)
 			amount = productOrder.product.maxOrderAmount!
 	}
 </script>

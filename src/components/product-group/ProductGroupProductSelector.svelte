@@ -72,7 +72,7 @@
 					</div>
 				</div>
 				<div class="flex items-center gap-2 mr-1">
-					<span class="text-sm font-semibold">Aantalll:</span>
+					<span class="text-sm font-semibold">Aantal:</span>
 
 					<AmountInput
 						bind:amount={productAmount.amount}

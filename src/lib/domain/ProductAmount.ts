@@ -15,9 +15,9 @@ export class ProductAmount {
 		public amount: number
 	) { }
 
-	toJSON(productGroupdId: number) {
+	toJSON(productGroupId: number) {
 		return {
-			product_group_id: productGroupdId,
+			product_group_id: productGroupId,
 			product_id: this.productId,
 			amount: this.amount,
 		} as Database['public']['Tables']['product_group_product_amounts']['Insert']
