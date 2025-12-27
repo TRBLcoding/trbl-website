@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from "$app/environment"
 	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import { page } from "$app/stores"
 	import Input from "$components/formHelpers/Input.svelte"
 	import ProductCard from "$components/product/ProductCard.svelte"
@@ -130,10 +131,18 @@
 </script>
 
 <div class="mx-4 lg:mx-12 my-5">
-	<div class="flex gap-3 mb-2">
+	<div class="flex gap-3 mb-2 items-center">
 		<h1 class="text-4xl font-semibold">Producten</h1>
 		{#if $authStore && $authStore.isAdmin()}
-			<a href="/products/new" class="btn btn-primary"> Nieuw product </a>
+			<a href={resolve("/products/new")} class="btn btn-primary btn-sm">
+				Nieuw product
+			</a>
+			<a
+				href={resolve("/product-groups/new")}
+				class="btn btn-primary btn-sm"
+			>
+				Nieuwe product groep
+			</a>
 		{/if}
 	</div>
 
@@ -240,12 +249,11 @@
 			{errorMessage}
 		</div>
 	{:else if loading}
-	<div class="mt-2 flex gap-2 flex-wrap justify-center">
+		<div class="mt-2 flex gap-2 flex-wrap justify-center">
 			{#each Array(8) as _}
 				<ProductCardSkeleton />
 			{/each}
 		</div>
-		
 	{:else}
 		<div class="mt-2 flex gap-2 flex-wrap justify-center">
 			{#each searchedProducts as product}

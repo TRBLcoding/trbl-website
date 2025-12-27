@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import ProductForm from "$components/product/ProductForm.svelte"
 	import { Product, type Category, type Type } from "$lib/domain/Product"
+	import type { ProductAmount } from "$lib/domain/ProductAmount"
 	import type { User } from "$lib/domain/User"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -36,6 +38,10 @@
 		showPreview = !showPreview
 	}
 	async function createPreviewProduct() {
+		const memberOf = Array<ProductAmount>(0)
+		const images = await Promise.all(
+				uploadedImages.map((e) => PreviewableFile.getFilePreview(e, false))
+		)
 		return new Product(
 			-1, // temporary id
 			name,
@@ -44,17 +50,17 @@
 			categories,
 			type,
 			visible,
-			await Promise.all(
-				uploadedImages.map((e) => PreviewableFile.getFilePreview(e))
-			),
-			maxOrderAmount
+			images,
+			maxOrderAmount,
+			memberOf
 		)
 	}
 
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Nieuw product")
 	// -- Authguard --
-	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin())) goto("/")
+	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin()))
+		goto(resolve("/"))
 </script>
 
 <div class="mx-2 lg:mx-6 mt-3 mb-8">

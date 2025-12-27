@@ -1,5 +1,5 @@
-import { toast } from "@zerodevx/svelte-toast"
 import CreatedToast from "$components/CreatedToast.svelte"
+import { toast } from "@zerodevx/svelte-toast"
 
 export function pushCreatedToast(createdText: string, config?: { gotoUrl?: string, removeLast?: boolean }) {
     if (config?.removeLast) {

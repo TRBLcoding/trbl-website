@@ -1,7 +1,11 @@
 <script lang="ts">
+	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import ProductForm from "$components/product/ProductForm.svelte"
 	import { Product } from "$lib/domain/Product"
+	import type { User } from "$lib/domain/User"
+	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { productStore } from "$lib/stores/ProductStore"
 	import { PreviewableFile } from "$lib/utils/PreviewableFile"
@@ -11,9 +15,7 @@
 	import Fa from "svelte-fa"
 	import { writable } from "svelte/store"
 	import type { PageData } from "./$types"
-	import { authStore } from "$lib/stores/AuthStore"
-	import { goto } from "$app/navigation"
-	import type { User } from "$lib/domain/User"
+	import type { ProductAmount } from "$lib/domain/ProductAmount"
 
 	export let data: PageData
 
@@ -21,7 +23,7 @@
 
 	let loading = true
 	let errorMessage = ""
-
+	
 	let name: string = ""
 	let visible: boolean = true
 	let price: number = 0
@@ -75,8 +77,9 @@
 		showPreview = !showPreview
 	}
 	async function createPreview() {
+		const memberOf = Array<ProductAmount>(0)
 		const images = await Promise.all(
-			combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e))
+			combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e, false))
 		)
 		return new Product(
 			-1, // temporary id
@@ -87,7 +90,8 @@
 			type,
 			visible,
 			images,
-			maxOrderAmount
+			maxOrderAmount,
+			memberOf
 		)
 	}
 
@@ -117,12 +121,14 @@
 		type = product.type
 		description = product.description
 		maxOrderAmount = product.maxOrderAmount
+		haveValuesBeenSet = true
 	}
 
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Product wijzigen")
 	// -- Authguard --
-	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin())) goto("/")
+	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin()))
+		goto(resolve("/"))
 </script>
 
 <div class="mx-6 mt-3 mb-8">

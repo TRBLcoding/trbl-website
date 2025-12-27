@@ -46,10 +46,7 @@
 				{/if}
 			</span>
 		</label>
-		<div
-			class="tooltip tooltip-left z-20"
-			data-tip={"Quill.js WYSIWYG editor"}
-		>
+		<div class="tooltip tooltip-left z-20" data-tip="Quill.js WYSIWYG editor">
 			<button type="button" class="btn btn-ghost btn-xs btn-circle">
 				<InfoCircle />
 			</button>
@@ -176,6 +173,7 @@
 			bind:this={editorContainer}
 			class="flex-1 rounded-b-lg border-t-0! border-2! border-[#d1d1d1]! dark:border-[#464e57]!"
 		>
+			<!--  eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html value}
 		</div>
 	</div>

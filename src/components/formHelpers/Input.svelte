@@ -13,6 +13,8 @@
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "lg" | "md" | "sm" | "xs" = "sm"
+	let classList = ""
+	export { classList as class }
 
 	export let type: "text" | "number" | "email" | "date" | "password"
 	export let placeholder = ""
@@ -75,7 +77,7 @@
 </script>
 
 <div
-	class="w-full"
+	class={`w-full ${classList}`}
 	class:max-w-lg={size === "lg"}
 	class:max-w-md={size === "md"}
 	class:max-w-sm={size === "sm"}

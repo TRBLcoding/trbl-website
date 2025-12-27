@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { browser } from "$app/environment"
+	import { resolve } from "$app/paths"
 	import ContactForm from "$components/ContactForm.svelte"
+	import OpenStreetMapMap from "$components/maps/OpenStreetMapMap.svelte"
 	import type { ContactRequest } from "$lib/domain/ContactMessage"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import Carousel from "../components/carousel/Carousel.svelte"
-	import OpenStreetMapMap from "$components/maps/OpenStreetMapMap.svelte"
 
 	const images = !browser
 		? []
@@ -161,7 +162,9 @@
 				>
 			</div>
 		</div>
-		<a href="/products" class="btn btn-primary w-fit">Meer producten tonen</a>
+		<a href={resolve("/products")} class="btn btn-primary w-fit"
+			>Meer producten tonen</a
+		>
 	</div>
 
 	<div class="w-full bg-gray-600 flex justify-center align-middle">

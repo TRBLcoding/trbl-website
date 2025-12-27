@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import type { Product } from "$lib/domain/Product"
 	import { ProductOrder } from "$lib/domain/ProductOrder"
 	import { cartAddTrigger, cartStore } from "$lib/stores/CartStore"
@@ -52,7 +53,7 @@
 	>
 		<li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Winkelmandje</li>
 
-		{#each $cartStore as productOrderPromise}
+		{#each $cartStore as productOrderPromise (productOrderPromise)}
 			{#await productOrderPromise then productOrder}
 				<li class="flex flex-row items-center gap-1 p-3">
 					{#if productOrder.product}
@@ -83,7 +84,9 @@
 						>
 							<a
 								class="font-semibold hover:link"
-								href="/products/{productOrder.product.id}"
+								href={resolve("/products/[slug]", {
+									slug: productOrder.product.id.toString(),
+								})}
 							>
 								{productOrder.product.name}
 							</a>
@@ -128,7 +131,7 @@
 					<span>Uw winkelwagen is leeg</span>
 					<span>
 						Ontdek al onze producten op de
-						<a href="/products" class="link">verhuur</a>
+						<a href={resolve("/products")} class="link">verhuur</a>
 						pagina
 					</span>
 				</div>
@@ -157,8 +160,9 @@
 			</div>
 
 			<li class="mx-4 mt-1 mb-2 flex flex-row justify-between">
-				<a class="btn btn-soft" href="/cart">Winkelmandje bekijken</a>
-				<a class="btn btn-primary" href="/checkout">Afrekenen</a>
+				<a class="btn btn-soft" href={resolve("/cart")}>Winkelmandje bekijken</a
+				>
+				<a class="btn btn-primary" href={resolve("/checkout")}>Afrekenen</a>
 			</li>
 		{/if}
 	</ul>

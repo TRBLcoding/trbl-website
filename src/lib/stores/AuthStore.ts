@@ -1,9 +1,9 @@
 import { browser } from '$app/environment'
 import { User } from '$lib/domain/User'
-import { supabase } from '$lib/supabase/supabaseClient'
-import { get, writable } from 'svelte/store'
 import type { Database } from '$lib/supabase/database.types'
-import { createPostgrestErrorFromObject, handleSupabaseDeleteError, handleSupabaseUpdateError } from '$lib/utils/SupabaseUtils'
+import { supabase } from '$lib/supabase/supabaseClient'
+import { handleSupabaseDeleteError, handleSupabaseUpdateError } from '$lib/utils/SupabaseUtils'
+import { get, writable } from 'svelte/store'
 
 function createAuthStore() {
 	// Value can be: undefined (not known yet), null (not logged in) or User (logged in)

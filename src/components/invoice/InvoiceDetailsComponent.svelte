@@ -182,46 +182,48 @@
 			{#await invoiceDetailsStore.initPromise}
 				Loading
 			{:then}
-				{#each $invoiceDetailsStore as invoiceDetails, i}
-					<div class="relative">
-						<button
-							class="w-full flex flex-col items-start bg-base-100 p-2 rounded-lg border-2 border-[#d1d1d1] dark:border-[#474e56] cursor-pointer hover:bg-base-300"
-							class:bg-base-300={selectedInvoiceDetails?.id ===
-								invoiceDetails.id}
-							type="button"
-							on:click={() => (selectedInvoiceDetails = invoiceDetails)}
-						>
-							<div class="text-sm italic">
-								{#if selectedInvoiceDetails?.id === invoiceDetails.id}
-									<span class="text-success">Geselecteerd</span>
-								{:else}
-									Alternatief
-								{/if}
+				{#each $invoiceDetailsStore as invoiceDetails (invoiceDetails.id)}
+					{#if invoiceDetails}
+						<div class="relative">
+							<button
+								class="w-full flex flex-col items-start bg-base-100 p-2 rounded-lg border-2 border-[#d1d1d1] dark:border-[#474e56] cursor-pointer hover:bg-base-300"
+								class:bg-base-300={selectedInvoiceDetails?.id ===
+									invoiceDetails.id}
+								type="button"
+								on:click={() => (selectedInvoiceDetails = invoiceDetails)}
+							>
+								<div class="text-sm italic">
+									{#if selectedInvoiceDetails?.id === invoiceDetails.id}
+										<span class="text-success">Geselecteerd</span>
+									{:else}
+										Alternatief
+									{/if}
+								</div>
+								<div class="font-semibold">
+									{invoiceDetails.firstName}
+									{invoiceDetails.lastName} • {invoiceDetails.companyName}
+								</div>
+								<div class="text-sm">
+									{invoiceDetails.streetAndNumber} • {invoiceDetails.postalCode}
+									{invoiceDetails.place} • {mapCountryCodeToName(
+										invoiceDetails.country
+									)}
+								</div>
+							</button>
+							<div class="absolute right-2 top-2">
+								<EditDropdown
+									size="xs"
+									editHandler={() => startEdit(invoiceDetails)}
+									deleteHandler={() => deleteInvoiceDetails(invoiceDetails)}
+								></EditDropdown>
 							</div>
-							<div class="font-semibold">
-								{invoiceDetails.firstName}
-								{invoiceDetails.lastName} • {invoiceDetails.companyName}
-							</div>
-							<div class="text-sm">
-								{invoiceDetails.streetAndNumber} • {invoiceDetails.postalCode}
-								{invoiceDetails.place} • {mapCountryCodeToName(
-									invoiceDetails.country
-								)}
-							</div>
-						</button>
-						<div class="absolute right-2 top-2">
-							<EditDropdown
-								size="xs"
-								editHandler={() => startEdit(invoiceDetails)}
-								deleteHandler={() => deleteInvoiceDetails(invoiceDetails)}
-							></EditDropdown>
 						</div>
-					</div>
-				{:else}
-					<div class="flex flex-col gap-4 my-2 items-center">
-						<Fa icon={faBorderNone} size="2x" />
-						<span>Geen opgeslagen factuurgegevens</span>
-					</div>
+					{:else}
+						<div class="flex flex-col gap-4 my-2 items-center">
+							<Fa icon={faBorderNone} size="2x" />
+							<span>Geen opgeslagen factuurgegevens</span>
+						</div>
+					{/if}
 				{/each}
 			{:catch error}
 				<div class="text-error">{error}</div>

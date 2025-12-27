@@ -6,13 +6,14 @@
 	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import type { PageData } from "./$types"
+	import { onDestroy } from "svelte"
 
 	export let data: PageData
 
 	let loading = true
 	let errorMessage = ""
 	let product: Product | undefined | null
-	$: $productStore && loadProduct(data)
+	let deletingProduct = false
 
 	async function initStore() {
 		loading = true
@@ -30,6 +31,8 @@
 		}
 	}
 	initStore()
+
+	$: $productStore && !deletingProduct && loadProduct(data)
 
 	async function loadProduct(data: PageData) {
 		errorMessage = ""
@@ -55,7 +58,7 @@
 		<span>Product laden</span>
 		<span class="loading loading-ring"></span>
 	{:else if product}
-		<ProductComponent {product} />
+		<ProductComponent {product} bind:deletingProduct />
 	{:else}
 		<div class="text-error flex gap-2 items-center text-lg">
 			<Fa icon={faExclamationTriangle} />

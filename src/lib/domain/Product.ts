@@ -1,11 +1,25 @@
 import type { Database } from "$lib/supabase/database.types"
 import { createSupabaseStorageUrl } from "$lib/supabase/supabaseClient"
+import { ProductAmount, type ProductAmountJSON } from "./ProductAmount"
 
 export const CategoryValues = ["Sound", "Light", "Truss", "Media"]
 export type Category = typeof CategoryValues[number]
 
 export const TypeValues = ["Mixer", "Microphone", "Speaker", "SoundSet", "LightEffect", "LightSet", "Truss", "Network", "UPS", "Scherm", "Controls"]
 export type Type = typeof TypeValues[number]
+
+export type ProductJSON = {
+	id: number
+	name: string
+	price: number
+	description: string
+	categories: Category[]
+	type: Type
+	visible: boolean
+	imageIds: string[]
+	maxOrderAmount: number | null
+	member_of: ProductAmountJSON[]
+}
 
 export class Product {
 	public searchableString = ""
@@ -20,6 +34,7 @@ export class Product {
 		public visible: boolean,
 		public imageIds: string[],
 		public maxOrderAmount: number | null,
+		public memberOf: ProductAmount[]
 	) {
 		this.updateSearchableString()
 	}
@@ -41,8 +56,10 @@ export class Product {
 			.includes(false)
 	}
 
-	isMaxOrderAmountReached(amount: number) {
-		return this.maxOrderAmount !== null && amount >= this.maxOrderAmount
+	/** Returns max amount or Infinity when maxOrderAmount is null  */
+	getMaxOrderAmount() {
+		if (this.maxOrderAmount === null) return Infinity
+		return this.maxOrderAmount
 	}
 
 	toJSON() {
@@ -57,7 +74,10 @@ export class Product {
 			maxOrderAmount: this.maxOrderAmount,
 		} as Database['public']['Tables']['products']['Insert']
 	}
-	static fromJSON(json: any): Product {
+	/**
+	 * Must be async to match signature of ProductGroup.fromJSON
+	 */
+	static async fromJSON(json: ProductJSON) {
 		return new Product(
 			json.id,
 			json.name,
@@ -68,6 +88,7 @@ export class Product {
 			json.visible,
 			json.imageIds || [],
 			json.maxOrderAmount || null,
+			json.member_of.map(ProductAmount.fromJSON)
 		)
 	}
 
@@ -79,10 +100,10 @@ export class Product {
 	}
 
 	getImageUrls() {
-		return this.imageIds.map(Product.imageToUrl)
+		return this.imageIds.map(e => e.startsWith("data:") ? e : Product.imageToUrl(e))
 	}
 	getThumbnailUrls() {
-		return this.imageIds.map(Product.imageToThumbnailUrl)
+		return this.imageIds.map(e => e.startsWith("data:") ? e : Product.imageToThumbnailUrl(e))
 	}
 
 	createCarouselImages() {
@@ -90,8 +111,8 @@ export class Product {
 		return this.imageIds.map(async (e) => {
 			return {
 				name: "name",
-				imageUrl: Product.imageToUrl(e),
-				thumbnailUrl: Product.imageToThumbnailUrl(e)
+				imageUrl: e.startsWith("data:") ? e : Product.imageToUrl(e),
+				thumbnailUrl: e.startsWith("data:") ? e : Product.imageToThumbnailUrl(e)
 			}
 		})
 	}

@@ -1,10 +1,9 @@
 import { browser } from '$app/environment'
 import { InvoiceDetails } from '$lib/domain/InvoiceDetails'
+import type { Database } from '$lib/supabase/database.types'
 import { supabase } from "$lib/supabase/supabaseClient"
 import { createPostgrestErrorFromObject, handleSupabaseDeleteError, handleSupabaseUpdateError } from '$lib/utils/SupabaseUtils'
-import { get, writable, type Writable } from 'svelte/store'
-import { type UploadProgress } from '../utils/UploadProgress'
-import type { Database } from '$lib/supabase/database.types'
+import { get, writable } from 'svelte/store'
 
 function createInvoiceDetailsStore() {
 	const store = writable<InvoiceDetails[]>(undefined)
@@ -19,7 +18,7 @@ function createInvoiceDetailsStore() {
 				throw createPostgrestErrorFromObject(error)
 			throw error
 		} else {
-			let products = (data || []).map(InvoiceDetails.fromJSON)
+			const products = (data || []).map(InvoiceDetails.fromJSON)
 			update(() => products)
 		}
 	}

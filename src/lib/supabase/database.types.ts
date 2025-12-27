@@ -67,6 +67,42 @@ export type Database = {
           },
         ]
       }
+      product_group_product_amounts: {
+        Row: {
+          amount: number
+          id: number
+          product_group_id: number
+          product_id: number
+        }
+        Insert: {
+          amount: number
+          id?: number
+          product_group_id: number
+          product_id: number
+        }
+        Update: {
+          amount?: number
+          id?: number
+          product_group_id?: number
+          product_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_group_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_group_product_amounts_product_group_id_fkey"
+            columns: ["product_group_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           categories: Database["public"]["Enums"]["Category"][]

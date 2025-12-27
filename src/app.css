@@ -6,18 +6,17 @@
 }
 
 @plugin "daisyui/theme" {
-  name: "light";
-  default: true;
-  --color-primary: "#FE5252";
+	name: "light";
+	default: true;
+	--color-primary: "#FE5252";
 }
 
 @plugin "daisyui/theme" {
-  name: "dark";
-  prefersdark: true;
-  --color-primary: "#FE5252";
+	name: "dark";
+	prefersdark: true;
+	--color-primary: "#FE5252";
 }
 
 .btn-primary {
-  color: white !important;
+	color: white !important;
 }
-

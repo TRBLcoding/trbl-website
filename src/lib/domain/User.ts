@@ -15,7 +15,7 @@ export class User {
 	toString() {
 		return `User(${this.auth_id}, ${this.email}, ${this.role})`
 	}
-	
+
 	// Creates a shallow copy of the user, useful for updating the store
 	clone() {
 		return new User(this.id, this.auth_id, this.email, this.role, this.firstName, this.lastName)

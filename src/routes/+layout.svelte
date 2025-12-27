@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import Footer from "$components/Footer.svelte"
 	import LoginModal from "$components/LoginModal.svelte"
 	import ProfileDropdown from "$components/ProfileDropdown.svelte"
@@ -31,8 +32,8 @@
 		toasts = true
 	})
 
-	// Make sure user is always loaded, by subscribing to authStore
-	$authStore
+	// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+	$authStore // Make sure user is always loaded, by subscribing to authStore
 </script>
 
 <svelte:head>
@@ -69,7 +70,7 @@
 
 		<div class="border-b border-base-300">
 			<div class="flex justify-between items-center mx-auto max-w-3/4">
-				<a href="/"
+				<a href={resolve("/")}
 					><img src="/TRBL_Logo.avif" alt="TRBL logo" class="w-40" /></a
 				>
 				<!-- Small screen -->
@@ -91,8 +92,8 @@
 							tabindex="0"
 							class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
 						>
-							<li><a href="/todo">Op Maat</a></li>
-							<li><a href="/todo">Verhuur</a></li>
+							<li><a href={resolve("/todo")}>Op Maat</a></li>
+							<li><a href={resolve("/todo")}>Verhuur</a></li>
 						</ul>
 					</div>
 					<div class="dropdown dropdown-hover">
@@ -102,12 +103,13 @@
 							tabindex="0"
 							class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
 						>
-							<li><a href="/todo">TRBL producten</a></li>
-							<li><a href="/todo">Hersteldienst</a></li>
+							<li><a href={resolve("/todo")}>TRBL producten</a></li>
+							<li><a href={resolve("/todo")}>Hersteldienst</a></li>
 						</ul>
 					</div>
 					<a class="btn shadow-none" href="/#contact">Contact</a>
-					<a class="btn btn-primary px-6" href="/products">Verhuur</a>
+					<a class="btn btn-primary px-6" href={resolve("/products")}>Verhuur</a
+					>
 					<Cart></Cart>
 					{#if !$authStore}
 						<label
@@ -125,7 +127,7 @@
 		</div>
 
 		<div class="flex flex-col lg:hidden" class:hidden={showMenu}>
-			<a href="/">
+			<a href={resolve("/")}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Home</div>
 				</div>
@@ -150,22 +152,22 @@
 					registration process.
 				</div>
 			</div>
-			<a href="/todo">
+			<a href={resolve("/products")}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Verhuur</div>
 				</div>
 			</a>
-			<a href="/profile">
+			<a href={resolve("/profile")}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Mijn account</div>
 				</div>
 			</a>
-			<a href="/todo">
+			<a href={resolve("/todo")}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Overzicht Offerte-Aanvraag</div>
 				</div>
 			</a>
-			<a href="/todo">
+			<a href="/#contact">
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Contact</div>
 				</div>

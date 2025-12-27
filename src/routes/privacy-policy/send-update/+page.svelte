@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import Textarea from "$components/formHelpers/Textarea.svelte"
 	import type { User } from "$lib/domain/User"
 	import { authStore } from "$lib/stores/AuthStore"
@@ -56,7 +57,7 @@
 	pageHeadStore.updatePageTitle("Update privacybeleid verzenden")
 	// -- Authguard --
 	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin()))
-		goto("/")
+		goto(resolve("/"))
 </script>
 
 <div class="max-w-6xl mx-auto p-6">

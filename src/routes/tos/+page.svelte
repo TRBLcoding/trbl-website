@@ -7,9 +7,7 @@
 
 <div class="max-w-3/4 mx-auto mt-15">
 	<div class="mx-10">
-		<div class="text-2xl font-semibold mb-5">
-			TRBL Algemene Voorwaarden
-		</div>
+		<div class="text-2xl font-semibold mb-5">TRBL Algemene Voorwaarden</div>
 		<ol class="mx-3 list-decimal opacity-80 ml-5">
 			<li>
 				De Algemene Voorwaarden worden door het invullen van de bestelbon of het

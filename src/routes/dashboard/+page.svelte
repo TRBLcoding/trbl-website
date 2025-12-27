@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import type { User } from "$lib/domain/User"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -10,7 +11,7 @@
 	pageHeadStore.updatePageTitle("Dashboard")
 	// -- Authguard --
 	$: if ($authStore === null || ($authStore && !($authStore as User).isAdmin()))
-		goto("/")
+		goto(resolve("/"))
 </script>
 
 <div class="mx-6 mt-3">
@@ -22,10 +23,16 @@
 	</div>
 
 	<div class="flex gap-2 flex-wrap">
-		<a href="/products/new" class="btn btn-primary normal-case">
+		<a href={resolve("/products/new")} class="btn btn-primary normal-case">
 			Nieuw product
 		</a>
-		<a href="/privacy-policy/send-update" class="btn btn-primary normal-case">
+		<a href={resolve("/product-groups/new")} class="btn btn-primary normal-case">
+			Nieuwe product groep
+		</a>
+		<a
+			href={resolve("/privacy-policy/send-update")}
+			class="btn btn-primary normal-case"
+		>
 			Update privacybeleid
 		</a>
 	</div>

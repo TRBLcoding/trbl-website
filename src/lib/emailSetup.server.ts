@@ -1,7 +1,7 @@
-import nodemailer from "nodemailer";
-import { GOOGLE_INTERMEDIARY_EMAIL, GOOGLE_APP_PASSWORD } from "$env/static/private";
+import { GOOGLE_APP_PASSWORD, GOOGLE_INTERMEDIARY_EMAIL } from "$env/static/private"
+import nodemailer from "nodemailer"
 
-let transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   secure: false,
@@ -9,14 +9,14 @@ let transporter = nodemailer.createTransport({
     user: GOOGLE_INTERMEDIARY_EMAIL,
     pass: GOOGLE_APP_PASSWORD,
   },
-});
+})
 
 transporter.verify(function (error, success) {
   if (error) {
-    console.error(error);
+    console.error(error)
   } else {
-    console.log("Server is ready to take our messages");
+    console.log("Server is ready to take our messages")
   }
-});
+})
 
-export default transporter;
+export default transporter

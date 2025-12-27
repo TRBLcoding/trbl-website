@@ -1,4 +1,4 @@
-import { GOOGLE_ADMIN_EMAIL, GOOGLE_INTERMEDIARY_EMAIL } from "$env/static/private"
+import { GOOGLE_INTERMEDIARY_EMAIL } from "$env/static/private"
 import { getPrivacyPolicyUpdateTemplace } from "$lib/templates/privacyPolicyUpdateTemplate"
 import { BadRequestError } from "$lib/utils/Errors"
 import type { Options } from "nodemailer/lib/mailer"

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
+	import { resolve } from "$app/paths"
 	import { page } from "$app/stores"
 	import DeleteAccountTab from "$components/profile/DeleteAccountTab.svelte"
 	import InvoiceDetailsTab from "$components/profile/InvoiceDetailsTab.svelte"
@@ -18,7 +19,7 @@
 	// -- Page title --
 	pageHeadStore.updatePageTitle("Profiel")
 	// -- Authguard --
-	$: if ($authStore === null && !deletedProfile) goto("/")
+	$: if ($authStore === null && !deletedProfile) goto(resolve("/"))
 </script>
 
 <div class="max-w-4xl mx-auto p-6">
@@ -27,6 +28,10 @@
 		<PersonalDetailsTab checked={currentTab == "personal"} {setTab} />
 		<SecurityTab checked={currentTab == "security"} {setTab} />
 		<InvoiceDetailsTab checked={currentTab == "invoice"} {setTab} />
-		<DeleteAccountTab checked={currentTab == "delete"} {setTab} bind:deletedProfile />
+		<DeleteAccountTab
+			checked={currentTab == "delete"}
+			{setTab}
+			bind:deletedProfile
+		/>
 	</div>
 </div>

@@ -74,7 +74,7 @@
 	$: dragableImages = combinedImages.map((e) => {
 		if (e instanceof File) return { id: e, data: e }
 		if (e.includes("http")) return { id: e, data: e }
-		return { id: e, data: previewConverter ? previewConverter(e) : e }
+		return { id: e, data: previewConverter ? previewConverter(e) : e, originalData: e }
 	})
 
 	function handleConsider(event: CustomEvent<DndEvent<any>>) {
@@ -84,7 +84,7 @@
 	async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
 		dragableImages = event.detail.items
 		dragDisabled = true
-		combinedImages = dragableImages.map((e) => e.data)
+		combinedImages = dragableImages.map((e) => e.originalData || e.data)
 	}
 	$: fileSize = combinedImages
 		?.map((e) => {
@@ -137,7 +137,7 @@
 			id={dropzoneId}
 		>
 			<div
-				class="relative cursor-pointer border-2 border-dashed rounded-sm bg-base-200 border-[#d1d1d1] dark:border-[#464e57]"
+				class="relative cursor-pointer border-2 border-dashed rounded-sm bg-base-200 border-[#d1d1d1] dark:border-[#464e57] focus-within:border-base-content"
 				class:cursor-not-allowed={disabled}
 				class:hover:bg-base-300={!disabled}
 				class:dark:hover:bg-[#313741]={!disabled}

@@ -11,7 +11,7 @@ export async function POST({ request }) {
 		console.log("Email sent to admin:", response1)
 		const response2 = await transporter.sendMail(await invoiceMessage.toCustomerEmail())
 		console.log("Email sent to customer:", response2)
-	
+
 		return json({ success: true, message: "Email sent successfully" })
 	} catch (error) {
 		console.error("Failed to send email:", error)

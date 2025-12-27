@@ -33,6 +33,7 @@
 		{placeholder}
 		{disabled}
 		{required}
+		--sms-options-z-index="{100};"
 	/>
 </div>
 
@@ -42,21 +43,18 @@
 	/* Integrate svelte-multiselect with Tailwind and dark mode */
 	:global(.multiselect) {
 		@apply border-2! h-fit! min-h-12! dark:border-[#464e57]!;
-
+		--sms-options-z-index: 100;
 		:global(input.form-control) {
-			@apply hidden!;
+			@apply w-0.5 h-0.5;
 		}
 		:global(.selected .remove:is(:hover, :focus) path) {
-			/* @apply fill-primary; */
-			@apply fill-[var(--color-primary)];
+			@apply fill-(--color-primary);
 		}
 		:global(.remove-all:is(:hover, :focus) path) {
-			/* @apply fill-primary; */
-			@apply fill-[var(--color-primary)];
+			@apply fill-(--color-primary);
 		}
 		:global(.options) {
-			/* @apply bg-base-100!; */
-			@apply p-2! bg-[var(--color-base-100)]!;
+			@apply p-2! bg-(--color-base-100)! z-100!;
 
 			:global(li) {
 				@apply px-4! py-2! rounded-lg!;
@@ -64,20 +62,6 @@
 		}
 	}
 	:global(.multiselect:focus-within) {
-		/* Add gray outline */
-		outline: 2px solid oklcha(var(--bc) / 0.2);
-		outline-offset: 2px;
-		/* Add blue outline */
-		--tw-ring-inset: var(--tw-empty, /*/ /*/);
-		--tw-ring-offset-width: 0px;
-		--tw-ring-offset-color: #fff;
-		--tw-ring-color: #1c64f2;
-		--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
-			var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-		--tw-ring-shadow: var(--tw-ring-inset) 0 0 0
-			calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-		box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
-			var(--tw-shadow);
-		border-color: #1c64f2 !important;
+		@apply border-black! dark:border-white! outline-2 outline-black dark:outline-white outline-offset-2;
 	}
 </style>
