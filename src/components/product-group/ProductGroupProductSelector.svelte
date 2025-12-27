@@ -72,7 +72,7 @@
 					</div>
 				</div>
 				<div class="flex items-center gap-2 mr-1">
-					<span class="text-sm font-semibold">Aantal:</span>
+					<span class="text-sm font-semibold">Aantalll:</span>
 
 					<AmountInput
 						bind:amount={productAmount.amount}
@@ -128,12 +128,12 @@
 		</div>
 	{:else}
 		{#each filteredProductAmounts as product}
-			<button
-				type="button"
-				class="w-full p-2.5 hover:bg-base-200 flex justify-between items-center border-b-2 border-[#d1d1d1] dark:border-[#464e57] last:border-b-0 hover:cursor-pointer"
-				on:click={() => addProduct(product)}
-				title="Toevoegen"
-			>
+            <button
+                type="button"
+                class="w-full p-2.5 hover:bg-base-200 flex justify-between items-center border-b-2 border-[#d1d1d1] dark:border-[#464e57] last:border-b-0 hover:cursor-pointer focus:outline-2 focus:outline-base-content focus:-outline-offset-2 focus:rounded-lg"
+                on:click={() => addProduct(product)}
+                title="Toevoegen"
+            >
 				<div class="avatar">
 					<div class="h-10 w-14 rounded mr-3">
 						<img src={product.getThumbnailUrls()[0]} alt="Product" />

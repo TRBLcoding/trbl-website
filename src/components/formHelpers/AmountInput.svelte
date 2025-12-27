@@ -41,7 +41,10 @@
 		<Fa icon={deleteOnZero && amount === 0 ? faTrashCan : faMinus} />
 	</button>
 	<label
-		class={`input join-item flex-1 bg-base-300! border-base-300! input-${size}`}
+		class="input join-item flex-1 bg-base-300! border-base-300!"
+		class:input-sm={size === "sm"}
+		class:input-md={size === "md"}
+		class:input-lg={size === "lg"}
 	>
 		<input
 			class="text-center font-bold"

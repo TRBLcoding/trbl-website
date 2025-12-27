@@ -137,7 +137,7 @@
 			id={dropzoneId}
 		>
 			<div
-				class="relative cursor-pointer border-2 border-dashed rounded-sm bg-base-200 border-[#d1d1d1] dark:border-[#464e57]"
+				class="relative cursor-pointer border-2 border-dashed rounded-sm bg-base-200 border-[#d1d1d1] dark:border-[#464e57] focus-within:border-base-content"
 				class:cursor-not-allowed={disabled}
 				class:hover:bg-base-300={!disabled}
 				class:dark:hover:bg-[#313741]={!disabled}
