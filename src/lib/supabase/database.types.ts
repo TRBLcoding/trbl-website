@@ -141,7 +141,7 @@ export type Database = {
       }
       users: {
         Row: {
-          auth_id: string | null
+          auth_id: string
           email: string
           first_name: string
           id: number
@@ -149,7 +149,7 @@ export type Database = {
           role: Database["public"]["Enums"]["Role"]
         }
         Insert: {
-          auth_id?: string | null
+          auth_id: string
           email: string
           first_name: string
           id?: number
@@ -157,7 +157,7 @@ export type Database = {
           role?: Database["public"]["Enums"]["Role"]
         }
         Update: {
-          auth_id?: string | null
+          auth_id?: string
           email?: string
           first_name?: string
           id?: number

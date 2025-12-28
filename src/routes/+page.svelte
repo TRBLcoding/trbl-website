@@ -3,7 +3,7 @@
 	import { resolve } from "$app/paths"
 	import ContactForm from "$components/ContactForm.svelte"
 	import OpenStreetMapMap from "$components/maps/OpenStreetMapMap.svelte"
-	import type { ContactRequest } from "$lib/domain/ContactMessage"
+	import type { ContactRequestJSON } from "$lib/domain/ContactMessage"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
@@ -41,7 +41,7 @@
 	}
 
 	async function send() {
-		const body: ContactRequest = {
+		const body: ContactRequestJSON = {
 			firstName,
 			lastName,
 			emailAddress,

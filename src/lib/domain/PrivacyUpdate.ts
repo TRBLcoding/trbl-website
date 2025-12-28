@@ -8,6 +8,9 @@ export type PrivacyUpdateJSON = {
 	notableChanges: string
 }
 
+/**
+ * Domain class representing a privacy policy update message sent by the privacy update form by a Admin.
+ */
 export class PrivacyUpdate {
 	constructor(
 		public notableChanges: string,

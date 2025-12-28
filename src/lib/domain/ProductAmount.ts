@@ -7,6 +7,13 @@ export type ProductAmountJSON = {
 	amount: number
 }
 
+/**
+ * Domain class representing a product amount relation. Used by 
+ * - ProductGroup.containedProducts: to define how many of each product is in the group 
+ * - Product.memberOf: to define how many of this product is in different groups
+ * 
+ * Saved in the product_group_product_amounts table.
+ */
 export class ProductAmount {
 	public product: Product | undefined
 

@@ -5,9 +5,9 @@
 	import MultiSelect from "$components/formHelpers/MultiSelect.svelte"
 	import Select from "$components/formHelpers/Select.svelte"
 	import {
-		CategoryValues,
+		CATEGORY_VALUES,
 		Product,
-		TypeValues,
+		TYPE_VALUES,
 		type Category,
 		type Type,
 	} from "$lib/domain/Product"
@@ -108,11 +108,11 @@
 			<MultiSelect
 				label="Categorieën:"
 				bind:values={categories}
-				options={CategoryValues}
+				options={CATEGORY_VALUES}
 				required
 			/>
 			<Select label="Type:" bind:value={type} required>
-				{#each TypeValues as type (type)}
+				{#each TYPE_VALUES as type (type)}
 					<option>{type}</option>
 				{/each}
 			</Select>

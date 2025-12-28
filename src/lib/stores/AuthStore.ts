@@ -24,8 +24,8 @@ function createAuthStore() {
 								.single()
 							if (error)
 								throw error
-							const newUser = new User(data.id, session.user.id, session.user.email!, data.role, data.first_name, data.last_name)
-							update(() => newUser)
+							const user = User.fromJSON(data)
+							update(() => user)
 						})()
 					}
 				} else if (event === 'SIGNED_OUT' || !session) {

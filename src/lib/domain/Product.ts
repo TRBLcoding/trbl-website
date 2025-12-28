@@ -2,25 +2,22 @@ import type { Database } from "$lib/supabase/database.types"
 import { createSupabaseStorageUrl } from "$lib/supabase/supabaseClient"
 import { ProductAmount, type ProductAmountJSON } from "./ProductAmount"
 
-export const CategoryValues = ["Sound", "Light", "Truss", "Media"]
-export type Category = typeof CategoryValues[number]
+export type Category = Database['public']['Enums']['Category']
+export const CATEGORY_VALUES: Category[] = ["Sound", "Light", "Truss", "Media"]
 
-export const TypeValues = ["Mixer", "Microphone", "Speaker", "SoundSet", "LightEffect", "LightSet", "Truss", "Network", "UPS", "Scherm", "Controls"]
-export type Type = typeof TypeValues[number]
+export type Type = Database['public']['Enums']['Type']
+export const TYPE_VALUES: Type[] = ["Mixer", "Microphone", "Speaker", "SoundSet", "LightEffect", "LightSet", "Truss", "Network", "UPS", "Scherm", "Controls"]
 
-export type ProductJSON = {
-	id: number
-	name: string
-	price: number
-	description: string
-	categories: Category[]
-	type: Type
-	visible: boolean
-	imageIds: string[]
-	maxOrderAmount: number | null
-	member_of: ProductAmountJSON[]
-}
+// The ProductJSON as specified in the database
+export type DBProductJSON = Database['public']['Tables']['products']['Row']
+// The ProductJSON received by the client includes joined member_of field
+export type ProductJSON = DBProductJSON & { member_of: ProductAmountJSON[] }
 
+/**
+ * Domain class representing a product. Is base class of ProductGroup.
+ * 
+ * Saved in the products table.
+ */
 export class Product {
 	public searchableString = ""
 
@@ -72,7 +69,7 @@ export class Product {
 			visible: this.visible,
 			imageIds: this.imageIds,
 			maxOrderAmount: this.maxOrderAmount,
-		} as Database['public']['Tables']['products']['Insert']
+		} as DBProductJSON
 	}
 	/**
 	 * Must be async to match signature of ProductGroup.fromJSON
