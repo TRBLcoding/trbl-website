@@ -154,7 +154,7 @@
 			</div>
 
 			<!-- Tab content -->
-			<div class="h-[524px] flex flex-col">
+			<div class="h-131 flex flex-col">
 				{#if activeTab === "products"}
 					<ProductGroupProductSelector
 						bind:selectedProductAmounts={selectedProducts}

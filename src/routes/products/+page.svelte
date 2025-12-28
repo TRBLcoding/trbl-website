@@ -137,10 +137,7 @@
 			<a href={resolve("/products/new")} class="btn btn-primary btn-sm">
 				Nieuw product
 			</a>
-			<a
-				href={resolve("/product-groups/new")}
-				class="btn btn-primary btn-sm"
-			>
+			<a href={resolve("/product-groups/new")} class="btn btn-primary btn-sm">
 				Nieuwe product groep
 			</a>
 		{/if}

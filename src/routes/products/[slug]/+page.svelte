@@ -6,7 +6,6 @@
 	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import type { PageData } from "./$types"
-	import { onDestroy } from "svelte"
 
 	export let data: PageData
 

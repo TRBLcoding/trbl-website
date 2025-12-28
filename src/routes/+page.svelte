@@ -77,12 +77,12 @@
 <!-- Scrollable content -->
 <div class="relative z-10">
 	<!-- Welcome card -->
-	<div class="xl:h-[650px] lg:h-[550px] md:h-[350px] w-full relative">
+	<div class="xl:h-162.5 lg:h-137.5 md:h-87.5 w-full relative">
 		<!-- Large Welcome card -->
 		<div
 			class="absolute right-0 bottom-0 xl:mr-45 xl:mb-30 lg:mr-20 lg:mb-15 mx-10 mb-7 hidden xs:block"
 		>
-			<div class="card bg-base-100 sm:w-[550px] shadow-sm">
+			<div class="card bg-base-100 sm:w-137.5 shadow-sm">
 				<div class="card-body">
 					<h2 class="card-title text-xl font-bold">
 						TRBL - Passie voor licht en geluid!
@@ -172,7 +172,7 @@
 			Enkele van onze projecten:
 		</div>
 	</div>
-	<div class="h-[500px] overflow-hidden flex relative">
+	<div class="h-125 overflow-hidden flex relative">
 		<img
 			src="scheveneken.jpg"
 			alt="Foto Scheveneken"

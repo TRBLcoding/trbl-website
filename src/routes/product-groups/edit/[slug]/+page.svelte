@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { goto } from "$app/navigation"
 	import { resolve } from "$app/paths"
+	import ProductGroupForm from "$components/product-group/ProductGroupForm.svelte"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
-	import ProductForm from "$components/product/ProductForm.svelte"
-	import { Product } from "$lib/domain/Product"
+	import type { Category, Type } from "$lib/domain/Product"
+	import type { ProductAmount } from "$lib/domain/ProductAmount"
+	import { ProductGroup } from "$lib/domain/ProductGroup"
 	import type { User } from "$lib/domain/User"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -11,13 +13,8 @@
 	import { PreviewableFile } from "$lib/utils/PreviewableFile"
 	import { pushCreatedToast } from "$lib/utils/Toast"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
-	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
-	import Fa from "svelte-fa"
 	import { writable } from "svelte/store"
 	import type { PageData } from "./$types"
-	import ProductGroupForm from "$components/product-group/ProductGroupForm.svelte"
-	import { ProductGroup } from "$lib/domain/ProductGroup"
-	import type { ProductAmount } from "$lib/domain/ProductAmount"
 
 	export let data: PageData
 
@@ -30,8 +27,8 @@
 	let visible: boolean = true
 	let price: number = 0
 	let combinedImages: (string | File)[] = []
-	let categories: string[] = []
-	let type: string = ""
+	let categories: Category[] = []
+	let type: Type
 	let description: string = ""
 	let maxOrderAmount: null | number = null
 	let selectedProducts: ProductAmount[] = []
@@ -108,8 +105,8 @@
 
 	async function loadProduct(data: PageData) {
 		try {
-			const foundProduct =  await productStore.getProductById(Number(data.id))
-			if(foundProduct instanceof ProductGroup) {
+			const foundProduct = await productStore.getProductById(Number(data.id))
+			if (foundProduct instanceof ProductGroup) {
 				product = foundProduct
 			} else {
 				errorMessage = "Product is geen productgroep"
