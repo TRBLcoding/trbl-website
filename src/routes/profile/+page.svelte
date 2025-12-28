@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from "$app/environment"
 	import { goto } from "$app/navigation"
 	import { resolve } from "$app/paths"
 	import { page } from "$app/stores"
@@ -6,12 +7,20 @@
 	import InvoiceDetailsTab from "$components/profile/InvoiceDetailsTab.svelte"
 	import PersonalDetailsTab from "$components/profile/PersonalDetailsTab.svelte"
 	import SecurityTab from "$components/profile/SecurityTab.svelte"
-	import type { TabType } from "$components/profile/TabType"
+	import { TAB_TYPES, type TabType } from "$components/profile/TabType"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
+	import type { Page } from "@sveltejs/kit"
 
 	let deletedProfile = false
-	$: currentTab = ($page.url.searchParams.get("tab") || "personal") as TabType
+	$: currentTab = getTabFromUrl($page)
+	function getTabFromUrl(_: Page): TabType {
+		if (browser) {
+			const tab = $page.url.searchParams.get("tab")
+			if (tab && TAB_TYPES.includes(tab as TabType)) return tab as TabType
+		}
+		return "personal"
+	}
 	function setTab(tab: TabType) {
 		goto(`?tab=${tab}`, { replaceState: true, keepFocus: true })
 	}
