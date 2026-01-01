@@ -133,9 +133,9 @@
 				</div>
 			</a>
 			<div
-				class="collapse collapse-plus bg-base-100 border-base-300 border rounded-none"
+				class="collapse collapse-arrow bg-base-100 border-base-300 border rounded-none"
 			>
-				<input type="checkbox" />
+				<input id="sound-and-light-collapse" type="checkbox" />
 				<div class="collapse-title">Sound and Light</div>
 				<div class="collapse-content text-sm">
 					Click the "Sign Up" button in the top right corner and follow the
@@ -143,9 +143,9 @@
 				</div>
 			</div>
 			<div
-				class="collapse collapse-plus bg-base-100 border-base-300 border rounded-none"
+				class="collapse collapse-arrow bg-base-100 border-base-300 border rounded-none"
 			>
-				<input type="checkbox" />
+				<input id="electronics-collapse" type="checkbox" />
 				<div class="collapse-title">Electronics</div>
 				<div class="collapse-content text-sm">
 					Click the "Sign Up" button in the top right corner and follow the

@@ -7,18 +7,20 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import dayjs from "dayjs"
 	import Fa from "svelte-fa"
+	import { v4 as uuidv4 } from "uuid"
 
 	export let label = ""
 	export let value: any
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "lg" | "md" | "sm" | "xs" = "sm"
+	export let id = ""
 	let classList = ""
 	export { classList as class }
 
 	export let type: "text" | "number" | "email" | "date" | "password"
 	export let placeholder = ""
-	export let autocomplete: AutoFill = ""
+	export let autocomplete: AutoFill | undefined = undefined
 	export let labelClass = ""
 	export let inputClass = ""
 	export let edited = false
@@ -31,7 +33,11 @@
 	export let step = ""
 	export let min = ""
 
-	$: inputId = label?.replace(/[ :]/g, "").toLowerCase() || "input-field"
+	$: inputId =
+		id ||
+		label?.replace(/[ :]/g, "").replace(" ", "-").toLowerCase() ||
+		placeholder?.toLowerCase().replace(" ", "-") ||
+		uuidv4()
 	$: error = edited ? validate(value) : ""
 	$: showIconLeft = $$slots.iconLeft || iconLeft
 	$: showIconRight = $$slots.iconRight || iconRight || toggleText

@@ -1,24 +1,32 @@
 <script lang="ts">
 	import { MultiSelect } from "svelte-multiselect"
+	import { v4 as uuidv4 } from "uuid"
 
 	export let label: string
 	export let values: string[]
-	export let required = false
-	export let disabled = false
+	export let required: boolean = false
+	export let disabled: boolean = false
 	export let size: "full" | "md" | "sm" | "xs" = "sm"
+	export let id = ""
 
-	export let placeholder = "Kies"
-	export let options = Array<string>()
-	export let allowUserOptions = false
+	export let placeholder: string = "Kies"
+	export let options: readonly string[] = []
+	export let allowUserOptions: boolean = false
+
+	$: inputId =
+		id ||
+		label?.replace(/[ :]/g, "").replace(" ", "-").toLowerCase() ||
+		placeholder?.toLowerCase().replace(" ", "-") ||
+		uuidv4()
 </script>
 
 <div
-	class="form-control w-full"
+	class="w-full"
 	class:max-w-md={size === "md"}
 	class:max-w-sm={size === "sm"}
 	class:max-w-xs={size === "xs"}
 >
-	<label class="label" for="multiselect">
+	<label class="label" for={inputId}>
 		<span class="label-text">
 			{label}
 			{#if required}
@@ -27,6 +35,7 @@
 		</span>
 	</label>
 	<MultiSelect
+		id={inputId}
 		bind:selected={values}
 		{options}
 		{allowUserOptions}

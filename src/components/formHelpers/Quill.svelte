@@ -38,14 +38,14 @@
 	class:max-w-xs={size === "xs"}
 >
 	<div class="flex justify-between gap-2">
-		<label class="label" for="editor">
+		<div class="label">
 			<span class="label-text">
 				{label}
 				{#if required}
 					<span class="text-red-500 font-bold">*</span>
 				{/if}
 			</span>
-		</label>
+		</div>
 		<div class="tooltip tooltip-left z-20" data-tip="Quill.js WYSIWYG editor">
 			<button type="button" class="btn btn-ghost btn-xs btn-circle">
 				<InfoCircle />
@@ -76,8 +76,10 @@
 				></button>
 			</span>
 			<span class="ql-formats">
-				<select title="Text color" class="ql-color"></select>
-				<select title="Background color" class="ql-background"></select>
+				<select id="ql-color-select" title="Text color" class="ql-color"
+				></select>
+				<select id="ql-bg-select" title="Background color" class="ql-background"
+				></select>
 			</span>
 			<span class="ql-formats">
 				<button
@@ -150,7 +152,7 @@
 				></button>
 			</span>
 			<span class="ql-formats">
-				<select title="Align" class="ql-align btn-ghost"></select>
+				<select id="ql-align-select" title="Align" class="ql-align btn-ghost"></select>
 			</span>
 			<span class="ql-formats">
 				<button title="Make link" type="button" class="ql-link btn btn-ghost"
@@ -170,6 +172,7 @@
 
 		<!-- Editor -->
 		<div
+			id="hello"
 			bind:this={editorContainer}
 			class="flex-1 rounded-b-lg border-t-0! border-2! border-[#d1d1d1]! dark:border-[#464e57]!"
 		>

@@ -9,6 +9,7 @@
 	import { dndzone, type DndEvent } from "svelte-dnd-action"
 	import Fa from "svelte-fa"
 	import DropzoneFilePreview from "./DropzoneFilePreview.svelte"
+	import { v4 as uuidv4 } from "uuid"
 
 	export let label: string
 	export let combinedImages: (string | File)[]
@@ -19,12 +20,17 @@
 	export let accept = "image/*"
 	export let maxAmount = 1000
 	export let sortable = true
-	export let dropzoneId = "file-dropzone"
+	export let id = ""
 	export let disablePreviews = false
 	export let showDiskSize = false
 	export let saving = false
 	export let progress: UploadProgress[] | undefined = undefined
 	export let previewConverter: ((e: string) => string) | undefined = undefined
+
+	$: inputId =
+		id ||
+		label?.replace(/[ :]/g, "").replace(" ", "-").toLowerCase() ||
+		uuidv4()
 
 	$: remainingSpace = maxAmount - combinedImages.length
 	$: fileImages = combinedImages.filter((e) => e instanceof File)
@@ -74,7 +80,11 @@
 	$: dragableImages = combinedImages.map((e) => {
 		if (e instanceof File) return { id: e, data: e }
 		if (e.includes("http")) return { id: e, data: e }
-		return { id: e, data: previewConverter ? previewConverter(e) : e, originalData: e }
+		return {
+			id: e,
+			data: previewConverter ? previewConverter(e) : e,
+			originalData: e,
+		}
 	})
 
 	function handleConsider(event: CustomEvent<DndEvent<any>>) {
@@ -110,7 +120,7 @@
 	class:max-w-xs={size === "xs"}
 >
 	<div class="flex items-center my-1">
-		<label class="label" for="dropzone-file">
+		<label class="label" for={inputId}>
 			<span class="label-text">
 				{label}
 				{#if required}
@@ -134,7 +144,6 @@
 		<label
 			on:drop={onFileDrop}
 			on:dragover={(e) => ignoreDragOver(e, disabled)}
-			id={dropzoneId}
 		>
 			<div
 				class="relative cursor-pointer border-2 border-dashed rounded-sm bg-base-200 border-[#d1d1d1] dark:border-[#464e57] focus-within:border-base-content"
@@ -154,7 +163,7 @@
 					</p>
 				</div>
 				<input
-					id={dropzoneId}
+					id={inputId}
 					type="file"
 					on:input={onFileInput}
 					class="absolute top-0 h-full w-full opacity-0 -z-10"

@@ -22,9 +22,12 @@
 		}
 	}
 
-	$: inputIdStart = label?.replace(/[ :]/g, "-").toLowerCase() + "start"
-	$: inputIdEnd = label?.replace(/[ :]/g, "-").toLowerCase() + "end"
-	$: inputIdFullDay = label?.replace(/[ :]/g, "-").toLowerCase() + "fullday"
+	$: inputIdStart =
+		label?.replace(/[ :]/g, "-").replace(" ", "-").toLowerCase() + "start"
+	$: inputIdEnd =
+		label?.replace(/[ :]/g, "-").replace(" ", "-").toLowerCase() + "end"
+	$: inputIdFullDay =
+		label?.replace(/[ :]/g, "-").replace(" ", "-").toLowerCase() + "fullday"
 </script>
 
 <div

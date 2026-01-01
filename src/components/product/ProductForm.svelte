@@ -118,7 +118,6 @@
 			</Select>
 		</div>
 		<div class="flex-col w-full">
-			<!-- <CLEditor label="Beschrijving van product:" bind:value={description} /> -->
 			<Quill
 				label="Beschrijving van product:"
 				bind:value={description}

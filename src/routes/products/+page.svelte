@@ -187,6 +187,7 @@
 
 			<div class="shrink min-w-32 max-w-lg w-full hidden lg:block">
 				<Input
+					id="product-search-input-lg"
 					size="full"
 					type="text"
 					bind:value={searchInputValue}
@@ -195,21 +196,7 @@
 					iconLeft={faSearch}
 					inputClass="rounded-full"
 					placeholder="Zoek een product"
-				>
-					<span
-						slot="iconRight"
-						class:hidden={!searchInputValue}
-						class="z-10 opacity-50"
-					>
-						<button
-							class="btn btn-ghost btn-circle btn-sm"
-							type="button"
-							on:click={clearSearch}
-						>
-							<Fa icon={faXmarkCircle} size="lg" />
-						</button>
-					</span>
-				</Input>
+				/>
 			</div>
 
 			<div class="flex gap-2 items-center shrink-0">
@@ -219,7 +206,11 @@
 					</div>
 				{/if}
 				<span class="whitespace-nowrap xl:ml-4">Sorteer op:</span>
-				<select class="select min-w-44" bind:value={sortOption}>
+				<select
+					id="sort-options-select"
+					class="select min-w-44"
+					bind:value={sortOption}
+				>
 					<option>Alfabetisch oplopend</option>
 					<option>Alfabetisch aflopend</option>
 					<option>Prijs oplopend</option>
@@ -229,6 +220,7 @@
 		</div>
 		<div class="lg:hidden max-w-sm md:max-w-3xl w-full">
 			<Input
+				id="product-search-input-sm"
 				size="full"
 				type="text"
 				bind:value={searchInputValue}
