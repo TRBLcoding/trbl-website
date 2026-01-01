@@ -35,8 +35,8 @@ export class ProductGroup extends Product {
 			json.categories,
 			json.type,
 			json.visible,
-			json.imageIds,
-			json.maxOrderAmount,
+			json.image_ids,
+			json.max_order_amount,
 			json.member_of.map(ProductAmount.fromJSON),
 			await Promise.all(json.contained_products.map(ProductAmount.fromJSON)),
 		)

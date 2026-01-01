@@ -108,8 +108,8 @@ export type Database = {
           categories: Database["public"]["Enums"]["Category"][]
           description: string
           id: number
-          imageIds: string[]
-          maxOrderAmount: number | null
+          image_ids: string[]
+          max_order_amount: number | null
           name: string
           price: number
           type: Database["public"]["Enums"]["Type"]
@@ -119,8 +119,8 @@ export type Database = {
           categories: Database["public"]["Enums"]["Category"][]
           description: string
           id?: number
-          imageIds: string[]
-          maxOrderAmount?: number | null
+          image_ids: string[]
+          max_order_amount?: number | null
           name: string
           price: number
           type: Database["public"]["Enums"]["Type"]
@@ -130,8 +130,8 @@ export type Database = {
           categories?: Database["public"]["Enums"]["Category"][]
           description?: string
           id?: number
-          imageIds?: string[]
-          maxOrderAmount?: number | null
+          image_ids?: string[]
+          max_order_amount?: number | null
           name?: string
           price?: number
           type?: Database["public"]["Enums"]["Type"]

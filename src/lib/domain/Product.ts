@@ -67,8 +67,8 @@ export class Product {
 			categories: this.categories,
 			type: this.type,
 			visible: this.visible,
-			imageIds: this.imageIds,
-			maxOrderAmount: this.maxOrderAmount,
+			image_ids: this.imageIds,
+			max_order_amount: this.maxOrderAmount,
 		} as DBProductJSON
 	}
 	/**
@@ -83,8 +83,8 @@ export class Product {
 			json.categories,
 			json.type,
 			json.visible,
-			json.imageIds || [],
-			json.maxOrderAmount || null,
+			json.image_ids || [],
+			json.max_order_amount || null,
 			json.member_of.map(ProductAmount.fromJSON)
 		)
 	}
