@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { ResolvedPathname } from "$app/types"
 	import {
 		faChevronDown,
 		faPen,
@@ -6,10 +7,10 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 
-	// EditUrl of editHandler can be used
-	export let editUrl = ""
-	export let editHandler: () => Promise<void> | any = () => {}
-	export let deleteHandler: (() => Promise<void> | any) | undefined = undefined
+	// editPathname or editHandler can be used, with EditUrl taking precedence
+	export let editPathname:  ResolvedPathname | undefined = undefined
+	export let editHandler: () => Promise<void> | void = () => {}
+	export let deleteHandler: (() => Promise<void> | void) | undefined = undefined
 	export let size: "full" | "md" | "sm" | "xs" = "md"
 	export let disabled = false
 	export let width = "w-52"
@@ -55,8 +56,8 @@
 			width}
 	>
 		<li>
-			{#if editUrl}
-				<a href={editUrl}>{editPrompt}</a>
+			{#if editPathname}
+				<a href={editPathname}>{editPrompt}</a>
 			{:else}
 				<button on:click={editWrapper} type="button">{editPrompt}</button>
 			{/if}

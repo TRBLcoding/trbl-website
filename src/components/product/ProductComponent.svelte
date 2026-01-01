@@ -78,17 +78,17 @@
 	<h1 class="text-4xl font-semibold">{product.name || "Geen naam"}</h1>
 	{#if !isPreview && $authStore?.isAdmin()}
 		<div class="ml-auto">
-			{#if product instanceof ProductGroup}
-				<EditDropdown
-					editUrl={`/product-groups/edit/${product.id}`}
-					deleteHandler={removeProduct}
-				/>
-			{:else}
-				<EditDropdown
-					editUrl={`/products/edit/${product.id}`}
-					deleteHandler={removeProduct}
-				/>
-			{/if}
+			<EditDropdown
+				editPathname={resolve(
+					product instanceof ProductGroup
+						? "/product-groups/edit/[slug]"
+						: "/products/edit/[slug]",
+					{
+						slug: product.id.toString(),
+					}
+				)}
+				deleteHandler={removeProduct}
+			/>
 		</div>
 	{/if}
 </div>
@@ -111,9 +111,9 @@
 		<div class="order-2 md:order-0">
 			<div class="rounded-lg p-6 bg-base-200">
 				<div class="flex gap-2 mb-3 items-center">
-					<h2 class="text-xl font-semibold ">Omschrijving</h2>
+					<h2 class="text-xl font-semibold">Omschrijving</h2>
 					{#if product instanceof ProductGroup}
-							<div class="badge badge-soft badge-sm">Bundel</div>
+						<div class="badge badge-soft badge-sm">Bundel</div>
 					{/if}
 				</div>
 

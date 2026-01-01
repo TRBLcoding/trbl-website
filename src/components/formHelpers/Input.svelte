@@ -43,6 +43,7 @@
 	$: updateInternal(value)
 	$: updateExternal(internalValue)
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function updateInternal(_: any) {
 		if (value === internalValue) return
 		if (type === "date") {
@@ -53,6 +54,7 @@
 			}
 		} else internalValue = value
 	}
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function updateExternal(_: any) {
 		if (type === "date") value = dayjs(internalValue)
 		else value = internalValue

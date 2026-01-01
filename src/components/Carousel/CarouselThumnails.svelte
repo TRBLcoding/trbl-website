@@ -60,7 +60,7 @@
 
 	{#if hasOverflow}
 		<button
-			class="flex-shrink-0 w-20 sm:w-32 rounded-sm h-20 sm:h-25 md:h-30 overflow-hidden shadow-lg relative bg-gray-400 dark:bg-gray-700 flex items-center justify-center cursor-pointer opacity-90 hover:opacity-100 transition-all duration-200"
+			class="shrink-0 w-20 sm:w-32 rounded-sm h-20 sm:h-25 md:h-30 overflow-hidden shadow-lg relative bg-gray-400 dark:bg-gray-700 flex items-center justify-center cursor-pointer opacity-90 hover:opacity-100 transition-all duration-200"
 			on:click={() => selectImage(maxThumbnails)}
 		>
 			<span class="text-white font-bold text-sm sm:text-lg">+{overflowCount}</span>

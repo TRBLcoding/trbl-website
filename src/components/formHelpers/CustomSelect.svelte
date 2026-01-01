@@ -21,6 +21,7 @@
 	$: updateInternal(value)
 	$: updateExternal(internalValue)
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function updateInternal(_: any) {
 		if (!value) {
 			internalValue = undefined
@@ -29,6 +30,7 @@
 			internalValue = { value: value, label: value.toString() }
 		}
 	}
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function updateExternal(_: any) {
 		value = internalValue?.value
 	}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let label = ""
-	export let value: any
+	export let value: string
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "md" | "sm" | "xs" = "sm"

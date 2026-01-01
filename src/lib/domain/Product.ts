@@ -3,10 +3,10 @@ import { createSupabaseStorageUrl } from "$lib/supabase/supabaseClient"
 import { ProductAmount, type ProductAmountJSON } from "./ProductAmount"
 
 export type Category = Database['public']['Enums']['Category']
-export const CATEGORY_VALUES: Category[] = ["Sound", "Light", "Truss", "Media"]
+export const CATEGORY_VALUES: readonly Category[] = ["Sound", "Light", "Truss", "Media"] as const
 
 export type Type = Database['public']['Enums']['Type']
-export const TYPE_VALUES: Type[] = ["Mixer", "Microphone", "Speaker", "SoundSet", "LightEffect", "LightSet", "Truss", "Network", "UPS", "Scherm", "Controls"]
+export const TYPE_VALUES: readonly Type[] = ["Mixer", "Microphone", "Speaker", "SoundSet", "LightEffect", "LightSet", "Truss", "Network", "UPS", "Scherm", "Controls"] as const
 
 // The ProductJSON as specified in the database
 export type DBProductJSON = Database['public']['Tables']['products']['Row']

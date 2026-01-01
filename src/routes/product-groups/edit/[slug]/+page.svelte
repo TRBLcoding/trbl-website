@@ -15,6 +15,8 @@
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 	import { writable } from "svelte/store"
 	import type { PageData } from "./$types"
+	import Fa from "svelte-fa"
+	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 
 	export let data: PageData
 
@@ -70,7 +72,9 @@
 		)
 		haveValuesBeenSet = false
 		pushCreatedToast("Productgroep gewijzigd", {
-			gotoUrl: "/products/" + product!.id,
+			gotoPathname: resolve("/products/[slug]", {
+				slug: product!.id.toString(),
+			}),
 		})
 	}
 
@@ -169,19 +173,35 @@
 			</button>
 		</div>
 
-		<ProductGroupForm
-			bind:name
-			bind:price
-			bind:visible
-			bind:combinedImages
-			bind:categories
-			bind:description
-			bind:maxOrderAmount
-			bind:selectedProducts
-			newProductGroup={false}
-			submitLabel="Productgroep wijzigen"
-			onSave={updateProductGroup}
-			progress={$progressStore}
-		/>
+		{#if errorMessage}
+			<div class="text-error flex gap-2 items-center">
+				<Fa icon={faExclamationTriangle} />
+				{errorMessage}
+			</div>
+		{:else if loading}
+			<span>Loading product</span>
+			<span class="loading loading-ring"></span>
+		{:else if product}
+			<ProductGroupForm
+				bind:name
+				bind:price
+				bind:visible
+				bind:combinedImages
+				bind:categories
+				bind:description
+				bind:maxOrderAmount
+				bind:selectedProducts
+				newProductGroup={false}
+				submitLabel="Productgroep wijzigen"
+				onSave={updateProductGroup}
+				progress={$progressStore}
+			/>
+		{:else}
+			<div class="text-error flex gap-2 items-center text-lg">
+				<Fa icon={faExclamationTriangle} />
+				Error: productgroep met ID <span class="font-bold">"{data.id}"</span> niet
+				gevonden
+			</div>
+		{/if}
 	{/if}
 </div>

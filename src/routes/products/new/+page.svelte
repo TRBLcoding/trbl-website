@@ -28,7 +28,9 @@
 	async function createProduct() {
 		const product = await createPreviewProduct()
 		await productStore.createProduct(product, uploadedImages, progressStore)
-		pushCreatedToast("Product aangemaakt", { gotoUrl: "/products" })
+		pushCreatedToast("Product aangemaakt", {
+			gotoPathname: resolve("/products"),
+		})
 	}
 
 	// -- Preview --

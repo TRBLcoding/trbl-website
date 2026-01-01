@@ -1,5 +1,4 @@
 import type { Database } from "$lib/supabase/database.types"
-import type { Session } from "@supabase/supabase-js"
 
 export type UserRole = Database['public']['Enums']['Role']
 

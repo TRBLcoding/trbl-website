@@ -14,6 +14,7 @@
 
 	let deletedProfile = false
 	$: currentTab = getTabFromUrl($page)
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function getTabFromUrl(_: Page): TabType {
 		if (browser) {
 			const tab = $page.url.searchParams.get("tab")

@@ -18,12 +18,13 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
+	import { SvelteSet } from "svelte/reactivity"
 	import { debounce } from "ts-debounce"
 
 	let searchInputValue: string
 	let searchString: string = "" // Debounced searchInputValue
 	let sortOption = "Alfabetisch oplopend"
-	let activeFilters = new Set<Category>()
+	let activeFilters = new SvelteSet<Category>()
 	let errorMessage = ""
 	let loading = true
 
@@ -106,7 +107,7 @@
 		if (browser && $page.url) {
 			// -- Filters --
 			const filterParams = $page.url.searchParams.getAll("filter")
-			activeFilters = new Set(filterParams as Category[])
+			activeFilters = new SvelteSet(filterParams as Category[])
 
 			// -- Sort --
 			const sortParam = $page.url.searchParams.get("sort")
@@ -247,7 +248,7 @@
 		</div>
 	{:else if loading}
 		<div class="mt-2 flex gap-2 flex-wrap justify-center">
-			{#each Array(8) as _}
+			{#each Array(8)}
 				<ProductCardSkeleton />
 			{/each}
 		</div>

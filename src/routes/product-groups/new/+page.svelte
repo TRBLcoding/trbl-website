@@ -35,7 +35,9 @@
 			uploadedImages,
 			progressStore
 		)
-		pushCreatedToast("Productgroep aangemaakt", { gotoUrl: "/products" })
+		pushCreatedToast("Productgroep aangemaakt", {
+			gotoPathname: resolve("/products"),
+		})
 	}
 
 	// -- Preview --

@@ -7,7 +7,7 @@
 	import { v4 as uuidv4 } from "uuid"
 
 	export let label = ""
-	export let value: any
+	export let value: string
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "md" | "sm" | "xs" = "sm"
@@ -42,7 +42,11 @@
 				oldValue = value
 				dirty = false
 			} catch (error) {
-				errorText = "An error occurred while saving."
+				if (error instanceof Error) {
+					errorText = error.message
+				} else {
+					errorText = "An error occurred while saving."
+				}
 			}
 			saving = false
 		}
