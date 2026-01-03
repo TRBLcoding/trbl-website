@@ -99,13 +99,13 @@
 
 						<div class="card-actions flex-col mt-4">
 							<a class="btn btn-primary btn-block" href={resolve("/checkout")}>
-								Afrekenen
+								Offerte aanvragen
 							</a>
 							<a
 								href={resolve("/products")}
 								class="btn btn-ghost btn-block btn-soft"
 							>
-								Verder winkelen
+								Meer producten bekijken
 							</a>
 						</div>
 					</div>

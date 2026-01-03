@@ -97,9 +97,9 @@
 						tot het voorzien van mobiele installaties en technische
 						ondersteuning op fuiven en evenementen!
 					</p>
-					<div class="card-actions justify-start mt-4">
+					<div class="card-actions justify-start mt-3">
 						<a
-							class="btn btn-primary px-6 uppercase text-[16px]"
+							class="btn btn-primary px-6 text-[16px]"
 							href="/#contact"
 						>
 							Contact

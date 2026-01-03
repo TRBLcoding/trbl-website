@@ -173,7 +173,7 @@
 					<a class="btn btn-soft" href={resolve("/cart")}
 						>Winkelmandje bekijken</a
 					>
-					<a class="btn btn-primary" href={resolve("/checkout")}>Afrekenen</a>
+					<a class="btn btn-primary" href={resolve("/checkout")}>Offerte aanvragen</a>
 				</li>
 			{/if}
 		</ul>

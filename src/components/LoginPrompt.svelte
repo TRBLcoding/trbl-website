@@ -38,7 +38,7 @@
 				<h3 class="font-semibold text-lg">Sla je factuurgegevens op</h3>
 				<p class="text-sm text-base-content/70 max-w-md">
 					Ingelogde gebruikers kunnen factuurgegevens opslaan voor later gebruik
-					en sneller afrekenen.
+					en sneller een offerte aanvragen.
 				</p>
 			</div>
 			<button
