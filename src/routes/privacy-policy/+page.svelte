@@ -7,7 +7,7 @@
 	pageHeadStore.updatePageTitle("Privacybeleid")
 </script>
 
-<div class="max-w-6xl mx-auto p-6">
+<div class="max-w-6xl mx-auto p-3 sm:p-6">
 	<div class="flex gap-3 mb-3 items-center">
 		<h1 class="text-4xl font-semibold">TRBL Privacybeleid</h1>
 		{#if $authStore && $authStore.isAdmin()}

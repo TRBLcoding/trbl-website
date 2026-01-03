@@ -60,7 +60,7 @@
 		goto(resolve("/"))
 </script>
 
-<div class="max-w-6xl mx-auto p-6">
+<div class="max-w-6xl mx-auto p-3 sm:p-6">
 	<h1 class="text-4xl font-semibold mb-4">Update privacybeleid verzenden</h1>
 
 	<div role="alert" class="alert alert-soft mb-5">

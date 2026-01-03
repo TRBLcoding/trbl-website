@@ -32,7 +32,7 @@
 	$: if ($authStore === null && !deletedProfile) goto(resolve("/"))
 </script>
 
-<div class="max-w-4xl mx-auto p-6">
+<div class="max-w-4xl mx-auto p-3 sm:p-6">
 	<h1 class="text-3xl font-bold mb-3">Profiel</h1>
 	<div class="tabs tabs-lift">
 		<PersonalDetailsTab checked={currentTab == "personal"} {setTab} />
