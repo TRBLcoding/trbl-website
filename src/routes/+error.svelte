@@ -13,7 +13,7 @@
 			<h1
 				class="select-none -z-10 text-[#262626] -translate-1/2 -ml-5 tracking-[-0.15em] absolute left-1/2 top-1/2 font-['Montserrat',sans-serif] uppercase font-black text-[252px]"
 			>
-				{#each $page.status.toString().split("") as letter (letter)}
+				{#each $page.status.toString().split("") as letter, i (i)}
 					<span class="[text-shadow:-8px_0px_0px_#5c5c5c]">{letter}</span>
 				{/each}
 			</h1>

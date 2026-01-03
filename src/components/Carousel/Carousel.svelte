@@ -75,14 +75,14 @@
 	<!-- Slide indicators -->
 	{#if images.length > 1 && !hideIndicators}
 		<div class="absolute flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-			{#each images, i}
-				<!-- svelte-ignore a11y_consider_explicit_label -->
+			{#each images as item, i (item)}
 				<button
 					type="button"
 					class="w-3 h-3 rounded-full cursor-pointer"
 					class:bg-slate-200={counter === i}
 					class:bg-slate-500={counter !== i}
 					on:click={() => (counter = i)}
+					title="Naar afbeelding {i + 1}"
 				></button>
 			{/each}
 		</div>
