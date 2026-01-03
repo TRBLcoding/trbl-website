@@ -4,6 +4,7 @@
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "md" | "sm" | "xs" = "sm"
+	export let id = ""
 	import { v4 as uuidv4 } from "uuid"
 
 	export let placeholder = ""
@@ -12,6 +13,7 @@
 	export { classList as class }
 
 	$: inputId =
+		id ||
 		label?.replace(/[ :]/g, "").replace(" ", "-").toLowerCase() ||
 		placeholder?.replace(" ", "-").toLowerCase() ||
 		uuidv4()

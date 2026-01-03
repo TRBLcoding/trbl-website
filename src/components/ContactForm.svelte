@@ -73,6 +73,7 @@
 	>
 		<div class="flex gap-6">
 			<Input
+				id="contact-first-name"
 				label="Voornaam"
 				type="text"
 				placeholder="Voornaam"
@@ -83,6 +84,7 @@
 				labelClass="text-base-content font-semibold mb-1"
 			/>
 			<Input
+				id="contact-last-name"
 				label="Achternaam"
 				type="text"
 				placeholder="Achternaam"
@@ -94,6 +96,7 @@
 			/>
 		</div>
 		<Input
+			id="contact-email"
 			label="Email"
 			type="email"
 			placeholder="Email"
@@ -104,6 +107,7 @@
 			labelClass="text-base-content font-semibold mb-1"
 		/>
 		<Input
+			id="contact-subject"
 			label="Onderwerp"
 			type="text"
 			placeholder="Onderwerp"
@@ -113,6 +117,7 @@
 			labelClass="text-base-content font-semibold mb-1"
 		/>
 		<Textarea
+			id="contact-message"
 			label="Boodschap"
 			placeholder="Boodschap"
 			bind:value={message}
