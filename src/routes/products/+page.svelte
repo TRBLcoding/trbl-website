@@ -131,23 +131,31 @@
 	pageHeadStore.updatePageTitle("Producten")
 </script>
 
-<div class="mx-4 lg:mx-12 my-5">
+<div class="max-w-500 mx-auto p-3 sm:p-6 mb-4">
 	<div class="flex gap-3 mb-2 items-center">
 		<h1 class="text-4xl font-semibold">Producten</h1>
 		{#if $authStore && $authStore.isAdmin()}
-			<a href={resolve("/products/new")} class="btn btn-primary btn-sm">
-				Nieuw product
-			</a>
-			<a href={resolve("/product-groups/new")} class="btn btn-primary btn-sm">
-				Nieuwe product groep
-			</a>
+			<div>
+				<a
+					href={resolve("/products/new")}
+					class="btn btn-primary btn-xs sm:btn-sm"
+				>
+					Nieuw product
+				</a>
+				<a
+					href={resolve("/product-groups/new")}
+					class="btn btn-primary btn-xs sm:btn-sm"
+				>
+					Nieuwe product groep
+				</a>
+			</div>
 		{/if}
 	</div>
 
 	<hr class="h-px bg-base-300 border-none" />
 
 	<!-- Filters -->
-	<div class="flex flex-col gap-3 my-4 items-center lg:items-stretch">
+	<div class="flex flex-col gap-3 my-2 sm:my-4 items-center lg:items-stretch">
 		<div
 			class="flex flex-col md:flex-row items-center justify-center lg:justify-between gap-3 xl:gap-5"
 		>
@@ -155,28 +163,28 @@
 				<div class="w-full flex items-center gap-1">
 					<span class="hidden md:block">Filters:</span>
 					<button
-						class="btn rounded-full"
+						class="btn btn-sm sm:btn-md rounded-full"
 						class:btn-primary={activeFilters.has("Sound")}
 						on:click={() => updateFilter("Sound")}
 					>
 						Geluid
 					</button>
 					<button
-						class="btn rounded-full"
+						class="btn btn-sm sm:btn-md rounded-full"
 						class:btn-primary={activeFilters.has("Light")}
 						on:click={() => updateFilter("Light")}
 					>
 						Verlichting
 					</button>
 					<button
-						class="btn rounded-full"
+						class="btn btn-sm sm:btn-md rounded-full"
 						class:btn-primary={activeFilters.has("Truss")}
 						on:click={() => updateFilter("Truss")}
 					>
 						Truss en statief
 					</button>
 					<button
-						class="btn rounded-full"
+						class="btn btn-sm sm:btn-md rounded-full"
 						class:btn-primary={activeFilters.has("Media")}
 						on:click={() => updateFilter("Media")}
 					>
