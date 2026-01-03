@@ -147,7 +147,7 @@
 	pageHeadStore.updatePageTitle("Offerte aanvragen")
 </script>
 
-<div class="xl:max-w-2/3 mx-auto mt-4 mb-8 p-4">
+<div class="max-w-6xl mx-auto p-3 sm:p-6 mb-4 sm:mb-8">
 	<h1 class="text-2xl font-bold mb-1">Offerte aanvragen</h1>
 	{#if $cartStore === undefined}
 		Loading <span class="loading loading-ring"></span>
