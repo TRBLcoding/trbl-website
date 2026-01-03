@@ -30,8 +30,8 @@
 	export let iconRight: IconDefinition | undefined = undefined
 	export let toggleText = type === "password"
 	export let toggled = false
-	export let step = ""
-	export let min = ""
+	export let step: string | undefined = undefined
+	export let min: string | undefined = undefined
 
 	$: inputId =
 		id ||
