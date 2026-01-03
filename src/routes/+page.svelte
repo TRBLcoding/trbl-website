@@ -9,6 +9,9 @@
 	import Fa from "svelte-fa"
 	import Carousel from "../components/carousel/Carousel.svelte"
 
+	let windowWidth = 0
+	$: mapHeight = windowWidth >= 640 ? 618 : 400
+
 	const images = !browser
 		? []
 		: [
@@ -69,6 +72,8 @@
 	pageHeadStore.updatePageTitle("")
 </script>
 
+<svelte:window bind:innerWidth={windowWidth} />
+
 <!-- Static image -->
 <div class="md:fixed inset-0 z-0">
 	<img src="camonigrava.jpg" alt="Foto Camonigrava" class="w-full" />
@@ -124,7 +129,7 @@
 	<div
 		class="w-full bg-base-100 flex flex-col justify-center items-center gap-10 py-8"
 	>
-		<div class="flex gap-16">
+		<div class="flex flex-wrap gap-4 md:gap-12 lg:gap-16 justify-center mx-5">
 			<div class="flex flex-col items-center gap-2">
 				<a class="avatar w-70 h-70" href="products?filter=Sound">
 					<img src="sound.webp" alt="temp" class="rounded-lg" />
@@ -192,24 +197,28 @@
 			Contact:
 		</div>
 	</div>
-	<div class="w-full bg-base-100 pb-10">
-		<div class="flex max-w-3/4 mx-auto pt-5 gap-10">
+	<div class="w-full bg-base-100 pb-10 ">
+		<div
+			class="flex flex-col md:flex-row justify-center mx-10 pt-5 gap-10 lg:max-w-6xl xl:mx-auto"
+		>
 			<div class="text-xl flex-1">
 				<div class="text-xl font-semibold mb-1 flex items-center gap-2">
 					<Fa icon={faLocationDot} />
 					Locatie
 				</div>
-				<OpenStreetMapMap height={618} />
+				<OpenStreetMapMap height={mapHeight} />
 			</div>
-			<div class="flex-1">
-				<ContactForm
-					bind:firstName
-					bind:lastName
-					bind:emailAddress
-					bind:subject
-					bind:message
-					{send}
-				/>
+			<div class="flex-1 flex md:block justify-center">
+				<div class="w-full max-w-lg">
+					<ContactForm
+						bind:firstName
+						bind:lastName
+						bind:emailAddress
+						bind:subject
+						bind:message
+						{send}
+					/>
+				</div>
 			</div>
 		</div>
 	</div>

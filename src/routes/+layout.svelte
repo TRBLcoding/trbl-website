@@ -15,6 +15,8 @@
 	import {
 		faBars,
 		faRightToBracket,
+		faSignIn,
+		faSignOut,
 		faXmark,
 	} from "@fortawesome/free-solid-svg-icons"
 	import { SvelteToast } from "@zerodevx/svelte-toast"
@@ -77,7 +79,7 @@
 				<div class="lg:hidden">
 					<button
 						class="btn btn-square btn-ghost"
-						onclick={() => (showMenu = !showMenu)}
+						on:click={() => (showMenu = !showMenu)}
 					>
 						<Fa icon={showMenu ? faBars : faXmark} size="lg" />
 					</button>
@@ -127,7 +129,7 @@
 		</div>
 
 		<div class="flex flex-col lg:hidden" class:hidden={showMenu}>
-			<a href={resolve("/")}>
+			<a href={resolve("/")} on:click={() => (showMenu = true)}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Home</div>
 				</div>
@@ -152,26 +154,61 @@
 					registration process.
 				</div>
 			</div>
-			<a href={resolve("/products")}>
+			<a href={resolve("/products")} on:click={() => (showMenu = true)}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Verhuur</div>
 				</div>
 			</a>
-			<a href={resolve("/profile")}>
-				<div class="bg-base-100 border-base-300 border rounded-none">
-					<div class="collapse-title">Mijn account</div>
-				</div>
-			</a>
-			<a href={resolve("/todo")}>
-				<div class="bg-base-100 border-base-300 border rounded-none">
-					<div class="collapse-title">Overzicht Offerte-Aanvraag</div>
-				</div>
-			</a>
-			<a href="/#contact">
+			<a href="/#contact" on:click={() => (showMenu = true)}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Contact</div>
 				</div>
 			</a>
+			{#if $authStore}
+				<a href={resolve("/profile")} on:click={() => (showMenu = true)}>
+					<div class="bg-base-100 border-base-300 border rounded-none">
+						<div class="collapse-title">Profiel</div>
+					</div>
+				</a>
+			{/if}
+			{#if $authStore && $authStore.isAdmin()}
+				<a href={resolve("/dashboard")} on:click={() => (showMenu = true)}>
+					<div class="bg-base-100 border-base-300 border rounded-none">
+						<div class="collapse-title">Dashboard</div>
+					</div>
+				</a>
+			{/if}
+			{#if $authStore}
+				<button
+					type="button"
+					on:click={() => {
+						authStore.signOut()
+						showMenu = true
+					}}
+				>
+					<div class="bg-base-100 border-base-300 border rounded-none">
+						<div class="collapse-title flex gap-2 items-center">
+							<Fa icon={faSignOut} class="text-lg" /> Uitloggen
+						</div>
+					</div>
+				</button>
+			{:else}
+				<button
+					type="button"
+					class="w-full text-left"
+					on:click={() => {
+						showMenu = true
+						document.getElementById(loginModalID)?.click()
+					}}
+					title="Account"
+				>
+					<div class="bg-base-100 border-base-300 border rounded-none">
+						<div class="collapse-title flex gap-2 items-center">
+							<Fa icon={faSignIn} class="text-lg" /> Aanmelden
+						</div>
+					</div>
+				</button>
+			{/if}
 		</div>
 	</div>
 

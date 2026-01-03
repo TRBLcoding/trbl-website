@@ -6,8 +6,8 @@
 </script>
 
 <footer class="footer relative z-1 bg-black flex py-4">
-	<div class="w-full flex justify-around">
-		<div class="text-white text-xs">
+	<div class="w-full flex flex-wrap justify-around">
+		<div class="text-white text-xs text-center">
 			<span class="whitespace-nowrap">Copyright © {year} TRBL</span> |
 			<span class="whitespace-nowrap">
 				Teun Van de Voorde - Student Zelfstandige
@@ -15,7 +15,7 @@
 			|
 			<span class="whitespace-nowrap">BE0791945315</span>
 		</div>
-		<div class="text-white text-xs">
+		<div class="text-white text-xs text-center">
 			<span class="whitespace-nowrap">
 				<a href={resolve("/tos")} class="link-hover">Algemene Voorwaarden</a
 				></span
