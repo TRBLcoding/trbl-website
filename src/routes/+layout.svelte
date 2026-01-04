@@ -14,6 +14,7 @@
 	import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
 	import {
 		faBars,
+		faChevronDown,
 		faRightToBracket,
 		faSignIn,
 		faSignOut,
@@ -86,23 +87,25 @@
 					<Cart></Cart>
 				</div>
 				<!-- Large screen -->
-				<div class="menu menu-horizontal hidden lg:block">
+				<div class="hidden lg:block">
 					<div class="dropdown dropdown-hover">
-						<div tabindex="0" role="button" class="btn">Sound and light</div>
-						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+						<div tabindex="0" role="button" class="btn">
+							Sound and light <Fa icon={faChevronDown} class="" />
+						</div>
 						<ul
-							tabindex="0"
-							class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
+							tabindex="-1"
+							class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm min-w-38"
 						>
 							<li><a href={resolve("/todo")}>Op Maat</a></li>
 							<li><a href={resolve("/todo")}>Verhuur</a></li>
 						</ul>
 					</div>
 					<div class="dropdown dropdown-hover">
-						<div tabindex="0" role="button" class="btn">Electronics</div>
-						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+						<div tabindex="0" role="button" class="btn">
+							Electronics <Fa icon={faChevronDown} class="" />
+						</div>
 						<ul
-							tabindex="0"
+							tabindex="-1"
 							class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
 						>
 							<li><a href={resolve("/todo")}>TRBL producten</a></li>
