@@ -11,7 +11,7 @@
 
 {#if $authStore}
 	<div title="Profiel" class="dropdown dropdown-end">
-		<div tabindex="0" role="button" class="btn btn-ghost gap-2 normal-case">
+		<div tabindex={0} role="button" class="btn btn-ghost gap-2 normal-case">
 			<Fa icon={faUser} class="text-xl" />
 			<Fa icon={faChevronDown} class="text-gray-500" />
 		</div>

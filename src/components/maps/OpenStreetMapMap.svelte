@@ -63,7 +63,7 @@
 				/>
 			</MapComponent.Marker>
 			<MapComponent.Marker latLng={[lattitude, longitude]}>
-				<MapComponent.DivIcon>
+				<MapComponent.DivIcon >
 					<div
 						class="text-md text-[1.2em] w-50 ml-6 -mt-7 text-red-600 font-medium text-shadow-2xs"
 					>

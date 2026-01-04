@@ -12,6 +12,7 @@
 
 	function updateAmount(productOrder: ProductOrder, newAmount: number) {
 		if (amount <= -1) removeItem(productOrder)
+		if (amount === productOrder.amount) return
 		else cartStore.set(productOrder.product, newAmount)
 	}
 	function removeItem(productOrder: ProductOrder) {
@@ -54,7 +55,7 @@
 					{productOrder.product.name}
 				</a>
 				<span
-					class="badge hidden sm:block badge-soft text-xs gap-1 font-semibold opacity-80 mt-1"
+					class="badge hidden sm:flex badge-soft text-xs gap-1 font-semibold opacity-80 mt-1 items-center"
 				>
 					Stukprijs: € {productOrder.product.price.toFixed(2)}
 				</span>
@@ -68,7 +69,7 @@
 						deleteOnZero
 						onChange={() => updateAmount(productOrder, amount)}
 						class="w-30"
-					></AmountInput>
+					/>
 				</div>
 			</div>
 

@@ -99,7 +99,7 @@
 			<select
 				required
 				class="w-1 h-1 opacity-0"
-				tabindex="-1"
+				tabindex={-1}
 				aria-hidden="true"
 			>
 				<option value="">Selecteer producten</option>

@@ -145,7 +145,7 @@
 						<button
 							type="button"
 							on:click={() => (toggled = !toggled)}
-							tabindex="-1"
+							tabindex={-1}
 						>
 							<Fa
 								icon={toggled ? faEyeSlash : faEye}

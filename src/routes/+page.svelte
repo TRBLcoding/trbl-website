@@ -98,10 +98,7 @@
 						ondersteuning op fuiven en evenementen!
 					</p>
 					<div class="card-actions justify-start mt-3">
-						<a
-							class="btn btn-primary px-6 text-[16px]"
-							href="/#contact"
-						>
+						<a class="btn btn-primary px-6 text-[16px]" href="/#contact">
 							Contact
 						</a>
 					</div>
@@ -131,7 +128,7 @@
 	>
 		<div class="flex flex-wrap gap-4 md:gap-12 lg:gap-16 justify-center mx-5">
 			<div class="flex flex-col items-center gap-2">
-				<a class="avatar w-70 h-70" href="products?filter=Sound">
+				<a class="avatar w-70 h-70" href="products?filter=Sound" tabindex={-1}>
 					<img src="sound.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
@@ -140,7 +137,7 @@
 				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<a class="avatar w-70 h-70" href="products?filter=Light">
+				<a class="avatar w-70 h-70" href="products?filter=Light" tabindex={-1}>
 					<img src="light.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
@@ -149,7 +146,7 @@
 				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<a class="avatar w-70 h-70" href="products?filter=Truss">
+				<a class="avatar w-70 h-70" href="products?filter=Truss" tabindex={-1}>
 					<img src="truss.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
@@ -158,7 +155,7 @@
 				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<a class="avatar w-70 h-70" href="products?filter=Media">
+				<a class="avatar w-70 h-70" href="products?filter=Media" tabindex={-1}>
 					<img src="media.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
@@ -197,7 +194,7 @@
 			Contact:
 		</div>
 	</div>
-	<div class="w-full bg-base-100 pb-10 ">
+	<div class="w-full bg-base-100 pb-10">
 		<div
 			class="flex flex-col md:flex-row justify-center mx-10 pt-5 gap-10 lg:max-w-6xl xl:mx-auto"
 		>

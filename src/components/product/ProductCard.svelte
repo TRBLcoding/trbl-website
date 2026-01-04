@@ -17,7 +17,7 @@
 	{#if product.imageIds?.length > 0}
 		<div class="relative">
 			<figure class="bg-base-200 h-72 rounded-t-md">
-				<a href={resolve("/products/[slug]", { slug: product.id.toString() })}>
+				<a href={resolve("/products/[slug]", { slug: product.id.toString() })} tabindex={-1}>
 					<img src={product.getThumbnailUrls()[0]} alt="Productafbeelding" />
 				</a>
 			</figure>

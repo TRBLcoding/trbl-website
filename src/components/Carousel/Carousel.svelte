@@ -44,8 +44,8 @@
 			setLoop()
 		}, duration)
 	}
-	  $: if (mounted && loop && $preferencesStore.autoPlay) setLoop()
-	  else clearTimeout(loopTimeout)
+	$: if (mounted && loop && $preferencesStore.autoPlay) setLoop()
+	else clearTimeout(loopTimeout)
 
 	function selectImage(i: number) {
 		counter = i
@@ -61,6 +61,39 @@
 	class={`relative h-72 sm:h-96 w-full overflow-hidden rounded-lg ${height}`}
 	class:bg-base-200={background}
 >
+	<!-- Slide buttons -->
+	{#if images.length > 1 && !hideButtons}
+		<button
+			type="button"
+			class="absolute top-0 left-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+			on:click={previous}
+		>
+			<span
+				class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-400/30 dark:bg-gray-800/30 group-hover:bg-slate-500/50 dark:group-hover:bg-gray-800/60 group-focus:border-2"
+			>
+				<Fa
+					icon={faChevronLeft}
+					class="text-white dark:text-slate-500 text-xl"
+				/>
+				<span class="sr-only">Volgende</span>
+			</span>
+		</button>
+		<button
+			type="button"
+			class="absolute top-0 right-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+			on:click={next}
+		>
+			<span
+				class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-400/30 dark:bg-gray-800/30 group-hover:bg-slate-500/50 dark:group-hover:bg-gray-800/60 group-focus:border-2"
+			>
+				<Fa
+					icon={faChevronRight}
+					class="text-white dark:text-slate-500 text-xl"
+				/>
+				<span class="sr-only">Vorige</span>
+			</span>
+		</button>
+	{/if}
 	<!-- Carousel images -->
 	{#each images as item, i (item)}
 		<img
@@ -87,46 +120,9 @@
 			{/each}
 		</div>
 	{/if}
-	<!-- Slide buttons -->
-	{#if images.length > 1 && !hideButtons}
-		<button
-			type="button"
-			class="absolute top-0 left-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-			on:click={previous}
-		>
-			<span
-				class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-400/30 dark:bg-gray-800/30 group-hover:bg-slate-500/50 dark:group-hover:bg-gray-800/60 group-focus:bg-slate-500/50 dark:group-focus:bg-slate-500/50"
-			>
-				<Fa
-					icon={faChevronLeft}
-					class="text-white dark:text-slate-500 text-xl"
-				/>
-				<span class="sr-only">Volgende</span>
-			</span>
-		</button>
-		<button
-			type="button"
-			class="absolute top-0 right-0 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-			on:click={next}
-		>
-			<span
-				class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-400/30 dark:bg-gray-800/30 group-hover:bg-slate-500/50 dark:group-hover:bg-gray-800/60 group-focus:bg-slate-500/50 dark:group-focus:bg-slate-500/50"
-			>
-				<Fa
-					icon={faChevronRight}
-					class="text-white dark:text-slate-500 text-xl"
-				/>
-				<span class="sr-only">Vorige</span>
-			</span>
-		</button>
-	{/if}
 </div>
 
 {#if thumbnails}
-	<CarouselThumnails
-		{selectImage}
-		{counter}
-		{carouselWidth}
-		{images}
+	<CarouselThumnails {selectImage} {counter} {carouselWidth} {images}
 	></CarouselThumnails>
 {/if}

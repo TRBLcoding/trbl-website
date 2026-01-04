@@ -17,7 +17,7 @@
 			<div class="flex flex-col items-end justify-between">
 				<button
 					class="btn btn-square btn-ghost hover:btn-primary btn-sm"
-					aria-label="Verwijder item"
+					title="Verwijder product"
 				>
 				</button>
 				<div class="text-right">

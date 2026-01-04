@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from "$app/paths"
 	import type { DeliveryMethod } from "$lib/domain/InvoiceRequest"
 	import { ProductOrder } from "$lib/domain/ProductOrder"
 	import {
@@ -33,27 +34,37 @@
 					>
 						<div class="overflow-clip w-20 h-14 relative rounded-lg">
 							{#if productOrder.product.getImageUrls()?.length > 0 && productOrder.product.getImageUrls()[0] != null}
-								<img
-									alt="Productafbeelding"
-									class="rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-									src={productOrder.product.getImageUrls()[0]}
-								/>
+								<a
+									href={resolve("/products/[slug]", {
+										slug: productOrder.product.id.toString(),
+									})}
+									target="_blank"
+									tabindex={-1}
+								>
+									<img
+										alt="Productafbeelding"
+										class="rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+										src={productOrder.product.getImageUrls()[0]}
+									/>
+								</a>
 							{:else}
 								<div
-									class="bg-transparent! rounded-lg absolute w-full h-full flex items-center justify-center"
+									class="bg-base-100 rounded-lg absolute w-full h-full flex items-center justify-center"
 									title="Geen afbeelding"
 								>
-									<Fa
-										icon={faImage}
-										size="lg"
-										class="opacity-80 text-neutral"
-									/>
+									<Fa icon={faImage} size="lg" />
 								</div>
 							{/if}
 						</div>
 						<div class="flex-1 flex justify-between">
 							<div>
-								<h3 class="font-semibold">{productOrder.product.name}</h3>
+								<a
+									class="font-semibold link link-hover"
+									target="_blank"
+									href={resolve("/products/[slug]", {
+										slug: productOrder.product.id.toString(),
+									})}>{productOrder.product.name}</a
+								>
 								<div class="flex gap-2 items-center mt-1">
 									<span
 										class="badge badge-soft text-xs gap-1 font-semibold opacity-80"

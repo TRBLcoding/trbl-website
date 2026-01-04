@@ -44,7 +44,7 @@
 	class:cursor-not-allowed={disabled}
 >
 	<div
-		tabindex="0"
+		tabindex={0}
 		role="button"
 		class="btn btn-ghost gap-2 normal-case flex flex-row text-base"
 		class:btn-xs={size === "xs"}
