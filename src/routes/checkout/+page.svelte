@@ -292,7 +292,7 @@
 						>
 							<span slot="title1">Betaling op factuur</span>
 							<span slot="content1">
-								Maak je betaling rechtstreeks over op onze bankrekening. Gebruik
+								Maak je betaling later rechtstreeks over op onze bankrekening. Gebruik
 								je factuurnummer als betalingsreferentie
 							</span>
 							<span slot="title2">Betaling bij levering</span>

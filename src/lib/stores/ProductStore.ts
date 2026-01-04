@@ -136,11 +136,11 @@ function createProductStore() {
 				name: newName,
 				visible: newVisible,
 				price: newPrice,
-				imageIds: uploadedImageIds,
+				image_ids: uploadedImageIds,
 				categories: newCategories,
 				type: newType,
 				description: newDescription,
-				maxOrderAmount: newMaxOrderAmount
+				max_order_amount: newMaxOrderAmount
 			} as Database['public']['Tables']['products']['Update'])
 			.eq('id', product.id)
 			.select('id')

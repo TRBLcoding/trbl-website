@@ -18,7 +18,7 @@
 <!-- Your order -->
 <div>
 	<h2 class="text-lg font-semibold pb-1 border-b border-base-300 mb-1">
-		Jouw besteling
+		Overzicht
 	</h2>
 
 	<div class="flex flex-col gap-3 mt-3 bg-base-200 rounded-lg p-6">

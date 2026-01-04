@@ -89,7 +89,7 @@
 		>
 			<div class="card bg-base-100 sm:w-137.5 shadow-sm">
 				<div class="card-body">
-					<h2 class="card-title text-xl font-bold">
+					<h2 class="card-title text-2xl font-bold">
 						TRBL - Passie voor licht en geluid!
 					</h2>
 					<p class="text-[15px]">
