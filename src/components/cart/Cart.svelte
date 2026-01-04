@@ -42,7 +42,7 @@
 		on:click={handleCartClick}
 		bind:this={dropdownButton}
 		tabindex={0}
-		class="btn btn-square btn-ghost relative"
+		class="btn btn-square btn-ghost mb-1 relative"
 		title="Winkelmandje"
 	>
 		<Fa icon={faCartShopping} class="text-xl" />
@@ -59,7 +59,7 @@
 		<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 		<ul
 			tabindex={-1}
-			class="list bg-base-100! dark:bg-base-200! rounded-box shadow-xl dropdown-content w-96"
+			class="list bg-base-200 rounded-box shadow-xl dropdown-content w-96"
 		>
 			<li class="p-4 pb-2 text-xs opacity-60 tracking-wide">Winkelmandje</li>
 

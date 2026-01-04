@@ -11,12 +11,12 @@
 
 {#if $authStore}
 	<div title="Profiel" class="dropdown dropdown-end">
-		<div tabindex={0} role="button" class="btn btn-ghost gap-2 normal-case">
+		<div tabindex={0} role="button" class="btn btn-ghost mb-1 gap-2 normal-case">
 			<Fa icon={faUser} class="text-xl" />
 			<Fa icon={faChevronDown} class="text-gray-500" />
 		</div>
 		<ul
-			class="dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box w-52"
+			class="dropdown-content z-10 menu p-2 shadow bg-base-200 rounded-box w-52"
 		>
 			<li class="menu-title">
 				<span>{$authStore.firstName || "User"}</span>

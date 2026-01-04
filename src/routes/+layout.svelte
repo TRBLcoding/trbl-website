@@ -89,33 +89,34 @@
 				<!-- Large screen -->
 				<div class="hidden lg:block">
 					<div class="dropdown dropdown-hover">
-						<div tabindex={0} role="button" class="btn">
+						<div tabindex={0} role="button" class="btn mb-1">
 							Sound and light <Fa icon={faChevronDown} class="" />
 						</div>
 						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 						<ul
 							tabindex={-1}
-							class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm min-w-38"
+							class="dropdown-content menu bg-base-200 rounded-box z-1 p-2 shadow-sm min-w-38"
 						>
 							<li><a href={resolve("/todo")}>Op Maat</a></li>
-							<li><a href={resolve("/todo")}>Verhuur</a></li>
+							<li><a href={resolve("/products")}>Verhuur</a></li>
 						</ul>
 					</div>
 					<div class="dropdown dropdown-hover">
-						<div tabindex={0} role="button" class="btn">
+						<div tabindex={0} role="button" class="btn mb-1">
 							Electronics <Fa icon={faChevronDown} class="" />
 						</div>
 						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 						<ul
 							tabindex={-1}
-							class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
+							class="dropdown-content menu bg-base-200 rounded-box z-1 p-2 shadow-sm"
 						>
 							<li><a href={resolve("/todo")}>TRBL producten</a></li>
 							<li><a href={resolve("/todo")}>Hersteldienst</a></li>
 						</ul>
 					</div>
-					<a class="btn shadow-none" href="/#contact">Contact</a>
-					<a class="btn btn-primary px-6" href={resolve("/products")}>Verhuur</a
+					<a class="btn shadow-none mb-1" href="/#contact">Contact</a>
+					<a class="btn btn-primary px-6 mb-1" href={resolve("/products")}
+						>Verhuur</a
 					>
 					<Cart></Cart>
 					{#if !$authStore}
@@ -144,9 +145,21 @@
 			>
 				<input id="sound-and-light-collapse" type="checkbox" />
 				<div class="collapse-title">Sound and Light</div>
-				<div class="collapse-content text-sm">
-					Click the "Sign Up" button in the top right corner and follow the
-					registration process.
+				<div class="collapse-content text-sm flex flex-col gap-3">
+					<a
+						href={resolve("/todo")}
+						on:click={() => (showMenu = true)}
+						class="px-4 link link-hover"
+					>
+						Op Maat
+					</a>
+					<a
+						href={resolve("/products")}
+						on:click={() => (showMenu = true)}
+						class="px-4 link link-hover"
+					>
+						Verhuur
+					</a>
 				</div>
 			</div>
 			<div
@@ -154,9 +167,21 @@
 			>
 				<input id="electronics-collapse" type="checkbox" />
 				<div class="collapse-title">Electronics</div>
-				<div class="collapse-content text-sm">
-					Click the "Sign Up" button in the top right corner and follow the
-					registration process.
+				<div class="collapse-content text-sm flex flex-col gap-3">
+					<a
+						href={resolve("/todo")}
+						on:click={() => (showMenu = true)}
+						class="px-4 link link-hover"
+					>
+						TRBL producten
+					</a>
+					<a
+						href={resolve("/todo")}
+						on:click={() => (showMenu = true)}
+						class="px-4 link link-hover"
+					>
+						Hersteldienst
+					</a>
 				</div>
 			</div>
 			<a href={resolve("/products")} on:click={() => (showMenu = true)}>
