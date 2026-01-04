@@ -5,6 +5,7 @@
 	import EditDropdown from "$components/EditDropdown.svelte"
 	import UserContentRenderer from "$components/UserContentRenderer.svelte"
 	import type { Product } from "$lib/domain/Product"
+	import { ProductGroup } from "$lib/domain/ProductGroup"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { productStore } from "$lib/stores/ProductStore"
 	import { pushCreatedToast } from "$lib/utils/Toast"
@@ -12,7 +13,6 @@
 	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import PriceCard from "./PriceCard.svelte"
-	import { ProductGroup } from "$lib/domain/ProductGroup"
 	import SmallProductCard from "./SmallProductCard.svelte"
 
 	export let product: Product
@@ -46,7 +46,7 @@
 <!-- Visibility -->
 {#if !product.visible}
 	<div class="flex items-center gap-2 underline -mb-1.5">
-		<Fa icon={faEyeSlash} /> Dit product is niet zichtbaar!
+		<Fa icon={faEyeSlash} /> Dit product is niet zichtbaar voor gewone gebruikers!
 	</div>
 {/if}
 

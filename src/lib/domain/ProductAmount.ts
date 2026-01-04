@@ -1,4 +1,3 @@
-import { productStore } from "$lib/stores/ProductStore"
 import type { Database } from "$lib/supabase/database.types"
 import type { Product } from "./Product"
 
@@ -37,7 +36,14 @@ export class ProductAmount {
 	}
 
 	async getProduct() {
-		if (!this.product) this.product = await productStore.getProductById(this.productId)
+		if (!this.product) {
+			// Dynamic import to avoid circular dependency
+			const { productStore } = await import("$lib/stores/ProductStore")
+			const product = await productStore.getProductById(this.productId)
+			if (!product)
+				throw new Error(`Product with ID ${this.productId} not found`)
+			this.product = product
+		}
 		return this.product
 	}
 
