@@ -7,7 +7,7 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa, { type IconSize } from "svelte-fa"
 
-	// editPathname or editHandler can be used, with EditUrl taking precedence
+	// editPathname or editHandler can be used, with editPathname taking precedence
 	export let editPathname: ResolvedPathname | undefined = undefined
 	export let editHandler: () => Promise<void> | void = () => {}
 	export let deleteHandler: (() => Promise<void> | void) | undefined = undefined
