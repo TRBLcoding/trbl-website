@@ -5,9 +5,9 @@ export type PersistedProductOrder = { id: number; amount: number }
 /**
  * Domain class representing an order of a product with a certain amount. Used in invoices and the cart.
  * 
- * Is similart to Product Amount, but is easier to use for local data since it contains the full Product object.
+ * Is similar to Product Amount, but is easier to use for local data since it contains the full Product object.
  * 
- * Persited in local storage.
+ * Persisted in local storage.
  */
 export class ProductOrder {
 	constructor(
