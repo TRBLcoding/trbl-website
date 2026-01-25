@@ -172,7 +172,6 @@
 
 		<!-- Editor -->
 		<div
-			id="hello"
 			bind:this={editorContainer}
 			class="flex-1 rounded-b-lg border-t-0! border-2! border-[#d1d1d1]! dark:border-[#464e57]!"
 		>
