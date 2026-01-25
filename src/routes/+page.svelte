@@ -101,6 +101,9 @@
 						<a class="btn btn-primary px-6 text-[16px]" href="/#contact">
 							Contact
 						</a>
+						<a class="btn btn-soft px-6 text-[16px]" href={resolve("/products")}>
+							Producten
+						</a>
 					</div>
 				</div>
 			</div>

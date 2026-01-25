@@ -5,7 +5,7 @@ import { ProductAmount, type ProductAmountJSON } from "./ProductAmount"
 export type ProductGroupJSON = ProductJSON & { contained_products: ProductAmountJSON[] }
 
 /**
- * Domain class representing a product group. Inherits from Product and adds contained proudcts (as ProductAmounts).
+ * Domain class representing a product group. Inherits from Product and adds contained products (as ProductAmounts).
  * 
  * Saved in the products table.
  */
