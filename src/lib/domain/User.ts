@@ -1,19 +1,37 @@
+import type { Database } from "$lib/supabase/database.types"
+
+export type UserRole = Database['public']['Enums']['Role']
+
+export type UserJSON = Database['public']['Tables']['users']['Row']
+
+/**
+ * Domain model representing a user.
+ * 
+ * Saved in the users table.
+ */
 export class User {
 	constructor(
 		public id: number,
 		public auth_id: string,
 		public email: string,
-		public role: "User" | "Admin",
+		public role: UserRole,
 		public firstName: string,
 		public lastName: string,
 	) { }
 
-	isAdmin() {
-		return this.role === 'Admin'
+	static fromJSON(json: UserJSON) {
+		return new User(
+			json.id,
+			json.auth_id,
+			json.email,
+			json.role,
+			json.first_name,
+			json.last_name
+		)
 	}
 
-	toString() {
-		return `User(${this.auth_id}, ${this.email}, ${this.role})`
+	isAdmin() {
+		return this.role === 'Admin'
 	}
 
 	// Creates a shallow copy of the user, useful for updating the store

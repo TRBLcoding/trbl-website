@@ -1,15 +1,16 @@
 <script lang="ts">
+	import type { ResolvedPathname } from "$app/types"
 	import {
 		faChevronDown,
 		faPen,
 		faTrashAlt,
 	} from "@fortawesome/free-solid-svg-icons"
-	import Fa from "svelte-fa"
+	import Fa, { type IconSize } from "svelte-fa"
 
-	// EditUrl of editHandler can be used
-	export let editUrl = ""
-	export let editHandler: () => Promise<void> | any = () => {}
-	export let deleteHandler: (() => Promise<void> | any) | undefined = undefined
+	// editPathname or editHandler can be used, with editPathname taking precedence
+	export let editPathname: ResolvedPathname | undefined = undefined
+	export let editHandler: () => Promise<void> | void = () => {}
+	export let deleteHandler: (() => Promise<void> | void) | undefined = undefined
 	export let size: "full" | "md" | "sm" | "xs" = "md"
 	export let disabled = false
 	export let width = "w-52"
@@ -29,6 +30,11 @@
 		await deleteHandler()
 		;(document.activeElement as HTMLElement).blur()
 	}
+	function toIconSize(size: "full" | "md" | "sm" | "xs" = "md"): IconSize {
+		if (size === "full") return "lg"
+		if (size === "md") return "1x"
+		return size
+	}
 </script>
 
 <div
@@ -37,9 +43,9 @@
 	class:static={positionStatic}
 	class:cursor-not-allowed={disabled}
 >
-	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-	<label
-		tabindex="0"
+	<div
+		tabindex={0}
+		role="button"
 		class="btn btn-ghost gap-2 normal-case flex flex-row text-base"
 		class:btn-xs={size === "xs"}
 		class:btn-sm={size === "sm"}
@@ -47,16 +53,20 @@
 		class:bg-transparent={disabled}
 		class:pointer-events-none={disabled}
 	>
-		<Fa icon={faPen} size="xs" class={disabled ? "text-gray-500" : ""} />
+		<Fa
+			icon={faPen}
+			size={toIconSize(size)}
+			class={disabled ? "text-gray-500" : ""}
+		/>
 		<Fa icon={faChevronDown} class="text-gray-500 hidden sm:block" />
-	</label>
+	</div>
 	<ul
 		class={"dropdown-content z-10 menu p-2 shadow-sm bg-base-100 rounded-box " +
 			width}
 	>
 		<li>
-			{#if editUrl}
-				<a href={editUrl}>{editPrompt}</a>
+			{#if editPathname}
+				<a href={editPathname}>{editPrompt}</a>
 			{:else}
 				<button on:click={editWrapper} type="button">{editPrompt}</button>
 			{/if}

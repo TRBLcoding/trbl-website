@@ -18,12 +18,13 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
+	import { SvelteSet } from "svelte/reactivity"
 	import { debounce } from "ts-debounce"
 
 	let searchInputValue: string
 	let searchString: string = "" // Debounced searchInputValue
 	let sortOption = "Alfabetisch oplopend"
-	let activeFilters = new Set<Category>()
+	let activeFilters = new SvelteSet<Category>()
 	let errorMessage = ""
 	let loading = true
 
@@ -106,7 +107,7 @@
 		if (browser && $page.url) {
 			// -- Filters --
 			const filterParams = $page.url.searchParams.getAll("filter")
-			activeFilters = new Set(filterParams as Category[])
+			activeFilters = new SvelteSet(filterParams as Category[])
 
 			// -- Sort --
 			const sortParam = $page.url.searchParams.get("sort")
@@ -130,26 +131,31 @@
 	pageHeadStore.updatePageTitle("Producten")
 </script>
 
-<div class="mx-4 lg:mx-12 my-5">
+<div class="max-w-500 mx-auto p-3 sm:p-6 mb-4">
 	<div class="flex gap-3 mb-2 items-center">
 		<h1 class="text-4xl font-semibold">Producten</h1>
 		{#if $authStore && $authStore.isAdmin()}
-			<a href={resolve("/products/new")} class="btn btn-primary btn-sm">
-				Nieuw product
-			</a>
-			<a
-				href={resolve("/product-groups/new")}
-				class="btn btn-primary btn-sm"
-			>
-				Nieuwe product groep
-			</a>
+			<div>
+				<a
+					href={resolve("/products/new")}
+					class="btn btn-primary btn-xs sm:btn-sm"
+				>
+					Nieuw product
+				</a>
+				<a
+					href={resolve("/product-groups/new")}
+					class="btn btn-primary btn-xs sm:btn-sm"
+				>
+					Nieuwe product groep
+				</a>
+			</div>
 		{/if}
 	</div>
 
 	<hr class="h-px bg-base-300 border-none" />
 
 	<!-- Filters -->
-	<div class="flex flex-col gap-3 my-4 items-center lg:items-stretch">
+	<div class="flex flex-col gap-3 my-2 sm:my-4 items-center lg:items-stretch">
 		<div
 			class="flex flex-col md:flex-row items-center justify-center lg:justify-between gap-3 xl:gap-5"
 		>
@@ -157,28 +163,28 @@
 				<div class="w-full flex items-center gap-1">
 					<span class="hidden md:block">Filters:</span>
 					<button
-						class="btn rounded-full"
+						class="btn btn-sm sm:btn-md rounded-full"
 						class:btn-primary={activeFilters.has("Sound")}
 						on:click={() => updateFilter("Sound")}
 					>
 						Geluid
 					</button>
 					<button
-						class="btn rounded-full"
+						class="btn btn-sm sm:btn-md rounded-full"
 						class:btn-primary={activeFilters.has("Light")}
 						on:click={() => updateFilter("Light")}
 					>
 						Verlichting
 					</button>
 					<button
-						class="btn rounded-full"
+						class="btn btn-sm sm:btn-md rounded-full"
 						class:btn-primary={activeFilters.has("Truss")}
 						on:click={() => updateFilter("Truss")}
 					>
 						Truss en statief
 					</button>
 					<button
-						class="btn rounded-full"
+						class="btn btn-sm sm:btn-md rounded-full"
 						class:btn-primary={activeFilters.has("Media")}
 						on:click={() => updateFilter("Media")}
 					>
@@ -189,6 +195,7 @@
 
 			<div class="shrink min-w-32 max-w-lg w-full hidden lg:block">
 				<Input
+					id="product-search-input-lg"
 					size="full"
 					type="text"
 					bind:value={searchInputValue}
@@ -197,21 +204,7 @@
 					iconLeft={faSearch}
 					inputClass="rounded-full"
 					placeholder="Zoek een product"
-				>
-					<span
-						slot="iconRight"
-						class:hidden={!searchInputValue}
-						class="z-10 opacity-50"
-					>
-						<button
-							class="btn btn-ghost btn-circle btn-sm"
-							type="button"
-							on:click={clearSearch}
-						>
-							<Fa icon={faXmarkCircle} size="lg" />
-						</button>
-					</span>
-				</Input>
+				/>
 			</div>
 
 			<div class="flex gap-2 items-center shrink-0">
@@ -221,7 +214,11 @@
 					</div>
 				{/if}
 				<span class="whitespace-nowrap xl:ml-4">Sorteer op:</span>
-				<select class="select min-w-44" bind:value={sortOption}>
+				<select
+					id="sort-options-select"
+					class="select min-w-44"
+					bind:value={sortOption}
+				>
 					<option>Alfabetisch oplopend</option>
 					<option>Alfabetisch aflopend</option>
 					<option>Prijs oplopend</option>
@@ -231,6 +228,7 @@
 		</div>
 		<div class="lg:hidden max-w-sm md:max-w-3xl w-full">
 			<Input
+				id="product-search-input-sm"
 				size="full"
 				type="text"
 				bind:value={searchInputValue}
@@ -250,7 +248,7 @@
 		</div>
 	{:else if loading}
 		<div class="mt-2 flex gap-2 flex-wrap justify-center">
-			{#each Array(8) as _}
+			{#each Array(8)}
 				<ProductCardSkeleton />
 			{/each}
 		</div>

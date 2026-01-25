@@ -44,7 +44,6 @@ export function getFilesFromDragEvent(event: DragEvent) {
 	if (event.dataTransfer.items) {
 		return Array.from(event.dataTransfer.items)
 			.filter((e) => e.kind === "file")
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			.map((e) => e.getAsFile()!)
 	}
 	// Use DataTransfer interface to access the file(s)
@@ -58,7 +57,6 @@ export function readFileAsDataURL(file: File) {
 	return new Promise<string>((accept, reject) => {
 		const reader = new FileReader()
 		reader.onload = (event) => {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			accept(event.target!.result as string)
 		}
 		/// XXX: rejecting with an event is rather unorthodox
@@ -80,7 +78,6 @@ export function readFileAsPreviewDataURL(file: File) {
 		}).then((thumbnail) => {
 			const reader = new FileReader()
 			reader.onload = (event) => {
-				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				accept(event.target!.result as string)
 			}
 			/// XXX: rejecting with an event is rather unorthodox

@@ -5,6 +5,7 @@
 		faTrashCan,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import { v4 as uuidv4 } from "uuid"
 
 	export let amount: number
 	export let disabled: boolean = false
@@ -13,10 +14,13 @@
 	export let max: number = Infinity
 	export let step: number = 1
 	export let required: boolean = false
+	export let id = ""
 	export let deleteOnZero: boolean = false // Overrides min amount when true
 	export let onChange: () => void = () => {} // Called when increased, decreased or on blur
 	let classList = ""
 	export { classList as class }
+
+	$: inputId = id || uuidv4()
 
 	function decrease() {
 		if (deleteOnZero ? amount <= -1 : amount <= min) return
@@ -47,6 +51,7 @@
 		class:input-lg={size === "lg"}
 	>
 		<input
+			id={inputId}
 			class="text-center font-bold"
 			type="number"
 			bind:value={amount}

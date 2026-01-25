@@ -6,7 +6,7 @@ import type { Options } from "nodemailer/lib/mailer"
 export type DeliveryMethod = "pick-up" | "delivery"
 export type PaymentMethod = "bank-transfer" | "cash"
 
-const INVOICE_REQUEST_REQUIRED_FIELDS: readonly (keyof InvoiceRequest)[] = []
+const INVOICE_REQUEST_REQUIRED_FIELDS: readonly (keyof InvoiceRequest)[] = ['firstName', 'lastName', 'emailAddress', 'phoneNumber', 'companyName', 'streetAndNumber', 'postalCode', 'place', 'country', 'selectedProducts', 'eventType', 'rentPeriod', 'paymentMethod', 'deliveryMethod']
 export type InvoiceRequest = {
 	firstName: string
 	lastName: string
@@ -26,16 +26,20 @@ export type InvoiceRequest = {
 	paymentMethod: PaymentMethod
 
 	deliveryMethod: DeliveryMethod
-	deliveryDetails?: {
-		deliveryFirstName: string
-		deliveryLastName: string
-		deliveryStreetAndNumber: string
-		deliveryPostalCode: string
-		deliveryPlace: string
-		deliveryCountry: string
-	}
+	deliveryDetails?: DeliveryDetails
+}
+export type DeliveryDetails = {
+	deliveryFirstName: string
+	deliveryLastName: string
+	deliveryStreetAndNumber: string
+	deliveryPostalCode: string
+	deliveryPlace: string
+	deliveryCountry: string
 }
 
+/**
+ * Domain class representing an invoice message sent from the invoice request form.
+ */
 export class InvoiceMessage {
 	constructor(
 		public firstName: string,
@@ -54,14 +58,7 @@ export class InvoiceMessage {
 		public couponCode: string | null,
 		public paymentMethod: PaymentMethod,
 		public deliveryMethod: DeliveryMethod,
-		public deliveryDetails?: {
-			deliveryFirstName: string
-			deliveryLastName: string
-			deliveryStreetAndNumber: string
-			deliveryPostalCode: string
-			deliveryPlace: string
-			deliveryCountry: string
-		},
+		public deliveryDetails?: DeliveryDetails,
 	) { }
 
 	static fromJSON(json: InvoiceRequest) {
@@ -100,7 +97,6 @@ export class InvoiceMessage {
 		}
 		return email
 	}
-
 	async toCustomerEmail() {
 		const email: Options = {
 			from: GOOGLE_INTERMEDIARY_EMAIL,

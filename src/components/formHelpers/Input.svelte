@@ -7,18 +7,20 @@
 	} from "@fortawesome/free-solid-svg-icons"
 	import dayjs from "dayjs"
 	import Fa from "svelte-fa"
+	import { v4 as uuidv4 } from "uuid"
 
 	export let label = ""
 	export let value: any
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "lg" | "md" | "sm" | "xs" = "sm"
+	export let id = ""
 	let classList = ""
 	export { classList as class }
 
 	export let type: "text" | "number" | "email" | "date" | "password"
 	export let placeholder = ""
-	export let autocomplete: AutoFill = ""
+	export let autocomplete: AutoFill | undefined = undefined
 	export let labelClass = ""
 	export let inputClass = ""
 	export let edited = false
@@ -28,10 +30,14 @@
 	export let iconRight: IconDefinition | undefined = undefined
 	export let toggleText = type === "password"
 	export let toggled = false
-	export let step = ""
-	export let min = ""
+	export let step: string | undefined = undefined
+	export let min: string | undefined = undefined
 
-	$: inputId = label?.replace(/[ :]/g, "").toLowerCase() || "input-field"
+	$: inputId =
+		id ||
+		label?.replace(/[ :]/g, "").replace(" ", "-").toLowerCase() ||
+		placeholder?.toLowerCase().replace(" ", "-") ||
+		uuidv4()
 	$: error = edited ? validate(value) : ""
 	$: showIconLeft = $$slots.iconLeft || iconLeft
 	$: showIconRight = $$slots.iconRight || iconRight || toggleText
@@ -43,6 +49,7 @@
 	$: updateInternal(value)
 	$: updateExternal(internalValue)
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function updateInternal(_: any) {
 		if (value === internalValue) return
 		if (type === "date") {
@@ -53,6 +60,7 @@
 			}
 		} else internalValue = value
 	}
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	function updateExternal(_: any) {
 		if (type === "date") value = dayjs(internalValue)
 		else value = internalValue
@@ -137,7 +145,7 @@
 						<button
 							type="button"
 							on:click={() => (toggled = !toggled)}
-							tabindex="-1"
+							tabindex={-1}
 						>
 							<Fa
 								icon={toggled ? faEyeSlash : faEye}

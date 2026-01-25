@@ -103,6 +103,8 @@ function createProductStore() {
 			.eq('id', id)
 			.single()
 		if (error) {
+			if(error?.message === "JSON object requested, multiple (or no) rows returned")
+				return null
 			console.error(error)
 			throw new Error(`Error fetching product by ID with ID ${id}: ${error?.message}`)
 		}
@@ -116,6 +118,7 @@ function createProductStore() {
 
 		return product
 	}
+
 
 	async function updateProduct(product: Product, newName: string, newVisible: boolean, newPrice: number, newCombinedImages: (string | File)[], newCategories: Category[], newType: Type, newDescription: string, newMaxOrderAmount: null | number, progressStore: Writable<UploadProgress[]>) {
 		// -- Delete images removed by user --
@@ -136,11 +139,11 @@ function createProductStore() {
 				name: newName,
 				visible: newVisible,
 				price: newPrice,
-				imageIds: uploadedImageIds,
+				image_ids: uploadedImageIds,
 				categories: newCategories,
 				type: newType,
 				description: newDescription,
-				maxOrderAmount: newMaxOrderAmount
+				max_order_amount: newMaxOrderAmount
 			} as Database['public']['Tables']['products']['Update'])
 			.eq('id', product.id)
 			.select('id')

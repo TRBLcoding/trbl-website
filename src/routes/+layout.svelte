@@ -14,7 +14,10 @@
 	import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
 	import {
 		faBars,
+		faChevronDown,
 		faRightToBracket,
+		faSignIn,
+		faSignOut,
 		faXmark,
 	} from "@fortawesome/free-solid-svg-icons"
 	import { SvelteToast } from "@zerodevx/svelte-toast"
@@ -77,38 +80,43 @@
 				<div class="lg:hidden">
 					<button
 						class="btn btn-square btn-ghost"
-						onclick={() => (showMenu = !showMenu)}
+						on:click={() => (showMenu = !showMenu)}
 					>
 						<Fa icon={showMenu ? faBars : faXmark} size="lg" />
 					</button>
 					<Cart></Cart>
 				</div>
 				<!-- Large screen -->
-				<div class="menu menu-horizontal hidden lg:block">
+				<div class="hidden lg:block">
 					<div class="dropdown dropdown-hover">
-						<div tabindex="0" role="button" class="btn">Sound and light</div>
+						<div tabindex={0} role="button" class="btn mb-1">
+							Sound and light <Fa icon={faChevronDown} class="" />
+						</div>
 						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 						<ul
-							tabindex="0"
-							class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
+							tabindex={-1}
+							class="dropdown-content menu bg-base-200 rounded-box z-1 p-2 shadow-sm min-w-38"
 						>
 							<li><a href={resolve("/todo")}>Op Maat</a></li>
-							<li><a href={resolve("/todo")}>Verhuur</a></li>
+							<li><a href={resolve("/products")}>Verhuur</a></li>
 						</ul>
 					</div>
 					<div class="dropdown dropdown-hover">
-						<div tabindex="0" role="button" class="btn">Electronics</div>
+						<div tabindex={0} role="button" class="btn mb-1">
+							Electronics <Fa icon={faChevronDown} class="" />
+						</div>
 						<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 						<ul
-							tabindex="0"
-							class="dropdown-content menu bg-base-100 rounded-box z-1 p-2 shadow-sm"
+							tabindex={-1}
+							class="dropdown-content menu bg-base-200 rounded-box z-1 p-2 shadow-sm"
 						>
 							<li><a href={resolve("/todo")}>TRBL producten</a></li>
 							<li><a href={resolve("/todo")}>Hersteldienst</a></li>
 						</ul>
 					</div>
-					<a class="btn shadow-none" href="/#contact">Contact</a>
-					<a class="btn btn-primary px-6" href={resolve("/products")}>Verhuur</a
+					<a class="btn shadow-none mb-1" href="/#contact">Contact</a>
+					<a class="btn btn-primary px-6 mb-1" href={resolve("/products")}
+						>Verhuur</a
 					>
 					<Cart></Cart>
 					{#if !$authStore}
@@ -127,51 +135,110 @@
 		</div>
 
 		<div class="flex flex-col lg:hidden" class:hidden={showMenu}>
-			<a href={resolve("/")}>
+			<a href={resolve("/")} on:click={() => (showMenu = true)}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Home</div>
 				</div>
 			</a>
 			<div
-				class="collapse collapse-plus bg-base-100 border-base-300 border rounded-none"
+				class="collapse collapse-arrow bg-base-100 border-base-300 border rounded-none"
 			>
-				<input type="checkbox" />
+				<input id="sound-and-light-collapse" type="checkbox" />
 				<div class="collapse-title">Sound and Light</div>
-				<div class="collapse-content text-sm">
-					Click the "Sign Up" button in the top right corner and follow the
-					registration process.
+				<div class="collapse-content text-sm flex flex-col gap-3">
+					<a
+						href={resolve("/todo")}
+						on:click={() => (showMenu = true)}
+						class="px-4 link link-hover"
+					>
+						Op Maat
+					</a>
+					<a
+						href={resolve("/products")}
+						on:click={() => (showMenu = true)}
+						class="px-4 link link-hover"
+					>
+						Verhuur
+					</a>
 				</div>
 			</div>
 			<div
-				class="collapse collapse-plus bg-base-100 border-base-300 border rounded-none"
+				class="collapse collapse-arrow bg-base-100 border-base-300 border rounded-none"
 			>
-				<input type="checkbox" />
+				<input id="electronics-collapse" type="checkbox" />
 				<div class="collapse-title">Electronics</div>
-				<div class="collapse-content text-sm">
-					Click the "Sign Up" button in the top right corner and follow the
-					registration process.
+				<div class="collapse-content text-sm flex flex-col gap-3">
+					<a
+						href={resolve("/todo")}
+						on:click={() => (showMenu = true)}
+						class="px-4 link link-hover"
+					>
+						TRBL producten
+					</a>
+					<a
+						href={resolve("/todo")}
+						on:click={() => (showMenu = true)}
+						class="px-4 link link-hover"
+					>
+						Hersteldienst
+					</a>
 				</div>
 			</div>
-			<a href={resolve("/products")}>
+			<a href={resolve("/products")} on:click={() => (showMenu = true)}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Verhuur</div>
 				</div>
 			</a>
-			<a href={resolve("/profile")}>
-				<div class="bg-base-100 border-base-300 border rounded-none">
-					<div class="collapse-title">Mijn account</div>
-				</div>
-			</a>
-			<a href={resolve("/todo")}>
-				<div class="bg-base-100 border-base-300 border rounded-none">
-					<div class="collapse-title">Overzicht Offerte-Aanvraag</div>
-				</div>
-			</a>
-			<a href="/#contact">
+			<a href="/#contact" on:click={() => (showMenu = true)}>
 				<div class="bg-base-100 border-base-300 border rounded-none">
 					<div class="collapse-title">Contact</div>
 				</div>
 			</a>
+			{#if $authStore}
+				<a href={resolve("/profile")} on:click={() => (showMenu = true)}>
+					<div class="bg-base-100 border-base-300 border rounded-none">
+						<div class="collapse-title">Profiel</div>
+					</div>
+				</a>
+			{/if}
+			{#if $authStore && $authStore.isAdmin()}
+				<a href={resolve("/dashboard")} on:click={() => (showMenu = true)}>
+					<div class="bg-base-100 border-base-300 border rounded-none">
+						<div class="collapse-title">Dashboard</div>
+					</div>
+				</a>
+			{/if}
+			{#if $authStore}
+				<button
+					type="button"
+					on:click={() => {
+						authStore.signOut()
+						showMenu = true
+					}}
+				>
+					<div class="bg-base-100 border-base-300 border rounded-none">
+						<div class="collapse-title flex gap-2 items-center">
+							<Fa icon={faSignOut} class="text-lg" /> Uitloggen
+						</div>
+					</div>
+				</button>
+			{:else}
+				<button
+					type="button"
+					class="w-full text-left"
+					on:click={() => {
+						showMenu = true
+						document.getElementById(loginModalID)?.click()
+					}}
+					title="Account"
+				>
+					<div class="bg-base-100 border-base-300 border rounded-none">
+						<div class="collapse-title flex gap-2 items-center">
+							<Fa icon={faSignIn} class="text-lg" /> Aanmelden
+						</div>
+					</div>
+				</button>
+			{/if}
 		</div>
 	</div>
 

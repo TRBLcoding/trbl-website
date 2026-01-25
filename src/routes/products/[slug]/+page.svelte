@@ -6,7 +6,6 @@
 	import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import type { PageData } from "./$types"
-	import { onDestroy } from "svelte"
 
 	export let data: PageData
 
@@ -40,7 +39,11 @@
 			product = await productStore.getProductById(Number(data.id))
 		} catch (error) {
 			console.error(error)
-			errorMessage = "error occurred"
+			if (error instanceof Error) {
+				errorMessage = error.toString()
+			} else {
+				errorMessage = "An unknown error occurred"
+			}
 		}
 	}
 

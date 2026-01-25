@@ -17,13 +17,25 @@
 	{#if product.imageIds?.length > 0}
 		<div class="relative">
 			<figure class="bg-base-200 h-72 rounded-t-md">
-				<a href={resolve("/products/[slug]", { slug: product.id.toString() })}>
+				<a
+					href={resolve("/products/[slug]", { slug: product.id.toString() })}
+					tabindex={-1}
+				>
 					<img src={product.getThumbnailUrls()[0]} alt="Productafbeelding" />
 				</a>
 			</figure>
-			{#if product instanceof ProductGroup}
+			{#if product.visible === false}
 				<div class="absolute top-1.5 right-2 pointer-events-none">
-					<span class="badge  badge-soft badge-sm">Bundel</span>
+					<span class="badge badge-soft badge-sm">Verborgen</span>
+				</div>
+			{/if}
+			{#if product instanceof ProductGroup}
+				<div
+					class="absolute {product.visible === false
+						? 'top-7'
+						: 'top-1.5'} right-2 pointer-events-none"
+				>
+					<span class="badge badge-soft badge-sm">Bundel</span>
 				</div>
 			{/if}
 		</div>

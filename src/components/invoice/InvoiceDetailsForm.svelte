@@ -21,7 +21,7 @@
 
 	let saving = false
 
-	async function onSubmitWrapper(event: SubmitEvent) {
+	async function onSubmitWrapper() {
 		saving = true
 		errorMessage = ""
 		try {

@@ -4,7 +4,7 @@
 	import Input from "$components/formHelpers/Input.svelte"
 	import Quill from "$components/formHelpers/Quill.svelte"
 	import Speaker from "$components/icons/Flowbite/Speaker.svelte"
-	import { 		CategoryValues,Product, type Category } from "$lib/domain/Product"
+	import { CATEGORY_VALUES, Product, type Category } from "$lib/domain/Product"
 	import type { UploadProgress } from "$lib/utils/UploadProgress"
 	import {
 		faExclamationTriangle,
@@ -31,7 +31,7 @@
 	export let newProductGroup: boolean
 
 	let activeTab: "products" | "description" = "products"
-	
+
 	let saving = false
 	let errorMessage = ""
 
@@ -105,10 +105,10 @@
 					previewConverter={Product.imageToThumbnailUrl}
 				/>
 				<MultiSelect
-				label="Categorieën:"
-				bind:values={categories}
-				options={CategoryValues}
-				required
+					label="Categorieën:"
+					bind:values={categories}
+					options={CATEGORY_VALUES}
+					required
 				/>
 				<div class="hidden md:block">
 					<div class="w-fit" class:hover:cursor-wait={saving}>
@@ -154,9 +154,11 @@
 			</div>
 
 			<!-- Tab content -->
-			<div class="h-[524px] flex flex-col">
+			<div class="h-131 flex flex-col">
 				{#if activeTab === "products"}
-					<ProductGroupProductSelector bind:selectedProductAmounts={selectedProducts}></ProductGroupProductSelector>
+					<ProductGroupProductSelector
+						bind:selectedProductAmounts={selectedProducts}
+					></ProductGroupProductSelector>
 				{:else if activeTab === "description"}
 					<Quill
 						label="Beschrijving van product:"

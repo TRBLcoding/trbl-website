@@ -44,7 +44,7 @@
 
 <!-- Selected products list -->
 <div class="mb-4 space-y-2 mt-6">
-	{#each selectedProductAmounts as productAmount}
+	{#each selectedProductAmounts as productAmount (productAmount.productId)}
 		{#await productAmount.getProduct() then product}
 			<div class="flex gap-2 items-center p-2 bg-base-200 rounded-lg">
 				<div class="avatar">
@@ -61,7 +61,7 @@
 								slug: product.id.toString(),
 							})}>{product.name}</a
 						>
-						{#each product.categories as category}
+						{#each product.categories as category (category)}
 							<div class="badge badge-sm badge-soft font-semibold">
 								{category}
 							</div>
@@ -99,7 +99,7 @@
 			<select
 				required
 				class="w-1 h-1 opacity-0"
-				tabindex="-1"
+				tabindex={-1}
 				aria-hidden="true"
 			>
 				<option value="">Selecteer producten</option>
@@ -127,7 +127,7 @@
 			Producten laden <span class="loading loading-ring"></span>
 		</div>
 	{:else}
-		{#each filteredProductAmounts as product}
+		{#each filteredProductAmounts as product (product.id)}
             <button
                 type="button"
                 class="w-full p-2.5 hover:bg-base-200 flex justify-between items-center border-b-2 border-[#d1d1d1] dark:border-[#464e57] last:border-b-0 hover:cursor-pointer focus:outline-2 focus:outline-base-content focus:-outline-offset-2 focus:rounded-lg"
@@ -142,7 +142,7 @@
 				<div class="text-left flex-1">
 					<div class="flex items-center gap-2">
 						<div class="font-medium mr-1">{product.name}</div>
-						{#each product.categories as category}
+						{#each product.categories as category (category)}
 							<div class="badge badge-sm badge-soft font-semibold">
 								{category}
 							</div>

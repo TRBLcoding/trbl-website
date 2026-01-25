@@ -5,8 +5,8 @@
 	pageHeadStore.updatePageTitle("Algemene Voorwaarden")
 </script>
 
-<div class="max-w-3/4 mx-auto mt-15">
-	<div class="mx-10">
+<div class="max-w-6xl mx-auto p-3 sm:p-6 mb-4 sm:mb-8">
+	<div class="mx-2">
 		<div class="text-2xl font-semibold mb-5">TRBL Algemene Voorwaarden</div>
 		<ol class="mx-3 list-decimal opacity-80 ml-5">
 			<li>

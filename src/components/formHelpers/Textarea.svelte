@@ -1,16 +1,22 @@
 <script lang="ts">
 	export let label = ""
-	export let value: any
+	export let value: string
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "md" | "sm" | "xs" = "sm"
+	export let id = ""
+	import { v4 as uuidv4 } from "uuid"
 
 	export let placeholder = ""
 	export let labelClass = ""
 	let classList = ""
 	export { classList as class }
 
-	$: inputId = label?.replace(/[ :]/g, "").toLowerCase() || "input-area"
+	$: inputId =
+		id ||
+		label?.replace(/[ :]/g, "").replace(" ", "-").toLowerCase() ||
+		placeholder?.replace(" ", "-").toLowerCase() ||
+		uuidv4()
 </script>
 
 <div
@@ -33,6 +39,7 @@
 		</div>
 	{/if}
 	<textarea
+		id={inputId}
 		class="input border-2 w-full h-74"
 		{required}
 		{placeholder}

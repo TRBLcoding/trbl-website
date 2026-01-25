@@ -4,7 +4,7 @@
 	export let required = false
 	export let disabled = false
 	export let size: "full" | "md" | "sm" | "xs" = "sm"
-	export let autocomplete: AutoFill = ""
+	export let autocomplete: AutoFill | undefined = undefined
 
 	$: selectId = label?.replace(/[ :]/g, "").toLowerCase()
 </script>

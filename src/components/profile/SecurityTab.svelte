@@ -85,7 +85,8 @@
 </script>
 
 <!-- Security -->
-<label class="tab [--tab-bg:var(--color-base-200)]">
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<label class="tab [--tab-bg:var(--color-base-200)]" tabindex={checked ? -1 : 0}>
 	<input
 		type="radio"
 		name="profile-tabs"

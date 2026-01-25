@@ -1,20 +1,14 @@
-import { Product, type Category, type Type } from "./Product"
+import { Product, type Category, type ProductJSON, type Type } from "./Product"
 import { ProductAmount, type ProductAmountJSON } from "./ProductAmount"
 
-export type ProductGroupJSON = {
-	id: number
-	name: string
-	price: number
-	description: string
-	categories: Category[]
-	type: Type
-	visible: boolean
-	imageIds: string[]
-	maxOrderAmount: number | null
-	member_of: ProductAmountJSON[]
-	contained_products: ProductAmountJSON[]
-}
+// The ProductGroupJSON received by the client includes joined contained_products field
+export type ProductGroupJSON = ProductJSON & { contained_products: ProductAmountJSON[] }
 
+/**
+ * Domain class representing a product group. Inherits from Product and adds contained products (as ProductAmounts).
+ * 
+ * Saved in the products table.
+ */
 export class ProductGroup extends Product {
 	constructor(
 		public id: number,
@@ -41,8 +35,8 @@ export class ProductGroup extends Product {
 			json.categories,
 			json.type,
 			json.visible,
-			json.imageIds,
-			json.maxOrderAmount,
+			json.image_ids,
+			json.max_order_amount,
 			json.member_of.map(ProductAmount.fromJSON),
 			await Promise.all(json.contained_products.map(ProductAmount.fromJSON)),
 		)

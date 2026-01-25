@@ -21,14 +21,16 @@
 	let price = 0
 	let uploadedImages: File[] = []
 	let categories: Category[] = []
-	let type: Type = ""
+	let type: Type
 	let description = ""
 	let maxOrderAmount: null | number = null
 
 	async function createProduct() {
 		const product = await createPreviewProduct()
 		await productStore.createProduct(product, uploadedImages, progressStore)
-		pushCreatedToast("Product aangemaakt", { gotoUrl: "/products" })
+		pushCreatedToast("Product aangemaakt", {
+			gotoPathname: resolve("/products"),
+		})
 	}
 
 	// -- Preview --
@@ -40,7 +42,7 @@
 	async function createPreviewProduct() {
 		const memberOf = Array<ProductAmount>(0)
 		const images = await Promise.all(
-				uploadedImages.map((e) => PreviewableFile.getFilePreview(e, false))
+			uploadedImages.map((e) => PreviewableFile.getFilePreview(e, false))
 		)
 		return new Product(
 			-1, // temporary id

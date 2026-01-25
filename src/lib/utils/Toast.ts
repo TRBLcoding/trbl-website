@@ -1,7 +1,8 @@
+import type { ResolvedPathname } from "$app/types"
 import CreatedToast from "$components/CreatedToast.svelte"
 import { toast } from "@zerodevx/svelte-toast"
 
-export function pushCreatedToast(createdText: string, config?: { gotoUrl?: string, removeLast?: boolean }) {
+export function pushCreatedToast(createdText: string, config?: { gotoPathname?: ResolvedPathname, removeLast?: boolean }) {
     if (config?.removeLast) {
         toast.pop()
     }
@@ -11,7 +12,7 @@ export function pushCreatedToast(createdText: string, config?: { gotoUrl?: strin
             src: CreatedToast as any,
             props: {
                 createdText: createdText,
-                gotoUrl: config?.gotoUrl,
+                gotoPathname: config?.gotoPathname
             },
             sendIdTo: "toastId",
         },

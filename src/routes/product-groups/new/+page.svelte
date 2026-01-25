@@ -3,7 +3,7 @@
 	import { resolve } from "$app/paths"
 	import ProductGroupForm from "$components/product-group/ProductGroupForm.svelte"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
-	import type { Category, Product, Type } from "$lib/domain/Product"
+	import type { Category, Type } from "$lib/domain/Product"
 	import type { ProductAmount } from "$lib/domain/ProductAmount"
 	import { ProductGroup } from "$lib/domain/ProductGroup"
 	import type { User } from "$lib/domain/User"
@@ -30,8 +30,14 @@
 
 	async function createProductGroup() {
 		const productGroup = await createPreview()
-		await productStore.createProductGroup(productGroup, uploadedImages, progressStore)
-		pushCreatedToast("Productgroep aangemaakt", { gotoUrl: "/products" })
+		await productStore.createProductGroup(
+			productGroup,
+			uploadedImages,
+			progressStore
+		)
+		pushCreatedToast("Productgroep aangemaakt", {
+			gotoPathname: resolve("/products"),
+		})
 	}
 
 	// -- Preview --

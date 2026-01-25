@@ -22,8 +22,8 @@
 	pageHeadStore.updatePageTitle("Winkelmandje")
 </script>
 
-<div class="max-w-6xl mx-auto p-6">
-	<h1 class="text-3xl font-bold mb-6">Winkelmandje</h1>
+<div class="max-w-6xl mx-auto p-3 sm:p-6">
+	<h1 class="text-3xl font-bold mb-3 sm:mb-6">Winkelmandje</h1>
 
 	{#if $cartStore && $cartStore.length === 0}
 		<div class="card bg-base-200">
@@ -99,13 +99,13 @@
 
 						<div class="card-actions flex-col mt-4">
 							<a class="btn btn-primary btn-block" href={resolve("/checkout")}>
-								Afrekenen
+								Offerte aanvragen
 							</a>
 							<a
 								href={resolve("/products")}
 								class="btn btn-ghost btn-block btn-soft"
 							>
-								Verder winkelen
+								Meer producten bekijken
 							</a>
 						</div>
 					</div>

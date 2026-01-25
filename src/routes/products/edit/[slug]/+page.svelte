@@ -3,7 +3,8 @@
 	import { resolve } from "$app/paths"
 	import ProductComponent from "$components/product/ProductComponent.svelte"
 	import ProductForm from "$components/product/ProductForm.svelte"
-	import { Product } from "$lib/domain/Product"
+	import { Product, type Category, type Type } from "$lib/domain/Product"
+	import type { ProductAmount } from "$lib/domain/ProductAmount"
 	import type { User } from "$lib/domain/User"
 	import { authStore } from "$lib/stores/AuthStore"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -15,7 +16,6 @@
 	import Fa from "svelte-fa"
 	import { writable } from "svelte/store"
 	import type { PageData } from "./$types"
-	import type { ProductAmount } from "$lib/domain/ProductAmount"
 
 	export let data: PageData
 
@@ -23,13 +23,13 @@
 
 	let loading = true
 	let errorMessage = ""
-	
+
 	let name: string = ""
 	let visible: boolean = true
 	let price: number = 0
 	let combinedImages: (string | File)[] = []
-	let categories: string[] = []
-	let type: string = ""
+	let categories: Category[] = []
+	let type: Type
 	let description: string = ""
 	let maxOrderAmount: null | number = null
 
@@ -67,7 +67,9 @@
 		)
 		haveValuesBeenSet = false
 		pushCreatedToast("Product gewijzigd", {
-			gotoUrl: "/products/" + product!.id,
+			gotoPathname: resolve("/products/[slug]", {
+				slug: product!.id.toString(),
+			}),
 		})
 	}
 

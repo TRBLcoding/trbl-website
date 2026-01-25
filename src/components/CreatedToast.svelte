@@ -1,19 +1,20 @@
 <script lang="ts">
 	import { beforeNavigate, goto } from "$app/navigation"
+	import type { ResolvedPathname } from "$app/types"
 	import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
 	import { isPageNavigation } from "$lib/utils/Utils"
 	import type { BeforeNavigate } from "@sveltejs/kit"
 	import { toast } from "@zerodevx/svelte-toast"
 
 	export let createdText = ""
-	export let gotoUrl: string | undefined
+	export let gotoPathname: ResolvedPathname | undefined
 	export let toastId: number
 
 	function removeToast() {
 		toast.pop(toastId)
 	}
 	function gotoCreated() {
-		goto(gotoUrl!)
+		goto(gotoPathname!)
 	}
 	beforeNavigate(async (navigation: BeforeNavigate) => {
 		if (isPageNavigation(navigation)) removeToast()
@@ -26,7 +27,7 @@
 		<span>{createdText}</span>
 		<div class="flex-none">
 			<button class="btn btn-sm btn-ghost" on:click={removeToast}> Ok </button>
-			{#if gotoUrl}
+			{#if gotoPathname}
 				<button class="btn btn-sm btn-primary" on:click={gotoCreated}>
 					Bekijken
 				</button>

@@ -10,9 +10,14 @@
 	export let inputClass = ""
 	let classList = ""
 	export { classList as class }
-	export let id = uuidv4()
+	export let id = ""
 	export let labelClass = ""
 	export let onInput: () => void = () => {}
+
+	$: inputId =
+		id ||
+		label?.replace(/[ :]/g, "").replace(" ", "-").toLowerCase() ||
+		uuidv4()
 </script>
 
 <div
@@ -22,7 +27,7 @@
 	class:max-w-xs={size === "xs"}
 >
 	<input
-		{id}
+		id={inputId}
 		type="checkbox"
 		bind:checked={value}
 		on:input={onInput}
@@ -36,7 +41,7 @@
 	/>
 	{#if label || $$slots.label}
 		<label
-			for={id}
+			for={inputId}
 			class="label p-0 flex-1 whitespace-break-spaces"
 			class:opacity-50={disabled}
 		>

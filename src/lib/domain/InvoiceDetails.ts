@@ -1,5 +1,12 @@
 import type { Database } from "$lib/supabase/database.types"
 
+export type InvoiceDetailsJSON = Database['public']['Tables']['invoice_details']['Row']
+
+/**
+ * Domain class representing invoice details for a customer. 
+ * 
+ * Saved in the invoice_details table.
+ */
 export class InvoiceDetails {
 	constructor(
 		public id: number,
@@ -29,10 +36,9 @@ export class InvoiceDetails {
 			postal_code: this.postalCode,
 			place: this.place,
 			country: this.country,
-		} as Database['public']['Tables']['invoice_details']['Insert']
+		} as InvoiceDetailsJSON
 	}
-
-	static fromJSON(json: any) {
+	static fromJSON(json: InvoiceDetailsJSON) {
 		return new InvoiceDetails(
 			json.id,
 			json.auth_id,

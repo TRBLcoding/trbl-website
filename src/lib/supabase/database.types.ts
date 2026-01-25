@@ -108,8 +108,8 @@ export type Database = {
           categories: Database["public"]["Enums"]["Category"][]
           description: string
           id: number
-          imageIds: string[]
-          maxOrderAmount: number | null
+          image_ids: string[]
+          max_order_amount: number | null
           name: string
           price: number
           type: Database["public"]["Enums"]["Type"]
@@ -119,8 +119,8 @@ export type Database = {
           categories: Database["public"]["Enums"]["Category"][]
           description: string
           id?: number
-          imageIds: string[]
-          maxOrderAmount?: number | null
+          image_ids: string[]
+          max_order_amount?: number | null
           name: string
           price: number
           type: Database["public"]["Enums"]["Type"]
@@ -130,8 +130,8 @@ export type Database = {
           categories?: Database["public"]["Enums"]["Category"][]
           description?: string
           id?: number
-          imageIds?: string[]
-          maxOrderAmount?: number | null
+          image_ids?: string[]
+          max_order_amount?: number | null
           name?: string
           price?: number
           type?: Database["public"]["Enums"]["Type"]
@@ -141,7 +141,7 @@ export type Database = {
       }
       users: {
         Row: {
-          auth_id: string | null
+          auth_id: string
           email: string
           first_name: string
           id: number
@@ -149,7 +149,7 @@ export type Database = {
           role: Database["public"]["Enums"]["Role"]
         }
         Insert: {
-          auth_id?: string | null
+          auth_id: string
           email: string
           first_name: string
           id?: number
@@ -157,7 +157,7 @@ export type Database = {
           role?: Database["public"]["Enums"]["Role"]
         }
         Update: {
-          auth_id?: string | null
+          auth_id?: string
           email?: string
           first_name?: string
           id?: number

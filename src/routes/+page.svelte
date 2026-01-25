@@ -3,11 +3,14 @@
 	import { resolve } from "$app/paths"
 	import ContactForm from "$components/ContactForm.svelte"
 	import OpenStreetMapMap from "$components/maps/OpenStreetMapMap.svelte"
-	import type { ContactRequest } from "$lib/domain/ContactMessage"
+	import type { ContactRequestJSON } from "$lib/domain/ContactMessage"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import Carousel from "../components/carousel/Carousel.svelte"
+
+	let windowWidth = 0
+	$: mapHeight = windowWidth >= 640 ? 618 : 400
 
 	const images = !browser
 		? []
@@ -41,7 +44,7 @@
 	}
 
 	async function send() {
-		const body: ContactRequest = {
+		const body: ContactRequestJSON = {
 			firstName,
 			lastName,
 			emailAddress,
@@ -69,6 +72,8 @@
 	pageHeadStore.updatePageTitle("")
 </script>
 
+<svelte:window bind:innerWidth={windowWidth} />
+
 <!-- Static image -->
 <div class="md:fixed inset-0 z-0">
 	<img src="camonigrava.jpg" alt="Foto Camonigrava" class="w-full" />
@@ -77,14 +82,14 @@
 <!-- Scrollable content -->
 <div class="relative z-10">
 	<!-- Welcome card -->
-	<div class="xl:h-[650px] lg:h-[550px] md:h-[350px] w-full relative">
+	<div class="xl:h-162.5 lg:h-137.5 md:h-87.5 w-full relative">
 		<!-- Large Welcome card -->
 		<div
 			class="absolute right-0 bottom-0 xl:mr-45 xl:mb-30 lg:mr-20 lg:mb-15 mx-10 mb-7 hidden xs:block"
 		>
-			<div class="card bg-base-100 sm:w-[550px] shadow-sm">
+			<div class="card bg-base-100 sm:w-137.5 shadow-sm">
 				<div class="card-body">
-					<h2 class="card-title text-xl font-bold">
+					<h2 class="card-title text-2xl font-bold">
 						TRBL - Passie voor licht en geluid!
 					</h2>
 					<p class="text-[15px]">
@@ -92,12 +97,12 @@
 						tot het voorzien van mobiele installaties en technische
 						ondersteuning op fuiven en evenementen!
 					</p>
-					<div class="card-actions justify-start mt-4">
-						<a
-							class="btn btn-primary px-6 uppercase text-[16px]"
-							href="/#contact"
-						>
+					<div class="card-actions justify-start mt-3">
+						<a class="btn btn-primary px-6 text-[16px]" href="/#contact">
 							Contact
+						</a>
+						<a class="btn btn-soft px-6 text-[16px]" href={resolve("/products")}>
+							Producten
 						</a>
 					</div>
 				</div>
@@ -124,9 +129,9 @@
 	<div
 		class="w-full bg-base-100 flex flex-col justify-center items-center gap-10 py-8"
 	>
-		<div class="flex gap-16">
+		<div class="flex flex-wrap gap-4 md:gap-12 lg:gap-16 justify-center mx-5">
 			<div class="flex flex-col items-center gap-2">
-				<a class="avatar w-70 h-70" href="products?filter=Sound">
+				<a class="avatar w-70 h-70" href="products?filter=Sound" tabindex={-1}>
 					<img src="sound.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
@@ -135,7 +140,7 @@
 				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<a class="avatar w-70 h-70" href="products?filter=Light">
+				<a class="avatar w-70 h-70" href="products?filter=Light" tabindex={-1}>
 					<img src="light.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
@@ -144,7 +149,7 @@
 				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<a class="avatar w-70 h-70" href="products?filter=Truss">
+				<a class="avatar w-70 h-70" href="products?filter=Truss" tabindex={-1}>
 					<img src="truss.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
@@ -153,7 +158,7 @@
 				>
 			</div>
 			<div class="flex flex-col items-center gap-2">
-				<a class="avatar w-70 h-70" href="products?filter=Media">
+				<a class="avatar w-70 h-70" href="products?filter=Media" tabindex={-1}>
 					<img src="media.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
@@ -172,7 +177,7 @@
 			Enkele van onze projecten:
 		</div>
 	</div>
-	<div class="h-[500px] overflow-hidden flex relative">
+	<div class="h-125 overflow-hidden flex relative">
 		<img
 			src="scheveneken.jpg"
 			alt="Foto Scheveneken"
@@ -193,23 +198,27 @@
 		</div>
 	</div>
 	<div class="w-full bg-base-100 pb-10">
-		<div class="flex max-w-3/4 mx-auto pt-5 gap-10">
+		<div
+			class="flex flex-col md:flex-row justify-center mx-10 pt-5 gap-10 lg:max-w-6xl xl:mx-auto"
+		>
 			<div class="text-xl flex-1">
 				<div class="text-xl font-semibold mb-1 flex items-center gap-2">
 					<Fa icon={faLocationDot} />
 					Locatie
 				</div>
-				<OpenStreetMapMap height={618} />
+				<OpenStreetMapMap height={mapHeight} />
 			</div>
-			<div class="flex-1">
-				<ContactForm
-					bind:firstName
-					bind:lastName
-					bind:emailAddress
-					bind:subject
-					bind:message
-					{send}
-				/>
+			<div class="flex-1 flex md:block justify-center">
+				<div class="w-full max-w-lg">
+					<ContactForm
+						bind:firstName
+						bind:lastName
+						bind:emailAddress
+						bind:subject
+						bind:message
+						{send}
+					/>
+				</div>
 			</div>
 		</div>
 	</div>

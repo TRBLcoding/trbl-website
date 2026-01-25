@@ -44,8 +44,8 @@
 			setLoop()
 		}, duration)
 	}
-	  $: if (mounted && loop && $preferencesStore.autoPlay) setLoop()
-	  else clearTimeout(loopTimeout)
+	$: if (mounted && loop && $preferencesStore.autoPlay) setLoop()
+	else clearTimeout(loopTimeout)
 
 	function selectImage(i: number) {
 		counter = i
@@ -61,32 +61,6 @@
 	class={`relative h-72 sm:h-96 w-full overflow-hidden rounded-lg ${height}`}
 	class:bg-base-200={background}
 >
-	<!-- Carousel images -->
-	{#each images as item, i (item)}
-		<img
-			src={item.imageUrl}
-			class:opacity-0={counter !== i}
-			class={`rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ease-in-out transition-opacity duration-700 ${
-				fillWidth ? "" : "h-full object-contain"
-			}`}
-			alt={item.alt}
-		/>
-	{/each}
-	<!-- Slide indicators -->
-	{#if images.length > 1 && !hideIndicators}
-		<div class="absolute flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-			{#each images, i}
-				<!-- svelte-ignore a11y_consider_explicit_label -->
-				<button
-					type="button"
-					class="w-3 h-3 rounded-full cursor-pointer"
-					class:bg-slate-200={counter === i}
-					class:bg-slate-500={counter !== i}
-					on:click={() => (counter = i)}
-				></button>
-			{/each}
-		</div>
-	{/if}
 	<!-- Slide buttons -->
 	{#if images.length > 1 && !hideButtons}
 		<button
@@ -95,7 +69,7 @@
 			on:click={previous}
 		>
 			<span
-				class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-400/30 dark:bg-gray-800/30 group-hover:bg-slate-500/50 dark:group-hover:bg-gray-800/60 group-focus:bg-slate-500/50 dark:group-focus:bg-slate-500/50"
+				class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-400/30 dark:bg-gray-800/30 group-hover:bg-slate-500/50 dark:group-hover:bg-gray-800/60 group-focus:border-2"
 			>
 				<Fa
 					icon={faChevronLeft}
@@ -110,7 +84,7 @@
 			on:click={next}
 		>
 			<span
-				class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-400/30 dark:bg-gray-800/30 group-hover:bg-slate-500/50 dark:group-hover:bg-gray-800/60 group-focus:bg-slate-500/50 dark:group-focus:bg-slate-500/50"
+				class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-400/30 dark:bg-gray-800/30 group-hover:bg-slate-500/50 dark:group-hover:bg-gray-800/60 group-focus:border-2"
 			>
 				<Fa
 					icon={faChevronRight}
@@ -120,13 +94,35 @@
 			</span>
 		</button>
 	{/if}
+	<!-- Carousel images -->
+	{#each images as item, i (item)}
+		<img
+			src={item.imageUrl}
+			class:opacity-0={counter !== i}
+			class={`rounded-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ease-in-out transition-opacity duration-700 ${
+				fillWidth ? "" : "h-full object-contain"
+			}`}
+			alt={item.alt}
+		/>
+	{/each}
+	<!-- Slide indicators -->
+	{#if images.length > 1 && !hideIndicators}
+		<div class="absolute flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+			{#each images as item, i (item)}
+				<button
+					type="button"
+					class="w-3 h-3 rounded-full cursor-pointer"
+					class:bg-slate-200={counter === i}
+					class:bg-slate-500={counter !== i}
+					on:click={() => (counter = i)}
+					title="Naar afbeelding {i + 1}"
+				></button>
+			{/each}
+		</div>
+	{/if}
 </div>
 
 {#if thumbnails}
-	<CarouselThumnails
-		{selectImage}
-		{counter}
-		{carouselWidth}
-		{images}
+	<CarouselThumnails {selectImage} {counter} {carouselWidth} {images}
 	></CarouselThumnails>
 {/if}
