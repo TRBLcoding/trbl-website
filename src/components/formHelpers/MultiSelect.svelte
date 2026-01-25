@@ -51,10 +51,10 @@
 
 	/* Integrate svelte-multiselect with Tailwind and dark mode */
 	:global(.multiselect) {
-		@apply border-2! h-fit! min-h-12! dark:border-[#464e57]!;
+		@apply border-2! h-fit! min-h-12! dark:border-[#464e57]! bg-transparent;
 		--sms-options-z-index: 100;
 		:global(input.form-control) {
-			@apply w-0.5 h-0.5;
+			@apply w-0.5 h-0.5 opacity-1;
 		}
 		:global(.selected .remove:is(:hover, :focus) path) {
 			@apply fill-(--color-primary);
