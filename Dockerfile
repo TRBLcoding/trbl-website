@@ -10,10 +10,15 @@ RUN npm prune --production
 
 # Use another Node.js Alpine image for the final stage
 FROM node:25-alpine
+# Create a non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
 WORKDIR /app
-COPY --from=builder /app/build build/
-COPY --from=builder /app/node_modules node_modules/
-COPY package.json .
+COPY --from=builder --chown=nodejs:nodejs /app/build build/
+COPY --from=builder --chown=nodejs:nodejs /app/node_modules node_modules/
+COPY --chown=nodejs:nodejs package.json .
+# Switch to non-root user
+USER nodejs
 EXPOSE 3000
 ENV NODE_ENV=production
 CMD [ "node", "build" ]
