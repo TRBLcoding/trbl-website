@@ -1,4 +1,4 @@
-import { GOOGLE_ADMIN_EMAIL, GOOGLE_INTERMEDIARY_EMAIL } from "$env/static/private"
+import { env } from "$env/dynamic/private"
 import { getAdminInvoiceRequestTemplate, getCustomerInvoiceRequestTemplate } from "$lib/templates/invoiceRequestTempate"
 import { BadRequestError } from "$lib/utils/Errors"
 import type { Options } from "nodemailer/lib/mailer"
@@ -89,8 +89,8 @@ export class InvoiceMessage {
 
 	async toAdminEmail() {
 		const email: Options = {
-			from: GOOGLE_INTERMEDIARY_EMAIL,
-			to: GOOGLE_ADMIN_EMAIL,
+			from: env.GOOGLE_INTERMEDIARY_EMAIL,
+			to: env.GOOGLE_ADMIN_EMAIL,
 			subject: `TRBL Bestelling: aanvraag tot offerte`,
 			replyTo: this.emailAddress,
 			html: await getAdminInvoiceRequestTemplate(this),
@@ -99,7 +99,7 @@ export class InvoiceMessage {
 	}
 	async toCustomerEmail() {
 		const email: Options = {
-			from: GOOGLE_INTERMEDIARY_EMAIL,
+			from: env.GOOGLE_INTERMEDIARY_EMAIL,
 			to: this.emailAddress,
 			subject: `No Reply TRBL Bestelling: aanvraag tot offerte`,
 			replyTo: "",

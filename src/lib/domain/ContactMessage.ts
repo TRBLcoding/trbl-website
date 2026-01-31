@@ -1,4 +1,4 @@
-import { GOOGLE_ADMIN_EMAIL, GOOGLE_INTERMEDIARY_EMAIL } from "$env/static/private"
+import { env } from "$env/dynamic/private"
 import { getAdminContactFormTemplate, getCustomerContactFormTemplate } from "$lib/templates/contactFormTemplate"
 import { BadRequestError } from "$lib/utils/Errors"
 import type { Options } from "nodemailer/lib/mailer"
@@ -40,8 +40,8 @@ export class ContactMessage {
 
 	toAdminEmail() {
 		const email: Options = {
-			from: GOOGLE_INTERMEDIARY_EMAIL,
-			to: GOOGLE_ADMIN_EMAIL,
+			from: env.GOOGLE_INTERMEDIARY_EMAIL,
+			to: env.GOOGLE_ADMIN_EMAIL,
 			subject: `TRBL Contactformulier: ${this.subject}`,
 			replyTo: this.emailAddress,
 			text: this.message,
@@ -52,7 +52,7 @@ export class ContactMessage {
 
 	toCustomerEmail() {
 		const email: Options = {
-			from: GOOGLE_INTERMEDIARY_EMAIL,
+			from: env.GOOGLE_INTERMEDIARY_EMAIL,
 			to: this.emailAddress,
 			subject: `No Reply TRBL Contactformulier: ${this.subject}`,
 			replyTo: "",

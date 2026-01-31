@@ -1,4 +1,4 @@
-import { GOOGLE_INTERMEDIARY_EMAIL } from "$env/static/private"
+import { env } from "$env/dynamic/private"
 import { getPrivacyPolicyUpdateTemplace } from "$lib/templates/privacyPolicyUpdateTemplate"
 import { BadRequestError } from "$lib/utils/Errors"
 import type { Options } from "nodemailer/lib/mailer"
@@ -28,7 +28,7 @@ export class PrivacyUpdate {
 
 	toEmail(emailAddress: string, firstName: string, lastName: string) {
 		const email: Options = {
-			from: GOOGLE_INTERMEDIARY_EMAIL,
+			from: env.GOOGLE_INTERMEDIARY_EMAIL,
 			to: emailAddress,
 			subject: `TRBL Privacy Update`,
 			replyTo: "noreply@trbl.be",

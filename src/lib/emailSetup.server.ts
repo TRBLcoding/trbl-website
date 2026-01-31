@@ -1,4 +1,4 @@
-import { GOOGLE_APP_PASSWORD, GOOGLE_INTERMEDIARY_EMAIL } from "$env/static/private"
+import { env } from "$env/dynamic/private"
 import nodemailer from "nodemailer"
 
 const transporter = nodemailer.createTransport({
@@ -6,8 +6,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: GOOGLE_INTERMEDIARY_EMAIL,
-    pass: GOOGLE_APP_PASSWORD,
+    user: env.GOOGLE_INTERMEDIARY_EMAIL,
+    pass: env.GOOGLE_APP_PASSWORD,
   },
 })
 
