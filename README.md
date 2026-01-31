@@ -1,7 +1,7 @@
 # TRBL website
-<div style="text-align: center;">
-  <img src="./static/TRBL_Logo.avif" alt="TRBL logo" style="width: 250px">
-</div>
+<p align="center">
+  <img src="./static/TRBL_Logo.avif" alt="TRBL logo" width="250">
+</p>
 A partially prerendered SvelteKit website with Supabase DB and styling with Tailwind and DaisyUI. Containerized with Docker and Docker Compose.
 
 - [SvelteKit in 100 seconds](https://youtu.be/H1eEFfAkIik)
