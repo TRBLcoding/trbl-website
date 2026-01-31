@@ -4,5 +4,7 @@ services:
     restart: unless-stopped
     ports:
       - 3001:3000
-    environment: []
+    # Environment variables required by the application (see .env.example file)
+    env_file:
+      - .env
 networks: {}
