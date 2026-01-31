@@ -6,7 +6,7 @@ Dockerfile
 README.md
 .npmrc
 .prettierrc
-.eslintrc.cjsdocker build -t my-sveltekit-app .
+.eslintrc.cjs
 .graphqlrc
 .editorconfig
 .svelte-kit
@@ -14,4 +14,7 @@ README.md
 node_modules
 build
 package
+.env
+.env.example
+.env.local
 # **/.env SvelteKit needs .env file during builddocker run
