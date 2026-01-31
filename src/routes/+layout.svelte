@@ -24,7 +24,7 @@
 	import { onMount } from "svelte"
 	import Fa from "svelte-fa"
 	import "../app.css"
-	import Cart from "../components/cart/Cart.svelte"
+	import Cart from "$components/cart/Cart.svelte"
 
 	let showMenu = true
 	const loginModalID = "login-modal"

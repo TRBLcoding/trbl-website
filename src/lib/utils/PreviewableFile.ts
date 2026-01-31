@@ -1,5 +1,5 @@
 import pLimit from "p-limit"
-import { readFileAsDataURL, readFileAsPreviewDataURL } from "./Utils"
+import { readFileAsDataURL, readFileAsPreviewDataURL } from "$lib/utils/Utils"
 
 const limit = pLimit(10)
 

@@ -7,7 +7,7 @@
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-	import Carousel from "../components/carousel/Carousel.svelte"
+	import Carousel from "$components/carousel/Carousel.svelte"
 
 	let windowWidth = 0
 	$: mapHeight = windowWidth >= 640 ? 618 : 400
