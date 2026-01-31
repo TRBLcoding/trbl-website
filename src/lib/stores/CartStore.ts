@@ -10,7 +10,7 @@ export const cartAddTrigger = writable<number>(0)
 
 function createCartStore() {
 	// Persists to localStorage
-	const innerStore = persisted<PersistedProductOrder[] | undefined>('cart', undefined)
+	const innerStore = persisted<PersistedProductOrder[]>('cart', [])
 
 	// Clean up items with amount=0 on load
 	if (browser) {
@@ -23,15 +23,20 @@ function createCartStore() {
 	const { update } = innerStore
 
 	// Derived store that transforms PersistedProductOrders to ProductOrders
-	const subscribe = derived<Persisted<PersistedProductOrder[] | undefined>, Promise<ProductOrder>[] | undefined>(innerStore, (persistedProductOrders) => {
-		if (!browser) return undefined
-		const productOrders = persistedProductOrders?.map(async e => {
-			const product = await productStore.getProductById(e.id)
-			if (!product)
-				console.warn("Product not found for id", e.id)
-			return new ProductOrder(product, e.amount)
-		})
-		return productOrders
+	const subscribe = derived<Persisted<PersistedProductOrder[]>, Promise<ProductOrder>[]>(innerStore, (persistedProductOrders) => {
+		if (!browser) return []
+		const productOrders = (persistedProductOrders || [])
+			.flatMap(e => {
+				const promise = productStore.getProductById(e.id).then(product => {
+					if (!product) {
+						console.warn("Product not found for id", e.id)
+						return []
+					}
+					return [new ProductOrder(product, e.amount)]
+				})
+				return [promise]
+			})
+		return productOrders.map(p => p.then(items => items[0]))
 	}).subscribe
 
 	// Add product to cart, or increase amount if already in cart

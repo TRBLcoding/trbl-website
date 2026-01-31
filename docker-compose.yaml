@@ -1,0 +1,10 @@
+services:
+  trbl-website:
+    image: ghcr.io/daellhin/trbl-website:latest
+    restart: unless-stopped
+    ports:
+      - 3001:3000
+    # Environment variables required by the application (see .env.example file)
+    env_file:
+      - .env
+networks: {}
