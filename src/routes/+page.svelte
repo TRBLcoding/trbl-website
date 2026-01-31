@@ -76,7 +76,7 @@
 
 <!-- Static image -->
 <div class="md:fixed inset-0 z-0">
-	<img src="camonigrava.jpg" alt="Foto Camonigrava" class="w-full" />
+	<img src="/camonigrava.jpg" alt="Foto Camonigrava" class="w-full" />
 </div>
 
 <!-- Scrollable content -->
@@ -132,7 +132,7 @@
 		<div class="flex flex-wrap gap-4 md:gap-12 lg:gap-16 justify-center mx-5">
 			<div class="flex flex-col items-center gap-2">
 				<a class="avatar w-70 h-70" href="products?filter=Sound" tabindex={-1}>
-					<img src="sound.webp" alt="temp" class="rounded-lg" />
+					<img src="/sound.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
 					class="text-xl font-semibold link link-hover"
@@ -141,7 +141,7 @@
 			</div>
 			<div class="flex flex-col items-center gap-2">
 				<a class="avatar w-70 h-70" href="products?filter=Light" tabindex={-1}>
-					<img src="light.webp" alt="temp" class="rounded-lg" />
+					<img src="/light.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
 					class="text-xl font-semibold link link-hover"
@@ -150,7 +150,7 @@
 			</div>
 			<div class="flex flex-col items-center gap-2">
 				<a class="avatar w-70 h-70" href="products?filter=Truss" tabindex={-1}>
-					<img src="truss.webp" alt="temp" class="rounded-lg" />
+					<img src="/truss.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
 					class="text-xl font-semibold link link-hover"
@@ -159,7 +159,7 @@
 			</div>
 			<div class="flex flex-col items-center gap-2">
 				<a class="avatar w-70 h-70" href="products?filter=Media" tabindex={-1}>
-					<img src="media.webp" alt="temp" class="rounded-lg" />
+					<img src="/media.webp" alt="temp" class="rounded-lg" />
 				</a>
 				<a
 					class="text-xl font-semibold link link-hover"
@@ -179,7 +179,7 @@
 	</div>
 	<div class="h-125 overflow-hidden flex relative">
 		<img
-			src="scheveneken.jpg"
+			src="/scheveneken.jpg"
 			alt="Foto Scheveneken"
 			class="w-full h-full object-cover"
 		/>
