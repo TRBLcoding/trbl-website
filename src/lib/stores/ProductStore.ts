@@ -208,6 +208,17 @@ function createProductStore() {
 		update((products) => (products.filter((e) => e.id !== product.id)))
 	}
 
+	async function getAllProductSlugs() {
+		const { error, data } = await supabase.from("products")
+			.select(`id`)
+		if (error) {
+			if (error?.message === "TypeError: Failed to fetch")
+				throw createPostgrestErrorFromObject(error)
+			throw error
+		}
+		return (data || []).map(e => e.id)
+	}
+
 	return {
 		subscribe,
 		createProduct,
@@ -216,6 +227,7 @@ function createProductStore() {
 		updateProduct,
 		updateProductGroup,
 		deleteProduct,
+		getAllProductSlugs,
 		initPromise
 	}
 }
