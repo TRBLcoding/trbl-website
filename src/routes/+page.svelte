@@ -19,7 +19,7 @@
 		: [
 				{ name: "", imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/NVDJBG_Klaar.webp` },
 				{ name: "", imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/NVDJBG_2.webp` },
-				{ name: "", imageUrl: `${env.PUBLIC_SITE_ORIGIN}carousel/NVDJBG_Mensen.webp` },
+				{ name: "", imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/NVDJBG_Mensen.webp` },
 				{
 					name: "",
 					imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/OogappelReunie_Klaar.webp`,
