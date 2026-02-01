@@ -8,6 +8,8 @@
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
 	import Carousel from "$components/carousel/Carousel.svelte"
+	import { env } from '$env/dynamic/public'
+	import ImageWithSkeleton from "$components/ImageWithSkeleton.svelte"
 
 	let windowWidth = 0
 	$: mapHeight = windowWidth >= 640 ? 618 : 400
@@ -15,18 +17,18 @@
 	const images = !browser
 		? []
 		: [
-				{ name: "", imageUrl: `${location.href}carousel/NVDJBG_Klaar.webp` },
-				{ name: "", imageUrl: `${location.href}carousel/NVDJBG_2.webp` },
-				{ name: "", imageUrl: `${location.href}carousel/NVDJBG_Mensen.webp` },
+				{ name: "", imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/NVDJBG_Klaar.webp` },
+				{ name: "", imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/NVDJBG_2.webp` },
+				{ name: "", imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/NVDJBG_Mensen.webp` },
 				{
 					name: "",
-					imageUrl: `${location.href}carousel/OogappelReunie_Klaar.webp`,
+					imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/OogappelReunie_Klaar.webp`,
 				},
-				{ name: "", imageUrl: `${location.href}carousel/Soundgarden23.webp` },
-				{ name: "", imageUrl: `${location.href}carousel/Lodejardin23.webp` },
+				{ name: "", imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/Soundgarden23.webp` },
+				{ name: "", imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/Lodejardin23.webp` },
 				{
 					name: "",
-					imageUrl: `${location.href}carousel/Gentbrugge-feest.webp`,
+					imageUrl: `${env.PUBLIC_SITE_ORIGIN}/carousel/Gentbrugge-feest.webp`,
 				},
 			]
 
@@ -60,7 +62,7 @@
 		if (!response.ok) {
 			if (responseJson.detailedError)
 				throw new Error(
-					`HTTP error: ${response.status} (${response.statusText}), ${responseJson.detailedError}`
+					`HTTP error: ${response.status} (${response.statusText}), ${responseJson.detailedError}`,
 				)
 
 			throw new Error(`HTTP error: ${response.status} ${response.statusText}`)
@@ -101,7 +103,10 @@
 						<a class="btn btn-primary px-6 text-[16px]" href="/#contact">
 							Contact
 						</a>
-						<a class="btn btn-soft px-6 text-[16px]" href={resolve("/products")}>
+						<a
+							class="btn btn-soft px-6 text-[16px]"
+							href={resolve("/products")}
+						>
 							Producten
 						</a>
 					</div>
@@ -132,7 +137,12 @@
 		<div class="flex flex-wrap gap-4 md:gap-12 lg:gap-16 justify-center mx-5">
 			<div class="flex flex-col items-center gap-2">
 				<a class="avatar w-70 h-70" href="products?filter=Sound" tabindex={-1}>
-					<img src="/sound.webp" alt="temp" class="rounded-lg" />
+					<ImageWithSkeleton
+						src="/sound.webp"
+						alt="Geluid verhuur"
+						imgClass="rounded-lg transition-opacity duration-300"
+						skeletonClass="w-70 h-70 rounded-lg"
+					/>
 				</a>
 				<a
 					class="text-xl font-semibold link link-hover"
@@ -141,7 +151,12 @@
 			</div>
 			<div class="flex flex-col items-center gap-2">
 				<a class="avatar w-70 h-70" href="products?filter=Light" tabindex={-1}>
-					<img src="/light.webp" alt="temp" class="rounded-lg" />
+					<ImageWithSkeleton
+						src="/light.webp"
+						alt="Verlichting verhuur"
+						imgClass="rounded-lg transition-opacity duration-300"
+						skeletonClass="w-70 h-70 rounded-lg"
+					/>
 				</a>
 				<a
 					class="text-xl font-semibold link link-hover"
@@ -150,7 +165,12 @@
 			</div>
 			<div class="flex flex-col items-center gap-2">
 				<a class="avatar w-70 h-70" href="products?filter=Truss" tabindex={-1}>
-					<img src="/truss.webp" alt="temp" class="rounded-lg" />
+					<ImageWithSkeleton
+						src="/truss.webp"
+						alt="Truss en Statief verhuur"
+						imgClass="rounded-lg transition-opacity duration-300"
+						skeletonClass="w-70 h-70 rounded-lg"
+					/>
 				</a>
 				<a
 					class="text-xl font-semibold link link-hover"
@@ -159,7 +179,12 @@
 			</div>
 			<div class="flex flex-col items-center gap-2">
 				<a class="avatar w-70 h-70" href="products?filter=Media" tabindex={-1}>
-					<img src="/media.webp" alt="temp" class="rounded-lg" />
+					<ImageWithSkeleton
+						src="/media.webp"
+						alt="Media verhuur"
+						imgClass="rounded-lg transition-opacity duration-300"
+						skeletonClass="w-70 h-70 rounded-lg"
+					/>
 				</a>
 				<a
 					class="text-xl font-semibold link link-hover"
