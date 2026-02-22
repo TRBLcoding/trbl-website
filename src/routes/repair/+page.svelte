@@ -17,7 +17,7 @@
 			lastName,
 			emailAddress,
 			subject,
-			message: `[Op maat] ${message}`,
+			message: `[Repair] ${message}`,
 		}
 		const response = await fetch("/api/contact", {
 			method: "POST",
@@ -48,11 +48,11 @@
 				<!-- Left Side - Content -->
 				<div class="text-center lg:text-left">
 					<h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-base-content mb-6">
-						Oplossingen op maat
+						Reduce, Reuse en Recycle
 					</h1>
 					<div class="w-20 h-1 bg-primary mb-6 mx-auto lg:mx-0"></div>
 					<p class="text-lg md:text-xl text-base-content/80 leading-relaxed mb-6">
-						Groter evenement, of niet zeker wat u allemaal nodig hebt? 
+						Maar wat als een toestel kapot gaat?
 						Neem vrijblijvend contact op en we komen zo snel mogelijk tot u terug!
 					</p>
 					<p class="text-base-content/60 text-sm">

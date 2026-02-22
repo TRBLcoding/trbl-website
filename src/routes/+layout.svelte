@@ -111,7 +111,7 @@
 							class="dropdown-content menu bg-base-200 rounded-box z-1 p-2 shadow-sm"
 						>
 							<li><a href={resolve("/todo")}>TRBL producten</a></li>
-							<li><a href={resolve("/todo")}>Hersteldienst</a></li>
+							<li><a href={resolve("/repair")}>Hersteldienst</a></li>
 						</ul>
 					</div>
 					<a class="btn shadow-none mb-1" href="/#contact">Contact</a>
@@ -176,7 +176,7 @@
 						TRBL producten
 					</a>
 					<a
-						href={resolve("/todo")}
+						href={resolve("/repair")}
 						on:click={() => (showMenu = true)}
 						class="px-4 link link-hover"
 					>
