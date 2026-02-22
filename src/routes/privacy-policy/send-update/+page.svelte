@@ -8,6 +8,7 @@
 	import { supabase } from "$lib/supabase/supabaseClient"
 	import { faCheck } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import type { SendPrivacyPolicyUpdateResponseJSON } from "../../api/send-privacy-policy-update/+server"
 
 	let notableChanges = ""
 	let loading = false
@@ -37,6 +38,8 @@
 				},
 				body: JSON.stringify({ notableChanges }),
 			})
+			// TODO improve error handling based on response JSON
+			const responseJson: SendPrivacyPolicyUpdateResponseJSON = await response.json()
 			if (!response.ok) {
 				throw new Error(
 					`Server returned ${response.status}: ${response.statusText}`
