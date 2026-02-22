@@ -97,7 +97,7 @@
 							tabindex={-1}
 							class="dropdown-content menu bg-base-200 rounded-box z-1 p-2 shadow-sm min-w-38"
 						>
-							<li><a href={resolve("/todo")}>Op Maat</a></li>
+							<li><a href={resolve("/custom")}>Op Maat</a></li>
 							<li><a href={resolve("/products")}>Verhuur</a></li>
 						</ul>
 					</div>
@@ -147,7 +147,7 @@
 				<div class="collapse-title">Sound and Light</div>
 				<div class="collapse-content text-sm flex flex-col gap-3">
 					<a
-						href={resolve("/todo")}
+						href={resolve("/custom")}
 						on:click={() => (showMenu = true)}
 						class="px-4 link link-hover"
 					>
