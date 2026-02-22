@@ -32,6 +32,11 @@ cd trbl-website
 npm install
 ```
 
+### Docker 
+Setup for production or testing using docker compose
+
+The [docker-compose.yaml file](./docker-compose.yaml) can be used to setup the service, it contains one container being the web application. A `.env` file should also be pressent, see [.env.example file](./.env.example) for this.
+
 ## Developing
 Run dev server
 ```bash
