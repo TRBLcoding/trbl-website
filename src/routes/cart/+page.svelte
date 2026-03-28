@@ -76,14 +76,6 @@
 									<span>t.b.d.</span>
 								{/await}
 							</div>
-							<div class="flex justify-between">
-								<span>Betaling:</span>
-								{#await subtotal}
-									<div class="skeleton h-5 w-16"></div>
-								{:then}
-									<span>Factuur of bij ontvangst</span>
-								{/await}
-							</div>
 						</div>
 
 						<div class="divider my-1"></div>
