@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { browser } from "$app/environment"
 	import { resolve } from "$app/paths"
+	import Carousel from "$components/carousel/Carousel.svelte"
 	import ContactForm from "$components/ContactForm.svelte"
+	import ImageWithSkeleton from "$components/ImageWithSkeleton.svelte"
 	import OpenStreetMapMap from "$components/maps/OpenStreetMapMap.svelte"
+	import { env } from '$env/dynamic/public'
 	import type { ContactRequestJSON } from "$lib/domain/ContactMessage"
 	import { pageHeadStore } from "$lib/stores/PageHeadStore"
 	import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
-	import Carousel from "$components/carousel/Carousel.svelte"
-	import { env } from '$env/dynamic/public'
-	import ImageWithSkeleton from "$components/ImageWithSkeleton.svelte"
+	import type { ContactResponseJSON } from "./api/contact/+server"
 
 	let windowWidth = 0
 	$: mapHeight = windowWidth >= 640 ? 618 : 400
@@ -39,12 +40,6 @@
 	let subject: string = ""
 	let message: string = ""
 
-	type ResultType = {
-		type: "error" | "success"
-		detailedError?: string
-		error?: { message: string }
-	}
-
 	async function send() {
 		const body: ContactRequestJSON = {
 			firstName,
@@ -57,12 +52,13 @@
 			method: "POST",
 			body: JSON.stringify(body),
 		})
-		const responseJson: ResultType = await response.json()
+		// TODO improve error handling based on response JSON
+		const responseJson: ContactResponseJSON = await response.json()
 
 		if (!response.ok) {
-			if (responseJson.detailedError)
+			if (responseJson.message)
 				throw new Error(
-					`HTTP error: ${response.status} (${response.statusText}), ${responseJson.detailedError}`,
+					`HTTP error: ${response.status} (${response.statusText}), ${responseJson.message}`,
 				)
 
 			throw new Error(`HTTP error: ${response.status} ${response.statusText}`)

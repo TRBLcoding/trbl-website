@@ -5,7 +5,10 @@ import { mapCountryCodeToName } from "$lib/utils/Utils"
 
 export async function getAdminInvoiceRequestTemplate(invoiceMessage: InvoiceMessage) {
 	const productOrders = await Promise.all(invoiceMessage.selectedProducts.map(async e => {
-		return new ProductOrder(await productStore.getProductById(e.id), e.amount)
+		const product = await productStore.getProductById(e.id)
+		if (!product)
+			throw new Error(`Product with ID ${e.id} not found`)
+		return new ProductOrder(product, e.amount)
 	}))
 	const totalPrice = await ProductOrder.calculatePrice(productOrders)
 
@@ -228,7 +231,10 @@ export async function getAdminInvoiceRequestTemplate(invoiceMessage: InvoiceMess
 
 export async function getCustomerInvoiceRequestTemplate(invoiceMessage: InvoiceMessage) {
 	const productOrders = await Promise.all(invoiceMessage.selectedProducts.map(async e => {
-		return new ProductOrder(await productStore.getProductById(e.id), e.amount)
+		const product = await productStore.getProductById(e.id)
+		if (!product)
+			throw new Error(`Product with ID ${e.id} not found`)
+		return new ProductOrder(product, e.amount)
 	}))
 	const totalPrice = await ProductOrder.calculatePrice(productOrders)
 

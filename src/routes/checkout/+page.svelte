@@ -23,6 +23,7 @@
 		faTicket,
 	} from "@fortawesome/free-solid-svg-icons"
 	import Fa from "svelte-fa"
+	import type { InvoiceRequestResponseJSON } from "../api/invoice-request/+server"
 
 	// Shipping address fields
 	let deliveryFirstName = ""
@@ -111,7 +112,8 @@
 				method: "POST",
 				body: JSON.stringify(body),
 			})
-			const responseJson = await response.json()
+			// TODO improve error handling based on response JSON
+			const responseJson: InvoiceRequestResponseJSON = await response.json()
 			cartSnapshot = $cartStore
 			succesFullySubmitted = true
 			cartStore.clear()
@@ -292,8 +294,8 @@
 						>
 							<span slot="title1">Betaling op factuur</span>
 							<span slot="content1">
-								Maak je betaling later rechtstreeks over op onze bankrekening. Gebruik
-								je factuurnummer als betalingsreferentie
+								Maak je betaling later rechtstreeks over op onze bankrekening.
+								Gebruik je factuurnummer als betalingsreferentie
 							</span>
 							<span slot="title2">Betaling bij levering</span>
 							<span slot="content2">

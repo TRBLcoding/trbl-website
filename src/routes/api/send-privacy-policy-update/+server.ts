@@ -4,6 +4,16 @@ import { getSupabaseClientFromToken } from '$lib/supabase/supabaseClient'
 import { json } from '@sveltejs/kit'
 import type { RequestHandler } from '../$types'
 
+export type ErrorDetails = {
+	user: string
+	error: string
+}
+
+export type SendPrivacyPolicyUpdateResponseJSON = {
+	message: string
+	errors?: ErrorDetails[]
+}
+
 export const POST: RequestHandler = async ({ request }) => {
 
 	const authHeader = request.headers.get('Authorization')
@@ -37,7 +47,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		const jsonBody = await request.json()
 
 		const notableChanges = PrivacyUpdate.fromJSON(jsonBody)
-		const errors = Array<{ user: string; error: string }>()
+		const errors = Array<ErrorDetails>()
 		const successes = Array<number>()
 
 		for (let i = 0; i < usersData.length; i++) {
@@ -61,22 +71,18 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		if (errors.length > 0) {
 			return json({
-				success: false,
 				message: `Failed to send ${errors.length} out of ${usersData.length} emails`,
 				errors,
-				successCount: successes.length
-			}, { status: 207 }) // Multi-Status
+			} satisfies SendPrivacyPolicyUpdateResponseJSON, { status: 207 }) // Multi-Status
 		}
 
 		return json({
-			success: true,
 			message: `Successfully sent ${successes.length} emails`,
-			successCount: successes.length
-		}, { status: 200 })
+		} satisfies SendPrivacyPolicyUpdateResponseJSON, { status: 200 })
 		// ...existing code...
 
 	} catch (error) {
 		console.error('Authentication error:', error)
-		return json({ error: 'Internal server error' }, { status: 500 })
+		return json({ message: 'Internal server error' } satisfies SendPrivacyPolicyUpdateResponseJSON, { status: 500 })
 	}
 }
