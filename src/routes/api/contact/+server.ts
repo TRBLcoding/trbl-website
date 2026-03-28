@@ -4,7 +4,7 @@ import { BadRequestError } from '$lib/utils/Errors.js'
 import { json } from '@sveltejs/kit'
 
 export type ContactResponseJSON = {
-	message: string;
+	message: string
 }
 
 export async function POST({ request }) {
@@ -15,14 +15,14 @@ export async function POST({ request }) {
 		const response2 = await transporter.sendMail(contactMessage.toCustomerEmail())
 		console.log("Email sent to customer:", response2)
 
-		return json({ message: "Email sent successfully" } satisfies ContactResponseJSON) 
+		return json({ message: "Email sent successfully" } satisfies ContactResponseJSON)
 	} catch (error) {
 		console.error("Failed to send email:", error)
 
 		if (error instanceof BadRequestError)
-			return json({ message: error.message }satisfies ContactResponseJSON, { status: 400 })
+			return json({ message: error.message } satisfies ContactResponseJSON, { status: 400 })
 		if (error instanceof Error)
 			return json({ message: error.message } satisfies ContactResponseJSON, { status: 500 })
-		return json({ message: "Failed to send email" }satisfies ContactResponseJSON, { status: 500 })
+		return json({ message: "Failed to send email" } satisfies ContactResponseJSON, { status: 500 })
 	}
 }
