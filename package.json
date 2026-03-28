@@ -46,7 +46,6 @@
 		"@supabase/supabase-js": "^2.100.1",
 		"@zerodevx/svelte-toast": "^0.9.6",
 		"byte-size": "^9.0.1",
-		"cl-editor": "^2.3.0",
 		"dayjs": "^1.11.20",
 		"nodemailer": "^8.0.4",
 		"p-limit": "^7.3.0",
