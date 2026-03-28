@@ -13,6 +13,8 @@
 	export let options: readonly string[] = []
 	export let allowUserOptions: boolean = false
 
+	$: mutableOptions = [...options] // Fix for svelte-multiselect mutability (probably wont change them, but does not mark options as readonly)
+
 	$: inputId =
 		id ||
 		label?.replace(/[ :]/g, "").replace(" ", "-").toLowerCase() ||
@@ -37,7 +39,7 @@
 	<MultiSelect
 		id={inputId}
 		bind:selected={values}
-		{options}
+		options={mutableOptions}
 		{allowUserOptions}
 		{placeholder}
 		{disabled}
