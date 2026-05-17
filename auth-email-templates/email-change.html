@@ -1,0 +1,60 @@
+<!-- Bevestig uw nieuw e-mailadres -->
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; line-height: 1.6;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 0; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <!-- Header -->
+        <div style="background-color: #ffffff; padding: 30px 40px; text-align: center; border-bottom: 2px solid #f0f0f0;">
+            <img src="https://mlhqzqapatk4.i.optimole.com/cb:UGQh.37d8a/w:auto/h:auto/q:90/f:best/http://trbl.be/files/2023/01/TRBL-Logo-Zwart-transparant-Zoomed16x9.png"
+                 alt="Logo TRBL"
+                 width="200"
+                 height="auto"
+                 style="width: 180px !important; height: auto !important; display: block; margin: 0 auto; max-width: 100%;">
+        </div>
+        
+        <!-- Content -->
+        <div style="padding: 40px;">
+            <h2 style="color: #333333; font-size: 28px; margin: 0 0 20px 0; font-weight: bold; text-align: center;">
+                Bevestig uw e-mailadres wijziging
+            </h2>
+            
+            <p style="color: #555555; font-size: 16px; margin: 0 0 20px 0;">
+                Hallo <strong>{{ .Data.first_name }} {{ .Data.last_name }}</strong>,
+            </p>
+            
+            <!-- Message for OLD email address -->
+            <p style="color: #555555; font-size: 16px; margin: 0 0 20px 0;">
+                Er werd een verzoek ingediend om het e-mailadres van uw TRBL account te wijzigen van <strong>{{ .Email }}</strong> naar <strong>{{ .NewEmail }}</strong>.
+            </p>
+            
+            <p style="color: #555555; font-size: 16px; margin: 0 0 30px 0;">
+                Om deze wijziging te voltooien, moet u de aanvraag bevestigen op zowel uw oude als nieuwe e-mailadres. Klik op de knop hieronder om deze wijziging te bevestigen.
+            </p>
+            
+            <!-- CTA Button -->
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="{{ .ConfirmationURL }}"
+                   style="display: inline-block; background-color: #FE5252; color: #ffffff; text-decoration: none; padding: 15px 30px; border-radius: 6px; font-size: 16px; font-weight: bold; text-align: center; transition: background-color 0.3s ease;">
+                    E-mailwijziging Bevestigen
+                </a>
+            </div>
+            
+            <!-- Security Notice -->
+            <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 30px 0;">
+                <p style="color: #856404; font-size: 14px; margin: 0;">
+                    <strong>Let op:</strong> Als u deze wijziging niet hebt aangevraagd, negeer dan deze e-mail. Uw account blijft veilig zolang u niet op de bevestigingsknop klikt.
+                </p>
+            </div>
+            
+            <p style="color: #888888; font-size: 14px; margin: 30px 0 0 0; text-align: center; border-top: 1px solid #f0f0f0; padding-top: 20px;">
+                 Deze mail werd automatisch doorgestuurd omdat er een verzoek werd ingediend om het e-mailadres van uw TRBL account te wijzigen op
+                <a href="https://trbl.be" style="color: #007bff; text-decoration: none;">trbl.be</a>.
+            </p>
+        </div>
+        
+        <!-- Footer -->
+        <div style="background-color: #f8f9fa; padding: 20px 40px; text-align: center; font-size: 12px; color: #888888;">
+            <p style="margin: 0;">
+                © 2025 TRBL. Alle rechten voorbehouden.
+            </p>
+        </div>
+    </div>
+</body>
